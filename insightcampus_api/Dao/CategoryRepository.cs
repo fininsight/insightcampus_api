@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using insightcampus_api.Data;
 using insightcampus_api.Model;
 
@@ -24,7 +25,17 @@ namespace insightcampus_api.Dao
             throw new NotImplementedException();
         }
 
+        public List<CodeModel> Select()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(CategoryModel categoryModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(CodeModel codeModel)
         {
             throw new NotImplementedException();
         }

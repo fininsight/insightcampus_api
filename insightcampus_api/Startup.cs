@@ -38,6 +38,8 @@ namespace insightcampus_api
             services.AddScoped<CategoryInterface, CategoryRepository>();
             services.AddScoped<RoleInterface, RoleRepository>();
             services.AddScoped<UserInterface, UserRepository>();
+            services.AddScoped<CodeInterface, CodeRepository>();
+            services.AddScoped<CodegroupInterface, CodegroupRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +53,7 @@ namespace insightcampus_api
             {
                 app.UseHsts();
             }
-
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseHttpsRedirection();
             app.UseMvc();
         }

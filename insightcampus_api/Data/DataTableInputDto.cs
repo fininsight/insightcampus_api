@@ -10,5 +10,7 @@ namespace insightcampus_api.Data
         public int totalPages { get; set; }
         public int size { get; set; }
         public IEnumerable data { get; set; }
+
+        public string codegroup_id { get; set; }
     }
 }

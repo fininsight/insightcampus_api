@@ -12,10 +12,17 @@ namespace insightcampus_api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CodeModel>().HasKey(role => new
+            {
+                role.code_id,
+                role.codegroup_id
+            });
         }
 
         public DbSet<CategoryModel> CategoryContext { get; set; }
         public DbSet<RoleModel> RoleContext { get; set; }
         public DbSet<UserModel> UserContext { get; set; }
+        public DbSet<CodeModel> CodeContext { get; set; }
+        public DbSet<CodegroupModel> CodegroupContext { get; set; }
     }
 }
