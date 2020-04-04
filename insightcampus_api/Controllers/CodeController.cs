@@ -46,9 +46,14 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Delete([FromBody] CodeModel code)
+        [HttpDelete("{codegroup_id}/{code_id}")]
+        public async Task<ActionResult> Delete(string codegroup_id, string code_id)
         {
+            CodeModel code = new CodeModel
+            {
+                codegroup_id = codegroup_id,
+                code_id = code_id
+            };
             await _code.Delete(code);
             return Ok();
         }
