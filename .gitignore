@@ -1,5 +1,6 @@
 # setting file
-*.json
+appsettings.json
+appsettings.Development.json
 
 # globs
 Makefile.in
