@@ -1,3 +1,7 @@
+# setting file
+insightcampus_api/appsettings.json
+insightcampus_api/appsettings.Development.json
+
 # globs
 Makefile.in
 *.userprefs
