@@ -1,6 +1,5 @@
 # setting file
-insightcampus_api/appsettings.json
-insightcampus_api/appsettings.Development.json
+appsettings.*
 
 # globs
 Makefile.in
