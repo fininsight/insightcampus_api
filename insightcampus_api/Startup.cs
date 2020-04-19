@@ -35,6 +35,7 @@ namespace insightcampus_api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<ClassInterface, ClassRepository>();
             services.AddScoped<CategoryInterface, CategoryRepository>();
             services.AddScoped<RoleInterface, RoleRepository>();
             services.AddScoped<UserInterface, UserRepository>();
