@@ -41,6 +41,7 @@ namespace insightcampus_api
             services.AddScoped<UserInterface, UserRepository>();
             services.AddScoped<CodeInterface, CodeRepository>();
             services.AddScoped<CodegroupInterface, CodegroupRepository>();
+            services.AddScoped<CurriculumInterface, CurriculumRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
