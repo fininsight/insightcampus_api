@@ -46,6 +46,7 @@ namespace insightcampus_api.Dao
 
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
+
             var result = (
                     from code in _context.CodeContext
                    where code.codegroup_id == dataTableInputDto.codegroup_id
