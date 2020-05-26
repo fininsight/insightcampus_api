@@ -12,5 +12,6 @@ namespace insightcampus_api.Data
         public IEnumerable data { get; set; }
 
         public string codegroup_id { get; set; }
+        public string user_seq { get; set; }
     }
 }
