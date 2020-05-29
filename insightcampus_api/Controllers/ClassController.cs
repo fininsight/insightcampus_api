@@ -34,6 +34,32 @@ namespace insightcampus_api.Controllers
             return await _class.Select(class_seq);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] ClassModel classes)
+        {
+            await _class.Add(classes);
+            return Ok();
+        }
+
+        [HttpPut("{seq}")]
+        public async Task<ActionResult> Put(int seq, [FromBody] ClassModel classes)
+        {
+            classes.class_seq = seq;
+            await _class.Update(classes);
+            return Ok();
+        }
+
+        [HttpDelete("{seq}")]
+        public async Task<ActionResult> Delete(int seq)
+        {
+            ClassModel classes = new ClassModel
+            {
+                class_seq = seq
+            };
+            await _class.Delete(classes);
+            return Ok();
+        }
+
         [HttpPut("template")]
         public async Task<ActionResult> TemplateUpdate([FromBody]ClassModel classModel)
         {
