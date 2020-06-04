@@ -41,6 +41,7 @@ namespace insightcampus_api.Dao
         {
             var result = (
                     from curriculum in _context.CurriculumContext
+                    where curriculum.class_seq == dataTableInputDto.class_seq
                     select curriculum);
 
             result = result.OrderByDescending(o => o.curriculum_seq);

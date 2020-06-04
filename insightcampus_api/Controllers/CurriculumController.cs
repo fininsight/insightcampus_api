@@ -18,12 +18,13 @@ namespace insightcampus_api.Controllers
             _curriculum = curriculum;
         }
         //SELECT
-        [HttpGet("{size}/{pageNumber}/{search?}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber, String search)
+        [HttpGet("{class_seq}/{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> Get(int class_seq, int size, int pageNumber)
         {
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
+            dataTableInputDto.class_seq = class_seq;
 
             return await _curriculum.Select(dataTableInputDto);
         }
