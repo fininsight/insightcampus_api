@@ -25,5 +25,6 @@ namespace insightcampus_api.Data
         public DbSet<CodeModel> CodeContext { get; set; }
         public DbSet<CodegroupModel> CodegroupContext { get; set; }
         public DbSet<ClassModel> ClassContext { get; set; }
+        public DbSet<CurriculumModel> CurriculumContext { get; set; }
     }
 }
