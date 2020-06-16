@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Linq;
 using insightcampus_api.Data;
+using System.Linq;
 using insightcampus_api.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace insightcampus_api.Dao
 {
@@ -16,19 +16,28 @@ namespace insightcampus_api.Dao
             _context = context;
         }
 
-        public Task Add<T>(T entity) where T : class
+        public async Task Add<T>(T entity) where T : class
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Delete<T>(T entity) where T : class
+        public async Task Delete<T>(T entity) where T : class
         {
-            throw new NotImplementedException();
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Update(ClassModel classModel)
+        public async Task Update(ClassModel classModel)
         {
-            throw new NotImplementedException();
+            _context.Entry(classModel).Property(x => x.class_nm).IsModified = true;
+            _context.Entry(classModel).Property(x => x.teacher).IsModified = true;
+            _context.Entry(classModel).Property(x => x.duration).IsModified = true;
+            _context.Entry(classModel).Property(x => x.duration_nm).IsModified = true;
+            _context.Entry(classModel).Property(x => x.thumbnail).IsModified = true;
+            _context.Entry(classModel).Property(x => x.price).IsModified = true;
+            _context.Entry(classModel).Property(x => x.real_price).IsModified = true;
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateTemplate(ClassModel classModel)
