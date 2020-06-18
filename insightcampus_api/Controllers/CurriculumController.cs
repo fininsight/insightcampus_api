@@ -17,18 +17,19 @@ namespace insightcampus_api.Controllers
         {
             _curriculum = curriculum;
         }
-        //SELECT
-        [HttpGet("{size}/{pageNumber}/{search?}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber, String search)
+        
+        [HttpGet("{class_seq}/{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> Get(int class_seq, int size, int pageNumber)
         {
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
+            dataTableInputDto.class_seq = class_seq;
 
             return await _curriculum.Select(dataTableInputDto);
         }
 
-        //CREATE(ADD)
+        
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CurriculumModel curriculum)
         {
@@ -36,7 +37,7 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-        //UPDATE
+        
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] CurriculumModel curriculum)
         {
@@ -44,7 +45,7 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-        //DELETE
+        
         [HttpDelete("{curriculum_seq}")]
         public async Task<ActionResult> Delete(string curriculum_seq)
         {

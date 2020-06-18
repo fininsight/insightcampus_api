@@ -17,13 +17,13 @@ namespace insightcampus_api.Dao
             _context = context;
         }
 
-        //Create
+        
         public async Task Add<T>(T entity) where T : class
         {
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        //Update
+        
         public async Task Update(CurriculumModel curriculumModel)
         {
             _context.Entry(curriculumModel).Property(x => x.curriculum_nm).IsModified = true;
@@ -36,11 +36,12 @@ namespace insightcampus_api.Dao
             _context.Entry(curriculumModel).Property(x => x.video_type).IsModified = true;
             await _context.SaveChangesAsync();
         }
-        //Select
+       
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             var result = (
                     from curriculum in _context.CurriculumContext
+                    where curriculum.class_seq == dataTableInputDto.class_seq
                     select curriculum);
 
             result = result.OrderByDescending(o => o.curriculum_seq);
@@ -58,7 +59,7 @@ namespace insightcampus_api.Dao
             return dataTableOutDto;
         }
 
-        //Delete
+        
         public async Task Delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
