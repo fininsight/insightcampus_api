@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using insightcampus_api.Dao;
 using insightcampus_api.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
+using Microsoft.IdentityModel.Tokens;
 
 namespace insightcampus_api
 {
@@ -39,9 +40,20 @@ namespace insightcampus_api
             services.AddScoped<CategoryInterface, CategoryRepository>();
             services.AddScoped<RoleInterface, RoleRepository>();
             services.AddScoped<UserInterface, UserRepository>();
+            services.AddScoped<RoleUserInterface, RoleUserRepository>();
             services.AddScoped<CodeInterface, CodeRepository>();
             services.AddScoped<CodegroupInterface, CodegroupRepository>();
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
+                option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +69,7 @@ namespace insightcampus_api
             }
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
