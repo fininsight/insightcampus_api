@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using insightcampus_api.Data;
 using insightcampus_api.Model;
 
 namespace insightcampus_api.Dao
 {
     public interface UserInterface
     {
-        void Add<T>(T entity) where T : class;
-        void Delete<T>(T entity) where T : class;
-        void Update(UserModel userModel);
-        List<UserModel> Select();
+        Task Add<T>(T entity) where T : class;
+        Task Delete<T>(T entity) where T : class;
+        Task Update(UserModel userModel);
+        Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
     }
 }

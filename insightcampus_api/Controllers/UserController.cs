@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using insightcampus_api.Dao;
+using insightcampus_api.Data;
 using insightcampus_api.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,26 +20,40 @@ namespace insightcampus_api.Controllers
             _user = user;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<UserModel>> Get()
+        [HttpGet("{size}/{pageNumber}/{search?}")]
+        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber, int search)
         {
-            return _user.Select();
-        }
+            DataTableInputDto dataTableInputDto = new DataTableInputDto();
+            dataTableInputDto.size = size;
+            dataTableInputDto.pageNumber = pageNumber;
 
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
+            return await _user.Select(dataTableInputDto);
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] UserModel user)
         {
+            await _user.Add(user);
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] UserModel user)
         {
+            user.user_seq = id;
+            await _user.Update(user);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            UserModel user = new UserModel
+            {
+                user_seq = id
+            };
+            await _user.Delete(user);
+            return Ok();
         }
     }
 }
