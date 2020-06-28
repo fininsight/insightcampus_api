@@ -43,7 +43,7 @@ namespace insightcampus_api
             services.AddScoped<RoleUserInterface, RoleUserRepository>();
             services.AddScoped<CodeInterface, CodeRepository>();
             services.AddScoped<CodegroupInterface, CodegroupRepository>();
-            services.AddScoped<CurriculumInterface, CurriculumRepository>();
+            services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
             services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
 
@@ -55,9 +55,11 @@ namespace insightcampus_api
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            });
+            });        
+
         }
 
+           
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
