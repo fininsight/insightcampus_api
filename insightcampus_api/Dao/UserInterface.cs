@@ -11,6 +11,9 @@ namespace insightcampus_api.Dao
         Task Add<T>(T entity) where T : class;
         Task Delete<T>(T entity) where T : class;
         Task Update(UserModel userModel);
+        UserModel Join(UserModel user);
+        UserModel PasswordCheck(UserModel userModel, UserModel userMatched);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
+        Task<UserModel> UserExists(UserModel userModel);
     }
 }
