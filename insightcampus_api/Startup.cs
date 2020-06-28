@@ -44,6 +44,8 @@ namespace insightcampus_api
             services.AddScoped<CodeInterface, CodeRepository>();
             services.AddScoped<CodegroupInterface, CodegroupRepository>();
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
+            services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
+            services.AddScoped<CurriculumInterface, CurriculumRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
                 option.TokenValidationParameters = new TokenValidationParameters
