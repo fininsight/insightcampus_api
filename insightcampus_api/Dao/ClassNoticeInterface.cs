@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using insightcampus_api.Data;
 using insightcampus_api.Model;
 
 namespace insightcampus_api.Dao
 {
-    public interface UserInterface
+    public interface ClassNoticeInterface
     {
         Task Add<T>(T entity) where T : class;
         Task Delete<T>(T entity) where T : class;
-        Task Update(UserModel userModel);
-        UserModel Join(UserModel user);
-        UserModel PasswordCheck(UserModel userModel, UserModel userMatched);
+        Task Update(ClassNoticeModel classNoticeModel);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
-        Task<UserModel> UserExists(UserModel userModel);
+        Task<ClassNoticeModel> Select(int class_notice_seq);
     }
 }
