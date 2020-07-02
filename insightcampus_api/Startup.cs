@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using insightcampus_api.Dao;
 using insightcampus_api.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -73,6 +75,8 @@ namespace insightcampus_api
             services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
             services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
                 option.TokenValidationParameters = new TokenValidationParameters

@@ -9,6 +9,8 @@
     <Folder Include="Model\" />
     <Folder Include="Data\" />
     <Folder Include="Dao\" />
+    <Folder Include="Utility\" />
+    <Folder Include="assets\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +24,8 @@
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1000" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="ClosedXML" Version="0.95.3" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.7" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>
