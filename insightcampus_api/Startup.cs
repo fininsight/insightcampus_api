@@ -45,6 +45,33 @@ namespace insightcampus_api
             services.AddScoped<RoleUserInterface, RoleUserRepository>();
             services.AddScoped<CodeInterface, CodeRepository>();
             services.AddScoped<CodegroupInterface, CodegroupRepository>();
+<<<<<<< HEAD
+<<<<<<< HEAD
+            services.AddScoped<CurriculumInterface, CurriculumRepository>();
+            services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
+            services.AddScoped<CSVFileInterface, CSVFileRepository>();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseHttpsRedirection();
+            app.UseMvc();
+        }
+    }
+}
+=======
+=======
+>>>>>>> 14d8097be772dc08336e0c8738c098b617001923
             services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
             services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
@@ -81,4 +108,9 @@ namespace insightcampus_api
             app.UseMvc();
         }
     }
+<<<<<<< HEAD
 }
+>>>>>>> 14d8097be772dc08336e0c8738c098b617001923
+=======
+}
+>>>>>>> 14d8097be772dc08336e0c8738c098b617001923
