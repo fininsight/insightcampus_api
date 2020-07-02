@@ -9,6 +9,8 @@
     <Folder Include="Model\" />
     <Folder Include="Data\" />
     <Folder Include="Dao\" />
+    <Folder Include="Utility\" />
+    <Folder Include="assets\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +20,8 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.7" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>
