@@ -3,12 +3,12 @@
 }
 
 .header {
-    width: 1700px;
+    width: 2000px;
     margin: 0 auto;
 }
 
     .header .title {
-        padding-top: 40px;
+        padding: 40px 0;
         text-align: center;
     }
 
@@ -17,12 +17,12 @@
         }
 
     .header .explane p {
-        margin: 10px 0;
-        font-size: 50px;
+        margin: 20px 0;
+        font-size: 60px;
     }
 
 .content {
-    width: 1700px;
+    width: 2000px;
     margin: 0 auto;
 }
 
@@ -39,13 +39,37 @@
         width: 100%;
         border-collapse: collapse;
         font-size: 50px;
-        font-weight: bold;
+        text-align: center;
     }
 
-        .content table thead {
-            background-color: #ddd;
-        }
+    .content table .price-line {
+        text-align: right;
+    }
 
-        .content table td {
-            border: 1px solid #000;
-        }
+.caution {
+    margin: 50px 0;
+    font-size: 55px;
+}
+    .caution li {
+        padding: 20px;
+    }
+
+    .caution .account-number {
+        margin-top: 0;
+        margin-bottom: 40px;
+        font-weight: bold;
+        font-size: 1.2em;
+        background-color: #ffff0b;
+    }
+
+#bg-grey {
+    background-color: #ebebeb;
+}
+
+#bg-lightyellow {
+    background-color: #fff5c1;
+}
+
+#bg-yellow {
+    background-color: #ffff0b;
+}
