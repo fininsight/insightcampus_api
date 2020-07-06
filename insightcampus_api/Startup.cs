@@ -48,8 +48,11 @@ namespace insightcampus_api
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
             services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
             services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
+            services.AddScoped<CurriculumInterface, CurriculumRepository>();
+            services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
             services.AddScoped<CSVFileInterface, CSVFileRepository>();
-
+            services.AddScoped<IncamAddfareInterface, IncamAddfareRepository>();
+          
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
@@ -76,7 +79,6 @@ namespace insightcampus_api
             }
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseHttpsRedirection();
-            app.UseAuthentication();
             app.UseMvc();
         }
     }
