@@ -45,11 +45,10 @@ namespace insightcampus_api
             services.AddScoped<RoleUserInterface, RoleUserRepository>();
             services.AddScoped<CodeInterface, CodeRepository>();
             services.AddScoped<CodegroupInterface, CodegroupRepository>();
-<<<<<<< HEAD
-<<<<<<< HEAD
             services.AddScoped<CurriculumInterface, CurriculumRepository>();
             services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
             services.AddScoped<CSVFileInterface, CSVFileRepository>();
+            services.AddScoped<IncamAddfareInterface, IncamAddfareRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,48 +68,48 @@ namespace insightcampus_api
         }
     }
 }
-=======
-=======
->>>>>>> 14d8097be772dc08336e0c8738c098b617001923
-            services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
-            services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
-            services.AddScoped<CurriculumInterface, CurriculumRepository>();
+//=======
+//=======
+//>>>>>>> 14d8097be772dc08336e0c8738c098b617001923
+//            services.AddScoped<ClassReviewInterface, ClassReviewRepository>();
+//            services.AddScoped<ClassNoticeInterface, ClassNoticeRepository>();
+//            services.AddScoped<CurriculumInterface, CurriculumRepository>();
 
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+//            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
-                option.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });        
+//            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
+//                option.TokenValidationParameters = new TokenValidationParameters
+//                {
+//                    ValidateIssuerSigningKey = true,
+//                    IssuerSigningKey = new SymmetricSecurityKey(key),
+//                    ValidateIssuer = false,
+//                    ValidateAudience = false
+//                };
+//            });        
 
-        }
+//        }
 
            
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseMvc();
-        }
-    }
-<<<<<<< HEAD
-}
->>>>>>> 14d8097be772dc08336e0c8738c098b617001923
-=======
-}
->>>>>>> 14d8097be772dc08336e0c8738c098b617001923
+//        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+//        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+//        {
+//            if (env.IsDevelopment())
+//            {
+//                app.UseDeveloperExceptionPage();
+//            }
+//            else
+//            {
+//                app.UseHsts();
+//            }
+//            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+//            app.UseHttpsRedirection();
+//            app.UseAuthentication();
+//            app.UseMvc();
+//        }
+//    }
+//<<<<<<< HEAD
+//}
+//>>>>>>> 14d8097be772dc08336e0c8738c098b617001923
+//=======
+//}
+//>>>>>>> 14d8097be772dc08336e0c8738c098b617001923
