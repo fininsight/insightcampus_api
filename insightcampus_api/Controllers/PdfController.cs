@@ -50,8 +50,8 @@ namespace insightcampus_api.Controllers
 
             var file = _converter.Convert(pdf);
 
-            //return File(file, "application/pdf");
-            return File(file, "application/pdf", "sample.pdf"); // for downloading as sample.pdf
+            return File(file, "application/pdf");
+            //return File(file, "application/pdf", "sample.pdf"); // for downloading as sample.pdf
         }
     }
 }
