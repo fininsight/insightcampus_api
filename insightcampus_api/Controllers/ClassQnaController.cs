@@ -37,6 +37,8 @@ namespace insightcampus_api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ClassQnaModel classqnaes)
         {
+            classqnaes.reg_dt = DateTime.Now;
+            classqnaes.upd_dt = DateTime.Now;
             await _class_qna.Add(classqnaes);
             return Ok();
         }
