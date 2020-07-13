@@ -66,5 +66,16 @@ namespace insightcampus_api.Dao
 
             return dataTableOutDto;
         }
+
+        public async Task<CodeModel> SelectCode(string codegroup_id, string code_id)
+        {
+
+            var result = await (
+                    from code in _context.CodeContext
+                   where code.codegroup_id == codegroup_id && code.code_id == code_id
+                  select code).FirstOrDefaultAsync();            
+
+            return result;
+        }
     }
 }
