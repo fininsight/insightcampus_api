@@ -83,8 +83,8 @@ namespace insightcampus_api.Controllers
             
             var claims = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.NameIdentifier, userMatched.user_seq.ToString()),
-                    new Claim(ClaimTypes.Name, userMatched.user_id)
+                    new Claim(ClaimTypes.Name, userMatched.user_seq.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, userMatched.user_id)                    
             });            
             
             var roles = await _roleuser.Select(userMatched.user_seq);
