@@ -14,10 +14,12 @@ namespace insightcampus_api.Controllers
     {
 
         private readonly UserInterface _user;
+        private readonly EmailInterface _email;
 
-        public UserController(UserInterface user)
+        public UserController(UserInterface user, EmailInterface email)
         {
             _user = user;
+            _email = email;
         }
 
         [HttpGet("{size}/{pageNumber}/{search?}")]
@@ -55,5 +57,13 @@ namespace insightcampus_api.Controllers
             await _user.Delete(user);
             return Ok();
         }
+
+        [HttpGet("email")]
+        public async Task<ActionResult> email()
+        {
+            _email.SendEmail();
+            return Ok();
+        }
+
     }
 }
