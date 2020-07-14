@@ -37,6 +37,8 @@ namespace insightcampus_api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ClassNoticeModel classnotices)
         {
+            classnotices.reg_dt = DateTime.Now;
+            classnotices.upd_dt = DateTime.Now;
             await _class_notice.Add(classnotices);
             return Ok();
         }
