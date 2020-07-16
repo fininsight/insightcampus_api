@@ -4,6 +4,7 @@ using insightcampus_api.Dao;
 using insightcampus_api.Data;
 using insightcampus_api.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace insightcampus_api.Controllers
 {
@@ -18,6 +19,7 @@ namespace insightcampus_api.Controllers
             _incamAddfare = incamAddfare;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("{size}/{pageNumber}")]
         public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
         {
@@ -28,12 +30,14 @@ namespace insightcampus_api.Controllers
             return await _incamAddfare.Select(dataTableInputDto);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("{addfare_seq}")]
         public async Task<ActionResult<IncamAddfareModel>> Get(int addfare_seq)
         {
             return await _incamAddfare.Select(addfare_seq);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] IncamAddfareModel incamAddfare)
         {
@@ -41,7 +45,7 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] IncamAddfareModel incamAddfare)
         {
