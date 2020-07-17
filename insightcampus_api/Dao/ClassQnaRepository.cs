@@ -42,10 +42,12 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
+        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, int class_seq)
         {
             var result = (
                     from class_qna in _context.ClassQnaContext
+                    where class_qna.class_seq == class_seq
+                    orderby class_qna.reg_dt descending
                     select class_qna);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
