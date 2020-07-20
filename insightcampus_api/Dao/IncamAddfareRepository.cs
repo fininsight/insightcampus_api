@@ -44,6 +44,7 @@ namespace insightcampus_api.Dao
                     from incam_addfare in _context.IncamAddfareContext
                     select incam_addfare);
             result = result.OrderByDescending(o => o.addfare_date);
+
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
             DataTableOutDto dataTableOutDto = new DataTableOutDto();
