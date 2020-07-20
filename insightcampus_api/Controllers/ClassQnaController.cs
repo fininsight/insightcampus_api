@@ -18,14 +18,14 @@ namespace insightcampus_api.Controllers
             _class_qna = class_qna;
         }
 
-        [HttpGet("{size}/{pageNumber}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
+        [HttpGet("{class_seq}/{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> Get(int class_seq ,int size, int pageNumber)
         {
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
 
-            return await _class_qna.Select(dataTableInputDto);
+            return await _class_qna.Select(dataTableInputDto, class_seq);
         }
 
         [HttpGet("{class_qna_seq}")]

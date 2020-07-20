@@ -10,7 +10,7 @@ namespace insightcampus_api.Dao
         Task Add<T>(T entity) where T : class;
         Task Delete<T>(T entity) where T : class;
         Task Update(ClassQnaModel classQnaModel);
-        Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
+        Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, int class_seq);
         Task<ClassQnaModel> Select(int class_qna_seq);
     }
 }
