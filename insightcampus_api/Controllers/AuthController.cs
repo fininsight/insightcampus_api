@@ -19,7 +19,6 @@ namespace insightcampus_api.Controllers
     [ApiController]
     public class AuthController: ControllerBase
     {
-        //private readonly CodeInterface _code;
 
         private readonly IConfiguration _config;
         private readonly UserInterface _user;
@@ -93,6 +92,50 @@ namespace insightcampus_api.Controllers
             {
                 claims.AddClaim(new Claim(ClaimTypes.Role, role.role_nm));
             }            
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claims,
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return new LoginResultDto
+            {
+                result = true,
+                message = tokenString
+            };
+        }
+
+        [HttpPost("familyLogin")]
+        public async Task<LoginResultDto> familyLogin([FromBody] UserModel userModel)
+        {
+
+            if (userModel.user_id!="이진범" || userModel.user_pw != "860921")
+            {
+                return new LoginResultDto
+                {
+                    result = false,
+                    message = "아이디나 패스워드가 일치하지 않습니다."
+                };
+            }
+            
+            // generate token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config.GetSection("AppSettings:Token").Value);
+
+
+            var claims = new ClaimsIdentity(new Claim[]
+            {
+                    new Claim(ClaimTypes.Name, "1"),
+                    new Claim(ClaimTypes.NameIdentifier, "1")
+            });
+
+            claims.AddClaim(new Claim(ClaimTypes.Role, "family"));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

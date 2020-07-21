@@ -29,7 +29,8 @@ namespace insightcampus_api.Dao
             _context.Entry(incamAddfareModel).Property(x => x.original_company).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.@class).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.gubun).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.name).IsModified = true;
+            _context.Entry(incamAddfareModel).Property(x => x.teacher_seq).IsModified = true;
+            _context.Entry(incamAddfareModel).Property(x => x.hour_price).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.price).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.hour).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.tax).IsModified = true;
@@ -66,6 +67,27 @@ namespace insightcampus_api.Dao
                       select incam_addfare).SingleAsync();
 
             return result;
+        }
+
+        public async Task<DataTableOutDto> SelectFamily(DataTableInputDto dataTableInputDto, int teacher_seq)
+        {
+            var result = (
+                    from incam_addfare in _context.IncamAddfareContext
+                   where incam_addfare.teacher_seq == teacher_seq
+                  select incam_addfare);
+            result = result.OrderByDescending(o => o.addfare_date);
+
+            var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
+
+            DataTableOutDto dataTableOutDto = new DataTableOutDto();
+
+            dataTableOutDto.pageNumber = dataTableInputDto.pageNumber;
+            dataTableOutDto.size = dataTableInputDto.size;
+            dataTableOutDto.data = paging;
+            dataTableOutDto.totalPages = (result.Count() % dataTableInputDto.size) > 0 ? result.Count() / dataTableInputDto.size + 1 : result.Count() / dataTableInputDto.size;
+            dataTableOutDto.totalElements = result.Count();
+
+            return dataTableOutDto;
         }
 
         public async Task Delete<T>(T entity) where T : class

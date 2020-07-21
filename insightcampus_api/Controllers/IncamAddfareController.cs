@@ -65,5 +65,15 @@ namespace insightcampus_api.Controllers
             await _incamAddfare.Delete(incamAddfare);
             return Ok();
         }
+
+        [Authorize(Roles = "family")]
+        [HttpGet("family/{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> GetFamily(int size, int pageNumber)
+        {
+            DataTableInputDto dataTableInputDto = new DataTableInputDto();
+            dataTableInputDto.size = size;
+            dataTableInputDto.pageNumber = pageNumber;
+            return await _incamAddfare.SelectFamily(dataTableInputDto, int.Parse(User.Identity.Name));
+        }
     }
 }
