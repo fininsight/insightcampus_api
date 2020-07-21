@@ -4,6 +4,7 @@ using insightcampus_api.Dao;
 using insightcampus_api.Data;
 using insightcampus_api.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace insightcampus_api.Controllers
 {
@@ -18,6 +19,7 @@ namespace insightcampus_api.Controllers
             _class_notice = class_notice;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("{size}/{pageNumber}")]
         public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
         {
@@ -28,6 +30,7 @@ namespace insightcampus_api.Controllers
             return await _class_notice.Select(dataTableInputDto);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("{class_notice_seq}")]
         public async Task<ActionResult<ClassNoticeModel>> Get(int class_notice_seq)
         {
@@ -37,20 +40,25 @@ namespace insightcampus_api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ClassNoticeModel classnotices)
         {
+            classnotices.reg_user = int.Parse(User.Identity.Name);
             classnotices.reg_dt = DateTime.Now;
             classnotices.upd_dt = DateTime.Now;
             await _class_notice.Add(classnotices);
             return Ok();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("{seq}")]
         public async Task<ActionResult> Put(int seq, [FromBody] ClassNoticeModel classnotices)
         {
+            classnotices.upd_user = int.Parse(User.Identity.Name);
+            classnotices.upd_dt = DateTime.Now;
             classnotices.class_notice_seq = seq;
             await _class_notice.Update(classnotices);
             return Ok();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{seq}")]
         public async Task<ActionResult> Delete(int seq)
         {
