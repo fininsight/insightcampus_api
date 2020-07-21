@@ -53,7 +53,7 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpDelete("{addfare_seq}")]
         public async Task<ActionResult> Delete(string addfare_seq)
         {
