@@ -18,8 +18,7 @@ namespace insightcampus_api.Controllers
         {
             _class = __class;
         }
-
-        [Authorize(Roles = "admin")]
+        
         [HttpGet("{size}/{pageNumber}")]
         public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
         {
@@ -29,8 +28,7 @@ namespace insightcampus_api.Controllers
 
             return await _class.Select(dataTableInputDto);
         }
-
-        [Authorize(Roles = "admin")]
+        
         [HttpGet("{class_seq}")]
         public async Task<ActionResult<ClassModel>> Get(int class_seq)
         {
