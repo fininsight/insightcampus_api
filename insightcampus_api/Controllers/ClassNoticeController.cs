@@ -19,7 +19,6 @@ namespace insightcampus_api.Controllers
             _class_notice = class_notice;
         }
 
-        [Authorize(Roles = "admin")]
         [HttpGet("{size}/{pageNumber}")]
         public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
         {
@@ -30,17 +29,27 @@ namespace insightcampus_api.Controllers
             return await _class_notice.Select(dataTableInputDto);
         }
 
-        [Authorize(Roles = "admin")]
+        [HttpGet("{class_seq}/{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> Get(int class_seq, int size, int pageNumber)
+        {
+            DataTableInputDto dataTableInputDto = new DataTableInputDto();
+            dataTableInputDto.size = size;
+            dataTableInputDto.pageNumber = pageNumber;
+
+            return await _class_notice.Select(class_seq, dataTableInputDto);
+        }
+
         [HttpGet("{class_notice_seq}")]
         public async Task<ActionResult<ClassNoticeModel>> Get(int class_notice_seq)
         {
             return await _class_notice.Select(class_notice_seq);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ClassNoticeModel classnotices)
         {
-            classnotices.reg_user = int.Parse(User.Identity.Name);
+            
             classnotices.reg_dt = DateTime.Now;
             classnotices.upd_dt = DateTime.Now;
             await _class_notice.Add(classnotices);

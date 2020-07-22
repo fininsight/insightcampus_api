@@ -11,6 +11,7 @@ namespace insightcampus_api.Dao
         Task Delete<T>(T entity) where T : class;
         Task Update(ClassNoticeModel classNoticeModel);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
+        Task<DataTableOutDto> Select(int class_seq, DataTableInputDto dataTableInputDto);
         Task<ClassNoticeModel> Select(int class_notice_seq);
     }
 }

@@ -58,6 +58,27 @@ namespace insightcampus_api.Dao
             return dataTableOutDto;
         }
 
+        public async Task<DataTableOutDto> Select(int class_seq, DataTableInputDto dataTableInputDto)
+        {
+            var result = (
+                    from class_notice in _context.ClassNoticeContext
+                    where class_notice.class_seq == class_seq
+                    orderby class_notice.reg_dt descending
+                    select class_notice);
+
+            var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
+
+            DataTableOutDto dataTableOutDto = new DataTableOutDto();
+
+            dataTableOutDto.pageNumber = dataTableInputDto.pageNumber;
+            dataTableOutDto.size = dataTableInputDto.size;
+            dataTableOutDto.data = paging;
+            dataTableOutDto.totalPages = (result.Count() % dataTableInputDto.size) > 0 ? result.Count() / dataTableInputDto.size + 1 : result.Count() / dataTableInputDto.size;
+            dataTableOutDto.totalElements = result.Count();
+
+            return dataTableOutDto;
+        }
+
         public async Task<ClassNoticeModel> Select(int class_notice_seq)
         {
             var result = await (
