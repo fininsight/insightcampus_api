@@ -63,6 +63,7 @@ namespace insightcampus_api.Dao
             var result = (
                     from class_notice in _context.ClassNoticeContext
                     where class_notice.class_seq == class_seq
+                    orderby class_notice.reg_dt descending
                     select class_notice);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
