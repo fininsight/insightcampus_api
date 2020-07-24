@@ -23,6 +23,7 @@ namespace insightcampus_api.Controllers
         private readonly IConfiguration _config;
         private readonly UserInterface _user;
         private readonly RoleUserInterface _roleuser;
+        private string user_id = "";
 
         public AuthController(IConfiguration config, UserInterface user, RoleUserInterface roleuesr)
         {
@@ -103,7 +104,7 @@ namespace insightcampus_api.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-
+       
             return new LoginResultDto
             {
                 result = true,
@@ -174,5 +175,12 @@ namespace insightcampus_api.Controllers
         {
             return Ok("로그인이 잘 되어있습니다");
         }
+
+        //[HttpGet()]
+        //public async Task<string> Get([FromBody] UserModel userModel)
+        //{
+        //    user_id = userModel.user_id;
+        //    return user_id;
+        //}
     }
 }
