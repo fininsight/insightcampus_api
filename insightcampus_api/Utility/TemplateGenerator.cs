@@ -1,27 +1,39 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using insightcampus_api.Model;
 
 namespace insightcampus_api.Utility
 {
     public static class TemplateGenerator
     {
-        public static string GetHTMLString()
+        public static string GetHTMLString(IncamAddfareModel incamAddfare)
         {
-            var spec = DataStorage.GetSpecData();
-            var name = spec.tutor_name;
-            var month = spec.month;
-            var type = spec.spec_type;
-            var lec_wage = spec.lec_wage_per_hour;
-            var mnt_wage = spec.mnt_wage_per_hour;
-            var lec_time = spec.lec_time;
-            var mnt_time = spec.mnt_time;
-            var lec_total = lec_wage * 10000 * lec_time;
-            var mnt_total = mnt_wage * 10000 * mnt_time;
-            var lec_calc = lec_total * (1 - spec.tax_percent);
-            var mnt_calc = mnt_total * (1 - spec.tax_percent);
-            var remit = lec_calc - mnt_calc;
-            var tax = spec.tax_percent * 100;
-            var bank = spec.account_bank;
-            var account_num = spec.account_num;
+            var name = incamAddfare.teacher_seq;
+            var month = incamAddfare.addfare_date.Month;
+            var lec_wage = incamAddfare.price / 10000;
+            var mnt_wage = incamAddfare.hour_price / 10000;
+            var times = incamAddfare.hour;
+            var lec_total = (float)lec_wage * 10000 * times;
+            var mnt_total = (float)mnt_wage* 10000 * times;
+            var tax = incamAddfare.tax;
+            var lec_calc = lec_total * (1 - tax);
+            var mnt_calc = mnt_total * (1 - tax);
+            var remit = incamAddfare.remit;
+            var bank = "KB국민";
+            var account_num = "277237-04-001089";
+            var type = "";
+            switch (incamAddfare.income_type)
+            {
+                case 1:
+                    type = "사업소득";
+                    break;
+                case 2:
+                    type = "기타소득";
+                    break;
+                default:
+                    type = "해당없음";
+                    break;
+            }
 
             var sb = new StringBuilder();
             sb.AppendFormat(@"
@@ -87,8 +99,8 @@ namespace insightcampus_api.Utility
                                     <br />
                                     <br />
                                     <br />
-            ", month, lec_wage, lec_time, tax, DataStorage.ToAccounting(lec_total), DataStorage.ToAccounting(lec_total * spec.tax_percent), DataStorage.ToAccounting(lec_calc)
-            , mnt_wage, mnt_time, DataStorage.ToAccounting(mnt_total), DataStorage.ToAccounting(mnt_total * spec.tax_percent), DataStorage.ToAccounting(mnt_calc));
+            ", month, lec_wage, times, tax * 100, ToAccounting(lec_total), ToAccounting(lec_total * tax), ToAccounting(lec_calc)
+            , mnt_wage, times, ToAccounting(mnt_total), ToAccounting(mnt_total * tax), ToAccounting(mnt_calc));
             sb.AppendFormat(@"
                                     <h1><span id='bg-yellow'>[핀인사이트로 송금해주실 금액]</span></h1>
                                     <table border='3' cellpadding='30'>
@@ -112,9 +124,14 @@ namespace insightcampus_api.Utility
                         
                                   </div>
                             </body>
-                        </html>", DataStorage.ToAccounting(lec_calc), DataStorage.ToAccounting(mnt_calc), DataStorage.ToAccounting(remit), bank, account_num);
+                        </html>", ToAccounting(lec_calc), ToAccounting(mnt_calc), ToAccounting(remit), bank, account_num);
 
             return sb.ToString();
+        }
+
+        public static string ToAccounting(double money)
+        {
+            return String.Format("{0:#,0}", money);
         }
     }
 }
