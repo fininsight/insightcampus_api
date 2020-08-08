@@ -24,6 +24,7 @@ namespace insightcampus_api.Data
                 role.role_nm
             });
         }
+        
 
         public DbSet<CategoryModel> CategoryContext { get; set; }
         public DbSet<RoleModel> RoleContext { get; set; }
@@ -36,6 +37,7 @@ namespace insightcampus_api.Data
         public DbSet<ClassReviewModel> ClassReviewContext { get; set; }
         public DbSet<ClassNoticeModel> ClassNoticeContext { get; set; }
         public DbSet<IncamAddfareModel> IncamAddfareContext { get; set; }
+        public DbSet<IncamContractModel> IncamContractContext { get; set; }
         public DbSet<ClassQnaModel> ClassQnaContext { get; set; }
         public DbSet<TeacherModel> TeacherContext { get; set; }
         public DbSet<IncamAddfareModel> PdfContext { get; set; } 
