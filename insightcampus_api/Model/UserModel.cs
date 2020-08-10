@@ -18,5 +18,6 @@ namespace insightcampus_api.Model
         public DateTime reg_dt { get; set; }
         public int upd_user { get; set; }
         public DateTime upd_dt { get; set; }
+        public int ad { get; set; }
     }
 }
