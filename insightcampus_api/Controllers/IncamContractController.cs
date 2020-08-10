@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using insightcampus_api.Dao;
 using insightcampus_api.Data;
@@ -38,6 +39,13 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<IncamContractModel>>> SelectContract(string searchText)
+        {
+            return await _incamContract.SelectContract(searchText);
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] IncamContractModel incamContract)
         {
@@ -54,12 +62,12 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete("{addfare_seq}")]
-        public async Task<ActionResult> Delete(string contract_seq)
+        [HttpDelete("{contract_seq}")]
+        public async Task<ActionResult> Delete(int contract_seq)
         {
             IncamContractModel incamAddfare = new IncamContractModel
             {
-                contract_seq = Convert.ToInt32(contract_seq)
+                contract_seq = contract_seq
             };
 
             await _incamContract.Delete(incamAddfare);

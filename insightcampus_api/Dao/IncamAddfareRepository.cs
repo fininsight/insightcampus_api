@@ -26,25 +26,37 @@ namespace insightcampus_api.Dao
         public async Task Update(IncamAddfareModel incamAddfareModel)
         {
             _context.Entry(incamAddfareModel).Property(x => x.addfare_date).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.original_company).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.@class).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.gubun).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.teacher_seq).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.hour_price).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.price).IsModified = true;
+            _context.Entry(incamAddfareModel).Property(x => x.contract_seq).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.hour).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.tax).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.income_type).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.remit).IsModified = true;
+
             await _context.SaveChangesAsync();
         }
 
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             var result = (
-                    from incam_addfare in _context.IncamAddfareContext
-                    select incam_addfare);
-            result = result.OrderByDescending(o => o.addfare_date);
+                    from addfare in _context.IncamAddfareContext
+                    join contract in _context.IncamContractContext
+                      on addfare.contract_seq equals contract.contract_seq
+                    join teacher in _context.TeacherContext
+                      on addfare.teacher_seq equals teacher.teacher_seq
+                    join company in _context.CodeContext
+                      on contract.original_company equals company.code_id
+                    where company.codegroup_id == "cooperative"
+                   select new IncamAddfareModel
+                    {
+                        addfare_seq = addfare.addfare_seq,
+                        teacher_seq = addfare.teacher_seq,
+                        contract_seq = addfare.contract_seq,
+                        hour = addfare.hour,
+                        addfare_date = addfare.addfare_date,
+                        income_type = addfare.income_type,
+                        original_company_nm = company.code_nm,
+                        @class = contract.@class,
+                        name = teacher.name
+                    });
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 

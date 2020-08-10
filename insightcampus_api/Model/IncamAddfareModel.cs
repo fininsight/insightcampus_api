@@ -10,15 +10,15 @@ namespace insightcampus_api.Model
         [Key]
         public int addfare_seq { get; set; }
         public int teacher_seq { get; set; }
-        public DateTime addfare_date { get; set; }
-        public string original_company { get; set; }
-        public string @class { get; set; }
-        public int gubun { get; set; }        
-        public decimal price { get; set; }
-        public decimal hour_price { get; set; }
+        public int contract_seq { get; set; }
         public int hour { get; set; }
-        public float tax { get; set; }
-        public int income_type { get; set; }
-        public int remit { get; set; }
+        public DateTime addfare_date { get; set; }
+        public string income_type { get; set; }
+        [NotMapped]
+        public string original_company_nm { get; set; }
+        [NotMapped]
+        public string @class { get; set; }
+        [NotMapped]
+        public string name { get; set; }
     }
 }

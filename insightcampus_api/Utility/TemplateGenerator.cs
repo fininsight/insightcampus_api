@@ -7,27 +7,27 @@ namespace insightcampus_api.Utility
     public static class TemplateGenerator
     {
         public static string GetHTMLString(IncamAddfareModel incamAddfare)
-        {
+        {   
             var name = incamAddfare.teacher_seq;
             var month = incamAddfare.addfare_date.Month;
-            var lec_wage = incamAddfare.price / 10000;
-            var mnt_wage = incamAddfare.hour_price / 10000;
-            var times = incamAddfare.hour;
+            var lec_wage = 10000; //incamAddfare.price / 10000;
+            var mnt_wage = 10000; //incamAddfare.hour_price / 10000;
+            var times = 10; //incamAddfare.hour;
             var lec_total = (float)lec_wage * 10000 * times;
             var mnt_total = (float)mnt_wage* 10000 * times;
-            var tax = incamAddfare.tax;
+            var tax = 10;   //incamAddfare.tax;
             var lec_calc = lec_total * (1 - tax);
             var mnt_calc = mnt_total * (1 - tax);
-            var remit = incamAddfare.remit;
+            var remit = 10; //incamAddfare.remit;
             var bank = "KB국민";
             var account_num = "277237-04-001089";
             var type = "";
             switch (incamAddfare.income_type)
             {
-                case 1:
+                case "1":
                     type = "사업소득";
                     break;
-                case 2:
+                case "2":
                     type = "기타소득";
                     break;
                 default:

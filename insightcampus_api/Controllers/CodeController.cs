@@ -35,6 +35,14 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpGet("{codegroup_id}")]
+        public async Task<ActionResult<List<CodeModel>>> SelectCodes(String codegroup_id)
+        {
+            return await _code.SelectCodes(codegroup_id);
+        }
+
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CodeModel code)
         {            

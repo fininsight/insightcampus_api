@@ -4,6 +4,7 @@ using insightcampus_api.Data;
 using insightcampus_api.Model;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace insightcampus_api.Dao
 {
@@ -28,8 +29,9 @@ namespace insightcampus_api.Dao
             _context.Entry(incamContractModel).Property(x => x.original_company).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.hour_price).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.hour_incen).IsModified = true;
-            _context.Entry(incamContractModel).Property(x => x.contract_day).IsModified = true;
-            _context.Entry(incamContractModel).Property(x => x.addfare_seq).IsModified = true;
+            _context.Entry(incamContractModel).Property(x => x.contract_price).IsModified = true;
+            _context.Entry(incamContractModel).Property(x => x.contract_start_date).IsModified = true;
+            _context.Entry(incamContractModel).Property(x => x.contract_end_date).IsModified = true;
             await _context.SaveChangesAsync();
         }
 
@@ -37,8 +39,22 @@ namespace insightcampus_api.Dao
         {
             var result = (
                     from incam_contract in _context.IncamContractContext
-                  select incam_contract);
-            result = result.OrderByDescending(o => o.addfare_seq);
+                    join company in _context.CodeContext
+                      on incam_contract.original_company equals company.code_id
+                   where company.codegroup_id == "cooperative"
+                  select new IncamContractModel
+                  {
+                      contract_seq = incam_contract.contract_seq,
+                      @class = incam_contract.@class,
+                      original_company = incam_contract.original_company,
+                      original_company_nm = company.code_nm,
+                      hour_price = incam_contract.hour_price,
+                      hour_incen = incam_contract.hour_price,
+                      contract_price = incam_contract.contract_price,
+                      contract_start_date = incam_contract.contract_start_date,
+                      contract_end_date = incam_contract.contract_end_date,
+                  });
+            result = result.OrderByDescending(o => o.contract_seq);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
@@ -60,6 +76,38 @@ namespace insightcampus_api.Dao
                      where incam_contract.contract_seq == contract_seq
                     select incam_contract).SingleAsync();
             return result;
+        }
+
+        public async Task<List<IncamContractModel>> SelectContract(String searchText)
+        {
+            /*
+            var result = (
+                    from teacher in _context.IncamContractContext
+                    select teacher);
+            */
+            var result = (
+                    from incam_contract in _context.IncamContractContext
+                    join company in _context.CodeContext
+                      on incam_contract.original_company equals company.code_id
+                    where company.codegroup_id == "cooperative"
+                    select new IncamContractModel
+                    {
+                        contract_seq = incam_contract.contract_seq,
+                        @class = incam_contract.@class,
+                        original_company = incam_contract.original_company,
+                        original_company_nm = company.code_nm,
+                        hour_price = incam_contract.hour_price,
+                        hour_incen = incam_contract.hour_incen,
+                        contract_price = incam_contract.contract_price,
+                        contract_start_date = incam_contract.contract_start_date,
+                        contract_end_date = incam_contract.contract_end_date});
+
+            if (searchText != "ALL")
+            {
+                result = result.Where(t => (t.original_company_nm + " " + t.@class).Contains(searchText));
+            }
+
+            return await result.ToListAsync();
         }
 
         public async Task Delete<T>(T entity) where T : class

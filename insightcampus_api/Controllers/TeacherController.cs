@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace insightcampus_api.Controllers
 {
@@ -30,6 +31,13 @@ namespace insightcampus_api.Controllers
             dataTableInputDto.pageNumber = pageNumber;
 
             return await _teacher.Select(dataTableInputDto);
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<TeacherModel>>> SelectTeacher(string searchText)
+        {
+            return await _teacher.SelectTeacher(searchText);
         }
 
         [Authorize(Roles = "admin")]

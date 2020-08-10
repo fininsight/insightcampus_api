@@ -62,10 +62,24 @@ namespace insightcampus_api.Dao
         {
             var result = await (
                       from teacher in _context.TeacherContext
-                      where teacher.teacher_seq == teacher_seq
-                      select teacher).SingleAsync();
+                     where teacher.teacher_seq == teacher_seq
+                    select teacher).SingleAsync();
 
             return result;
+        }
+
+        public async Task<List<TeacherModel>> SelectTeacher(String searchText)
+        {
+            var result = (
+                    from teacher in _context.TeacherContext
+                  select teacher);
+
+            if (searchText != "ALL")
+            {
+                result = result.Where(t => t.name.Contains(searchText));
+            }
+
+            return await result.ToListAsync();
         }
 
         public async Task Delete<T>(T entity) where T : class

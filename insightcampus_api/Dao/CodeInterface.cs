@@ -12,5 +12,6 @@ namespace insightcampus_api.Dao
         Task Delete<T>(T entity) where T : class;
         Task Update(CodeModel codeModel);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
+        Task<List<CodeModel>> SelectCodes(string codegroup_id);
     }
 }

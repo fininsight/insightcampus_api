@@ -13,7 +13,10 @@ namespace insightcampus_api.Model
         public string original_company { get; set; }
         public decimal hour_price { get; set; }
         public decimal hour_incen { get; set; }
-        public int contract_day { get; set; }
-        public int addfare_seq { get; set; }
+        public decimal contract_price { get; set; }
+        public DateTime contract_start_date { get; set; }
+        public DateTime contract_end_date { get; set; }
+        [NotMapped]
+        public string original_company_nm { get; set; }
     }
 }
