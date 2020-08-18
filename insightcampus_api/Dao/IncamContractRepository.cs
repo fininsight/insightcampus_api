@@ -28,6 +28,7 @@ namespace insightcampus_api.Dao
             _context.Entry(incamContractModel).Property(x => x.@class).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.original_company).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.hour_price).IsModified = true;
+            _context.Entry(incamContractModel).Property(x => x.teacher_seq).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.hour_incen).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.contract_price).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.contract_start_date).IsModified = true;
@@ -38,21 +39,26 @@ namespace insightcampus_api.Dao
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             var result = (
-                    from incam_contract in _context.IncamContractContext
+                    from contract in _context.IncamContractContext
                     join company in _context.CodeContext
-                      on incam_contract.original_company equals company.code_id
+                      on contract.original_company equals company.code_id
+                    join teacher in _context.TeacherContext
+                      on contract.teacher_seq equals teacher.teacher_seq
                    where company.codegroup_id == "cooperative"
+                 orderby contract.contract_seq descending
                   select new IncamContractModel
                   {
-                      contract_seq = incam_contract.contract_seq,
-                      @class = incam_contract.@class,
-                      original_company = incam_contract.original_company,
+                      contract_seq = contract.contract_seq,
+                      teacher_seq = contract.teacher_seq,
+                      @class = contract.@class,
+                      original_company = contract.original_company,
                       original_company_nm = company.code_nm,
-                      hour_price = incam_contract.hour_price,
-                      hour_incen = incam_contract.hour_price,
-                      contract_price = incam_contract.contract_price,
-                      contract_start_date = incam_contract.contract_start_date,
-                      contract_end_date = incam_contract.contract_end_date,
+                      hour_price = contract.hour_price,
+                      hour_incen = contract.hour_price,
+                      contract_price = contract.contract_price,
+                      contract_start_date = contract.contract_start_date,
+                      contract_end_date = contract.contract_end_date,
+                      name = teacher.name
                   });
             result = result.OrderByDescending(o => o.contract_seq);
 
@@ -80,31 +86,31 @@ namespace insightcampus_api.Dao
 
         public async Task<List<IncamContractModel>> SelectContract(String searchText)
         {
-            /*
             var result = (
-                    from teacher in _context.IncamContractContext
-                    select teacher);
-            */
-            var result = (
-                    from incam_contract in _context.IncamContractContext
+                    from contract in _context.IncamContractContext
                     join company in _context.CodeContext
-                      on incam_contract.original_company equals company.code_id
-                    where company.codegroup_id == "cooperative"
-                    select new IncamContractModel
+                      on contract.original_company equals company.code_id
+                    join teacher in _context.TeacherContext
+                      on contract.teacher_seq equals teacher.teacher_seq
+                   where company.codegroup_id == "cooperative"
+                 orderby contract.contract_seq descending
+                  select new IncamContractModel
                     {
-                        contract_seq = incam_contract.contract_seq,
-                        @class = incam_contract.@class,
-                        original_company = incam_contract.original_company,
+                        contract_seq = contract.contract_seq,
+                        teacher_seq = contract.teacher_seq,
+                        @class = contract.@class,
+                        name = teacher.name,
+                        original_company = contract.original_company,
                         original_company_nm = company.code_nm,
-                        hour_price = incam_contract.hour_price,
-                        hour_incen = incam_contract.hour_incen,
-                        contract_price = incam_contract.contract_price,
-                        contract_start_date = incam_contract.contract_start_date,
-                        contract_end_date = incam_contract.contract_end_date});
+                        hour_price = contract.hour_price,
+                        hour_incen = contract.hour_incen,
+                        contract_price = contract.contract_price,
+                        contract_start_date = contract.contract_start_date,
+                        contract_end_date = contract.contract_end_date});
 
             if (searchText != "ALL")
             {
-                result = result.Where(t => (t.original_company_nm + " " + t.@class).Contains(searchText));
+                result = result.Where(t => t.name.Contains(searchText) || t.original_company_nm.Contains(searchText) || t.@class.Contains(searchText));
             }
 
             return await result.ToListAsync();

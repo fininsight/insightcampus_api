@@ -9,6 +9,7 @@ namespace insightcampus_api.Model
     {
         [Key]
         public int contract_seq { get; set; }
+        public int teacher_seq { get; set; }
         public string @class { get; set; }
         public string original_company { get; set; }
         public decimal hour_price { get; set; }
@@ -18,5 +19,7 @@ namespace insightcampus_api.Model
         public DateTime contract_end_date { get; set; }
         [NotMapped]
         public string original_company_nm { get; set; }
+        [NotMapped]
+        public string name { get; set; }
     }
 }

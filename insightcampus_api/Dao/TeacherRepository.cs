@@ -42,7 +42,8 @@ namespace insightcampus_api.Dao
         {
             var result = (
                     from teacher in _context.TeacherContext
-                    select teacher);
+                 orderby teacher.name
+                  select teacher);
             
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();

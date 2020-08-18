@@ -26,7 +26,6 @@ namespace insightcampus_api.Dao
         public async Task Update(IncamAddfareModel incamAddfareModel)
         {
             _context.Entry(incamAddfareModel).Property(x => x.addfare_date).IsModified = true;
-            _context.Entry(incamAddfareModel).Property(x => x.teacher_seq).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.contract_seq).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.hour).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.income_type).IsModified = true;
@@ -41,20 +40,27 @@ namespace insightcampus_api.Dao
                     join contract in _context.IncamContractContext
                       on addfare.contract_seq equals contract.contract_seq
                     join teacher in _context.TeacherContext
-                      on addfare.teacher_seq equals teacher.teacher_seq
+                      on contract.teacher_seq equals teacher.teacher_seq
                     join company in _context.CodeContext
                       on contract.original_company equals company.code_id
-                    where company.codegroup_id == "cooperative"
-                   select new IncamAddfareModel
+                    join incom in _context.CodeContext
+                      on addfare.income_type equals incom.code_id
+                   where company.codegroup_id == "cooperative"
+                   where incom.codegroup_id == "incom"
+                    orderby addfare.addfare_seq descending
+                  select new IncamAddfareModel
                     {
                         addfare_seq = addfare.addfare_seq,
-                        teacher_seq = addfare.teacher_seq,
                         contract_seq = addfare.contract_seq,
                         hour = addfare.hour,
                         addfare_date = addfare.addfare_date,
                         income_type = addfare.income_type,
+                        income_type_nm = incom.code_nm,
                         original_company_nm = company.code_nm,
                         @class = contract.@class,
+                        hour_price = addfare.hour_price,
+                        hour_incen = addfare.hour_incen,
+                        contract_price = addfare.contract_price,
                         name = teacher.name
                     });
 
@@ -79,27 +85,6 @@ namespace insightcampus_api.Dao
                       select incam_addfare).SingleAsync();
 
             return result;
-        }
-
-        public async Task<DataTableOutDto> SelectFamily(DataTableInputDto dataTableInputDto, int teacher_seq)
-        {
-            var result = (
-                    from incam_addfare in _context.IncamAddfareContext
-                   where incam_addfare.teacher_seq == teacher_seq
-                  select incam_addfare);
-            result = result.OrderByDescending(o => o.addfare_date);
-
-            var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
-
-            DataTableOutDto dataTableOutDto = new DataTableOutDto();
-
-            dataTableOutDto.pageNumber = dataTableInputDto.pageNumber;
-            dataTableOutDto.size = dataTableInputDto.size;
-            dataTableOutDto.data = paging;
-            dataTableOutDto.totalPages = (result.Count() % dataTableInputDto.size) > 0 ? result.Count() / dataTableInputDto.size + 1 : result.Count() / dataTableInputDto.size;
-            dataTableOutDto.totalElements = result.Count();
-
-            return dataTableOutDto;
         }
 
         public async Task Delete<T>(T entity) where T : class
