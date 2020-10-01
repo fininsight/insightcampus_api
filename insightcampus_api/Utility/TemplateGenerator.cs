@@ -8,7 +8,7 @@ namespace insightcampus_api.Utility
     {
         public static string GetHTMLString(IncamAddfareModel incamAddfare)
         {   
-            var name = incamAddfare.teacher_seq;
+            var name = incamAddfare.name;
             var month = incamAddfare.addfare_date.Month;
             var lec_wage = 10000; //incamAddfare.price / 10000;
             var mnt_wage = 10000; //incamAddfare.hour_price / 10000;
