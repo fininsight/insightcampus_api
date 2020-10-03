@@ -10,7 +10,7 @@ namespace insightcampus_api.Model
         [Key]
         public int addfare_seq { get; set; }
         public int contract_seq { get; set; }
-        public int hour { get; set; }
+        public float hour { get; set; }
         public DateTime addfare_date { get; set; }
         public string income_type { get; set; }
         [NotMapped]
