@@ -88,5 +88,44 @@ namespace insightcampus_api.Dao
             _context.Remove(entity);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateLog(TeacherModel entity)
+        {
+            TeacherLogModel teacher_log = new TeacherLogModel();
+            teacher_log.action = 1;
+            teacher_log.log_dt = DateTime.Now;
+
+            teacher_log.teacher_seq = entity.teacher_seq;
+            teacher_log.name = entity.name;
+            teacher_log.email = entity.email;
+            teacher_log.phone = entity.phone;
+            teacher_log.address = entity.address;
+            teacher_log.user_seq = entity.user_seq;
+            teacher_log.passwd = entity.passwd;
+
+            await _context.AddAsync(teacher_log);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteLog(int teacher_seq)
+        {
+            TeacherLogModel teacher_log = new TeacherLogModel();
+            teacher_log.action = 2;
+            teacher_log.log_dt = DateTime.Now;
+
+            var result = await (
+                      from teacher in _context.TeacherContext
+                      where teacher.teacher_seq == teacher_seq
+                      select teacher).SingleAsync();
+
+            teacher_log.teacher_seq = teacher_seq;
+            teacher_log.name = result.name;
+            teacher_log.email = result.email;
+            teacher_log.phone = result.phone;
+            teacher_log.address = result.address;
+
+            await _context.AddAsync(teacher_log);
+            await _context.SaveChangesAsync();
+        }
     }
 }
