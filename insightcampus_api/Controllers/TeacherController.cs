@@ -70,7 +70,8 @@ namespace insightcampus_api.Controllers
         {
             TeacherModel teacher = new TeacherModel
             {
-                teacher_seq = teacher_seq
+                teacher_seq = teacher_seq,
+                use_yn = 0
             };
 
             await _teacher.DeleteLog(teacher_seq);
