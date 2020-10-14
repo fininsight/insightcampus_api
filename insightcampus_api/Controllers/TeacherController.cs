@@ -59,7 +59,7 @@ namespace insightcampus_api.Controllers
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] TeacherModel teacher)
         {
-            await _teacher.UpdateLog(teacher);
+            await _teacher.UpdateLog(teacher.teacher_seq);
             await _teacher.Update(teacher);
             return Ok();
         }
@@ -74,7 +74,6 @@ namespace insightcampus_api.Controllers
                 use_yn = 0
             };
 
-            await _teacher.DeleteLog(teacher_seq);
             await _teacher.Delete(teacher);
             return Ok();
         }

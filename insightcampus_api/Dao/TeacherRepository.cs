@@ -86,40 +86,15 @@ namespace insightcampus_api.Dao
             return await result.ToListAsync();
         }
 
-        //public async Task Delete<T>(T entity) where T : class
-        //{
-        //    _context.Remove(entity);
-        //    await _context.SaveChangesAsync();
-        //}
-
         public async Task Delete(TeacherModel teacher)
         {
             _context.Entry(teacher).Property(x => x.use_yn).IsModified = true;
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateLog(TeacherModel entity)
+        public async Task UpdateLog(int teacher_seq)
         {
             TeacherLogModel teacher_log = new TeacherLogModel();
-            teacher_log.action = 1;
-            teacher_log.log_dt = DateTime.Now;
-
-            teacher_log.teacher_seq = entity.teacher_seq;
-            teacher_log.name = entity.name;
-            teacher_log.email = entity.email;
-            teacher_log.phone = entity.phone;
-            teacher_log.address = entity.address;
-            teacher_log.user_seq = entity.user_seq;
-            teacher_log.passwd = entity.passwd;
-
-            await _context.AddAsync(teacher_log);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteLog(int teacher_seq)
-        {
-            TeacherLogModel teacher_log = new TeacherLogModel();
-            teacher_log.action = 2;
             teacher_log.log_dt = DateTime.Now;
 
             var result = await (
@@ -127,7 +102,7 @@ namespace insightcampus_api.Dao
                       where teacher.teacher_seq == teacher_seq
                       select teacher).SingleAsync();
 
-            teacher_log.teacher_seq = teacher_seq;
+            teacher_log.teacher_seq = result.teacher_seq;
             teacher_log.name = result.name;
             teacher_log.email = result.email;
             teacher_log.phone = result.phone;

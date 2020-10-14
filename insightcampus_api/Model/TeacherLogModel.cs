@@ -9,7 +9,6 @@ namespace insightcampus_api.Model
     {
         [Key]
         public int log_seq { get; set; }
-        public int action { get; set; }
         public DateTime? log_dt { get; set; }
         public int teacher_seq { get; set; }
         public string name { get; set; }
