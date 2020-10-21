@@ -27,5 +27,7 @@ namespace insightcampus_api.Model
         public decimal hour_incen { get; set; }
         [NotMapped]
         public decimal contract_price { get; set; }
+        [NotMapped]
+        public float rate { get; set; }
     }
 }
