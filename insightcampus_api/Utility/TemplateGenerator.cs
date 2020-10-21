@@ -21,9 +21,17 @@ namespace insightcampus_api.Utility
             var class_name = incamAddfare.@class;
             var month = incamAddfare.addfare_date.Month;
             var type = incamAddfare.income_type_nm;
+            var lec_wage = incamAddfare.hour_incen / 10000;
+            var mnt_wage = incamAddfare.hour_price / 10000;
+            var times = incamAddfare.hour;
+            var lec_total = (float)lec_wage * 10000 * times;
+            var mnt_total = (float)mnt_wage* 10000 * times;
+            var tax = 0.033;   //incamAddfare.tax;
+            var lec_calc = lec_total * (1 - tax);
+            var mnt_calc = mnt_total * (1 - tax);
+            var remit = 10; //incamAddfare.remit;
             var bank = "KB국민";
             var account_num = "277237-04-001089";
-
 
             var sb = new StringBuilder();
             sb.AppendFormat(@"
