@@ -58,6 +58,7 @@ namespace insightcampus_api
             services.AddScoped<TeacherInterface, TeacherRepository>();
             services.AddScoped<PdfInterface, PdfRepository>();
             services.AddScoped<IncamContractInterface, IncamContractRepository>();
+            services.AddScoped<EmailLogInterface, EmailLogRepository>();
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
