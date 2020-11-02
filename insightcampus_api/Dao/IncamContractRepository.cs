@@ -54,7 +54,7 @@ namespace insightcampus_api.Dao
                       original_company = contract.original_company,
                       original_company_nm = company.code_nm,
                       hour_price = contract.hour_price,
-                      hour_incen = contract.hour_price,
+                      hour_incen = contract.hour_incen,
                       contract_price = contract.contract_price,
                       contract_start_date = contract.contract_start_date,
                       contract_end_date = contract.contract_end_date,

@@ -14,6 +14,7 @@ namespace insightcampus_api.Dao
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
         Task<TeacherModel> Select(int teacher_seq);
         Task<List<TeacherModel>> SelectTeacher(String searchText);
-        Task Delete<T>(T entity) where T : class;
+        Task Delete(TeacherModel teacher);
+        Task UpdateLog(int teacher_seq);
     }
 }
