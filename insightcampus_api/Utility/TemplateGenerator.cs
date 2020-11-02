@@ -29,7 +29,7 @@ namespace insightcampus_api.Utility
             var tax = 0.033;   //incamAddfare.tax;
             var lec_calc = lec_total * (1 - tax);
             var mnt_calc = mnt_total * (1 - tax);
-            var remit = 10; //incamAddfare.remit;
+            // var remit = 10; //incamAddfare.remit;
             var bank = "KB국민";
             var account_num = "277237-04-001089";
 
