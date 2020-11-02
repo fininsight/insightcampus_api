@@ -59,6 +59,8 @@ namespace insightcampus_api
             services.AddScoped<PdfInterface, PdfRepository>();
             services.AddScoped<IncamContractInterface, IncamContractRepository>();
             services.AddScoped<EmailLogInterface, EmailLogRepository>();
+            services.AddScoped<CouponInterface, CouponRepository>();
+          
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
@@ -89,7 +91,7 @@ namespace insightcampus_api
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials()); // Cross Domain 문제 해결
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseStaticFiles();

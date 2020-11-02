@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace insightcampus_api.Dao
 {
-    public interface TeacherInterface
+    public interface CouponInterface
     {
         Task Add<T>(T entity) where T : class;
-        Task Update(TeacherModel incamAddfareModel);
+        Task Update(CouponModel incamAddfareModel);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
-        Task<TeacherModel> Select(int teacher_seq);
-        Task<List<TeacherModel>> SelectTeacher(String searchText);
-        Task Delete(TeacherModel teacher);
-        Task UpdateLog(int teacher_seq);
+        Task<CouponModel> Select(int coupon_seq);
+        Task<List<CouponModel>> SelectCoupon(String searchText);
+        Task Delete(CouponModel couponModel);
     }
 }

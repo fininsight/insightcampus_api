@@ -7,9 +7,20 @@ namespace insightcampus_api.Utility
     public static class TemplateGenerator
     {
         public static string GetHTMLString(IncamAddfareModel incamAddfare)
-        {
+        {   
             var name = incamAddfare.name;
+            var all = (float)incamAddfare.hour_price * incamAddfare.hour;
+            var all_tax = Math.Truncate(all * incamAddfare.rate / 10) * 10;
+            var hour = incamAddfare.hour;
+            //var hour_incen = incamAddfare.hour_incen;
+            var hour_price = incamAddfare.hour_price;
+            var employee_all = (float)incamAddfare.contract_price * incamAddfare.hour;
+            var employee_tax = Math.Truncate(employee_all * incamAddfare.rate /10) * 10;
+            var contract_price = incamAddfare.contract_price;
+            var remit = (all - all_tax) - (employee_all - employee_tax);
+            var class_name = incamAddfare.@class;
             var month = incamAddfare.addfare_date.Month;
+            var type = incamAddfare.income_type_nm;
             var lec_wage = incamAddfare.hour_incen / 10000;
             var mnt_wage = incamAddfare.hour_price / 10000;
             var times = incamAddfare.hour;
@@ -21,19 +32,6 @@ namespace insightcampus_api.Utility
             var remit = 10; //incamAddfare.remit;
             var bank = "KB국민";
             var account_num = "277237-04-001089";
-            var type = "";
-            switch (incamAddfare.income_type)
-            {
-                case "1":
-                    type = "사업소득";
-                    break;
-                case "2":
-                    type = "기타소득";
-                    break;
-                default:
-                    type = "해당없음";
-                    break;
-            }
 
             var sb = new StringBuilder();
             sb.AppendFormat(@"
@@ -47,7 +45,7 @@ namespace insightcampus_api.Utility
                                     </div>
                                     <div class='explane'>
                                       <p>안녕하세요<b> {2}님</b></p>
-                                      <p><b>{0}월 멀티캠퍼스 혁신성장 인공지능 B반 멘토링</b>에 대한 정산내역입니다.</p>
+                                      <p><b>{0}월 {3}</b>에 대한 정산내역입니다.</p>
                                       <p>감사합니다.</p>
                                     </div>
                                   </div>
@@ -55,7 +53,7 @@ namespace insightcampus_api.Utility
                                   <br />
                                   <br />
                                   <br />
-            ", month, type, name);
+            ", month, type, name, class_name);
             sb.AppendFormat(@"
                                   <div class='content'>
                                     <h1>[{0}월 교육과정 총 입금액]</h1>
@@ -86,21 +84,21 @@ namespace insightcampus_api.Utility
                                             <td id='bg-lightyellow' rowspan='2'>실 지급액</td>
                                         </tr>
                                         <tr id='bg-grey'>
-                                            <td>{7}만원 * {8}시간</td>
+                                            <td>{7}만원 * {2}시간</td>
                                             <td>(사업소득 {3}%)</td>
                                         </tr>
                                         <tr class='price-line'>
+                                            <td>₩{8}</td>
                                             <td>₩{9}</td>
-                                            <td>₩{10}</td>
-                                            <td id='bg-lightyellow'>₩{11}</td>
+                                            <td id='bg-lightyellow'>₩{10}</td>
                                         </tr>
                                     </table>
                                     <br />
                                     <br />
                                     <br />
                                     <br />
-            ", month, lec_wage, times, tax * 100, ToAccounting(lec_total), ToAccounting(lec_total * tax), ToAccounting(lec_calc)
-            , mnt_wage, times, ToAccounting(mnt_total), ToAccounting(mnt_total * tax), ToAccounting(mnt_calc));
+            ", month, hour_price / 10000, hour, incamAddfare.rate * 100, ToAccounting(all), ToAccounting(all_tax), ToAccounting(all - all_tax)
+            , contract_price / 10000, ToAccounting(employee_all), ToAccounting(employee_tax), ToAccounting(employee_all - employee_tax));
             sb.AppendFormat(@"
                                     <h1><span id='bg-yellow'>[핀인사이트로 송금해주실 금액]</span></h1>
                                     <table border='3' cellpadding='30'>
@@ -124,7 +122,8 @@ namespace insightcampus_api.Utility
                         
                                   </div>
                             </body>
-                        </html>", ToAccounting(lec_calc), ToAccounting(mnt_calc), ToAccounting(remit), bank, account_num);
+                        </html>", ToAccounting(all - all_tax), ToAccounting(employee_all - employee_tax),
+                        ToAccounting(remit), bank, account_num);
 
             return sb.ToString();
         }

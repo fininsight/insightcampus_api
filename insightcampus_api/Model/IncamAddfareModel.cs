@@ -8,6 +8,7 @@ namespace insightcampus_api.Model
     public class IncamAddfareModel
     {
         [Key]
+        public int teacher_seq { get; set; }
         public int addfare_seq { get; set; }
         public int contract_seq { get; set; }
         public float hour { get; set; }
@@ -27,5 +28,7 @@ namespace insightcampus_api.Model
         public decimal hour_incen { get; set; }
         [NotMapped]
         public decimal contract_price { get; set; }
+        [NotMapped]
+        public float rate { get; set; }
     }
 }
