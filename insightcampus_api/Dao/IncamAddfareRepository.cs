@@ -58,9 +58,9 @@ namespace insightcampus_api.Dao
                         income_type_nm = incom.code_nm,
                         original_company_nm = company.code_nm,
                         @class = contract.@class,
-                        hour_price = addfare.hour_price,
-                        hour_incen = addfare.hour_incen,
-                        contract_price = addfare.contract_price,
+                        hour_price = contract.hour_price,
+                        hour_incen = contract.hour_incen,
+                        contract_price = contract.contract_price,
                         name = teacher.name
                     });
 
