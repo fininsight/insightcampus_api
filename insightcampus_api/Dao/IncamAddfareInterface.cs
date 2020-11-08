@@ -13,6 +13,8 @@ namespace insightcampus_api.Dao
         Task Update(IncamAddfareModel incamAddfareModel);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
         Task<IncamAddfareModel> Select(int addfare_seq);
-        Task Delete<T>(T entity) where T : class;
+        Task<DataTableOutDto> SelectFamily(DataTableInputDto dataTableInputDto, int teacher_seq);
+        Task Delete(IncamAddfareModel incamAddfareModel);
+        Task SendAddfare(List<IncamAddfareModel> incamAddfares);
     }
 }

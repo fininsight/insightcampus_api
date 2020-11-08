@@ -13,6 +13,6 @@ namespace insightcampus_api.Dao
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
         Task<IncamContractModel> Select(int contract_seq);
         Task<List<IncamContractModel>> SelectContract(String searchText);
-        Task Delete<T>(T entity) where T : class;
+        Task Delete(IncamContractModel incamContractModel);
     }
 }

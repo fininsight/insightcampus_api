@@ -71,6 +71,11 @@ namespace insightcampus_api.Dao
             return await _context.UserContext.FirstOrDefaultAsync(x => x.user_id == userModel.user_id);
         }
 
+        public async Task<TeacherModel> FamilyExists(TeacherModel teacherModel)
+        {
+            return await _context.TeacherContext.FirstOrDefaultAsync(x => x.teacher_seq == teacherModel.teacher_seq && x.passwd == teacherModel.passwd);
+        }
+
         public UserModel Join(UserModel user)
         {
             byte[] passwordHash, passwordSalt;

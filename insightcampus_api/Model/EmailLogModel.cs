@@ -12,6 +12,7 @@ namespace insightcampus_api.Model
         public string subject { get; set; }
         public string contents { get; set; }
         public string to { get; set; }
+        public string type { get; set; }
         public DateTime reg_date { get; set; }
         public int use_yn { get; set; }
     }

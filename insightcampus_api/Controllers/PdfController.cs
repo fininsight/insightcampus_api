@@ -57,10 +57,6 @@ namespace insightcampus_api.Controllers
             };
 
             var file = _converter.Convert(pdf);
-
-            
-
-            //return File(file, "application/pdf"); // for showing on browser
             return File(file, "application/pdf", addfare.name + "님_지급명세서_" + addfare.addfare_date.ToString("yyyy-MM-dd") + ".pdf"); // for downloading as sample.pdf
         }
     }

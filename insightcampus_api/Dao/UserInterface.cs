@@ -15,5 +15,6 @@ namespace insightcampus_api.Dao
         UserModel PasswordCheck(UserModel userModel, UserModel userMatched);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
         Task<UserModel> UserExists(UserModel userModel);
+        Task<TeacherModel> FamilyExists(TeacherModel teacherModel);
     }
 }

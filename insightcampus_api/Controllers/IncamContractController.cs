@@ -49,6 +49,11 @@ namespace insightcampus_api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] IncamContractModel incamContract)
         {
+            incamContract.use_yn = 1;
+            incamContract.reg_dt = DateTime.Now;
+            incamContract.reg_user = int.Parse(User.Identity.Name);
+            incamContract.upd_dt = DateTime.Now;
+            incamContract.upd_user = int.Parse(User.Identity.Name);
             await _incamContract.Add(incamContract);
             return Ok();
         }
@@ -57,6 +62,8 @@ namespace insightcampus_api.Controllers
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] IncamContractModel incamContract)
         {
+            incamContract.upd_dt = DateTime.Now;
+            incamContract.upd_user = int.Parse(User.Identity.Name);
             await _incamContract.Update(incamContract);
             return Ok();
         }
@@ -67,7 +74,8 @@ namespace insightcampus_api.Controllers
         {
             IncamContractModel incamAddfare = new IncamContractModel
             {
-                contract_seq = contract_seq
+                contract_seq = contract_seq,
+                use_yn = 0
             };
 
             await _incamContract.Delete(incamAddfare);

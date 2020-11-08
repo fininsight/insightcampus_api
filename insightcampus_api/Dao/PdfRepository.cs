@@ -42,7 +42,8 @@ namespace insightcampus_api.Dao
                         hour_incen = contract.hour_incen,
                         contract_price = contract.contract_price,
                         name = teacher.name,
-                        rate = float.Parse(incom.value1)
+                        rate = float.Parse(incom.value1),
+                        income = incam_addfare.income
                     }).SingleAsync();
 
 

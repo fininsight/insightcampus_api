@@ -10,28 +10,17 @@ namespace insightcampus_api.Utility
         {   
             var name = incamAddfare.name;
             var all = (float)incamAddfare.hour_price * incamAddfare.hour;
-            var all_tax = Math.Truncate(all * incamAddfare.rate / 10) * 10;
+            var all_tax = Math.Truncate(all * incamAddfare.income / 10) * 10;
             var hour = incamAddfare.hour;
             var income_type_nm = incamAddfare.income_type_nm;
-            //var hour_incen = incamAddfare.hour_incen;
             var hour_price = incamAddfare.hour_price;
             var employee_all = (float)incamAddfare.contract_price * incamAddfare.hour;
-            var employee_tax = Math.Truncate(employee_all * incamAddfare.rate /10) * 10;
+            var employee_tax = Math.Truncate(employee_all * incamAddfare.income /10) * 10;
             var contract_price = incamAddfare.contract_price;
             var remit = (all - all_tax) - (employee_all - employee_tax);
             var class_name = incamAddfare.@class;
             var month = incamAddfare.addfare_date.Month;
             var day = incamAddfare.addfare_date.Day;
-            var type = incamAddfare.income_type_nm;
-            var lec_wage = incamAddfare.hour_incen / 10000;
-            var mnt_wage = incamAddfare.hour_price / 10000;
-            var times = incamAddfare.hour;
-            var lec_total = (float)lec_wage * 10000 * times;
-            var mnt_total = (float)mnt_wage* 10000 * times;
-            var tax = 0.033;   //incamAddfare.tax;
-            var lec_calc = lec_total * (1 - tax);
-            var mnt_calc = mnt_total * (1 - tax);
-            // var remit = 10; //incamAddfare.remit;
             var bank = "KB국민";
             var account_num = "277237-04-001089";
 
@@ -69,7 +58,7 @@ namespace insightcampus_api.Utility
                                         </tr>
                                         <tr id='bg-grey'>
                                             <td>{hour_price / 10000}만원 * {hour}시간</td>
-                                            <td>({income_type_nm} {incamAddfare.rate * 100}%)</td>
+                                            <td>({income_type_nm} {incamAddfare.income * 100}%)</td>
                                         </tr>
                                         <tr class='price-line'>
                                             <td>₩{ToAccounting(all)}</td>
