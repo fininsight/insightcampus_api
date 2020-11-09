@@ -8,114 +8,108 @@ namespace insightcampus_api.Utility
     {
         public static string GetHTMLString(IncamAddfareModel incamAddfare)
         {   
-            var name = incamAddfare.teacher_seq;
+            var name = incamAddfare.name;
+            var all = (float)incamAddfare.hour_price * incamAddfare.hour;
+            var all_tax = Math.Truncate(all * incamAddfare.income / 10) * 10;
+            var hour = incamAddfare.hour;
+            var income_type_nm = incamAddfare.income_type_nm;
+            var hour_price = incamAddfare.hour_price;
+            var employee_all = (float)incamAddfare.contract_price * incamAddfare.hour;
+            var employee_tax = Math.Truncate(employee_all * incamAddfare.income /10) * 10;
+            var contract_price = incamAddfare.contract_price;
+            var remit = (all - all_tax) - (employee_all - employee_tax);
+            var class_name = incamAddfare.@class;
             var month = incamAddfare.addfare_date.Month;
-            var lec_wage = 10000; //incamAddfare.price / 10000;
-            var mnt_wage = 10000; //incamAddfare.hour_price / 10000;
-            var times = 10; //incamAddfare.hour;
-            var lec_total = (float)lec_wage * 10000 * times;
-            var mnt_total = (float)mnt_wage* 10000 * times;
-            var tax = 10;   //incamAddfare.tax;
-            var lec_calc = lec_total * (1 - tax);
-            var mnt_calc = mnt_total * (1 - tax);
-            var remit = 10; //incamAddfare.remit;
+            var day = incamAddfare.addfare_date.Day;
             var bank = "KB국민";
             var account_num = "277237-04-001089";
-            var type = "";
-            switch (incamAddfare.income_type)
-            {
-                case "1":
-                    type = "사업소득";
-                    break;
-                case "2":
-                    type = "기타소득";
-                    break;
-                default:
-                    type = "해당없음";
-                    break;
-            }
 
             var sb = new StringBuilder();
-            sb.AppendFormat(@"
+            sb.AppendFormat($@"
                         <html>
                             <head>
                             </head>
                             <body>
                                 <div class='header'>
                                     <div class='title'>
-                                      <h1>{0}월 {1} 지급 명세서</h1>
+                                      <h1>{month}월 강의료 지급 명세서</h1>
                                     </div>
+                                  <br/>
+                                  <br/>
                                     <div class='explane'>
-                                      <p>안녕하세요<b> {2}님</b></p>
-                                      <p><b>{0}월 멀티캠퍼스 혁신성장 인공지능 B반 멘토링</b>에 대한 정산내역입니다.</p>
+                                      <p>안녕하세요<b> {name}님</b></p>
+                                      <p><b>{month}월 {day}일 진행 된 {class_name}</b>에 대한 정산내역입니다.</p>
                                       <p>감사합니다.</p>
                                     </div>
                                   </div>
-                                  <br />
-                                  <br />
-                                  <br />
-                                  <br />
-            ", month, type, name);
-            sb.AppendFormat(@"
+                                  <br/>
+                                  <br/>
+            ");
+
+
+            sb.AppendFormat($@"
                                   <div class='content'>
-                                    <h1>[{0}월 교육과정 총 입금액]</h1>
-                                    <table border='3' cellpadding='30'>
+                                    <h1>[{month}월 교육과정 총 입금액]</h1>
+                                    <table cellpadding='5'>
                                         <tr id='bg-grey'>
                                             <td>총 예산</td>
                                             <td>원천징수액</td>
                                             <td id='bg-lightyellow' rowspan='2'>총 입금액</td>
                                         </tr>
                                         <tr id='bg-grey'>
-                                            <td>{1}만원 * {2}시간</td>
-                                            <td>(사업소득 {3}%)</td>
+                                            <td>{hour_price / 10000}만원 * {hour}시간</td>
+                                            <td>({income_type_nm} {incamAddfare.income * 100}%)</td>
                                         </tr>
                                         <tr class='price-line'>
-                                            <td>₩{4}</td>
-                                            <td>₩{5}</td>
-                                            <td id='bg-lightyellow'>₩{6}</td>
+                                            <td>₩{ToAccounting(all)}</td>
+                                            <td>₩{ToAccounting(all_tax)}</td>
+                                            <td id='bg-lightyellow'>₩{ToAccounting(all - all_tax)}</td>
                                         </tr>
                                     </table>
                                     <h5>* 위 금액은 강사님 계좌로 입금되는 금액입니다. 혹시 금액이 다르면 연락 주십시오.</h5>
                                     <br />
                                     <br />
-                                    <h1><span id='bg-yellow'>[{0}월 멘토링비]</span></h1>
-                                    <table border='3' cellpadding='30'>
+                                    <br />
+                                    <br />
+                                    <h1><span id='bg-yellow'>[{month}월 강의료]</span></h1>
+                                    <table cellpadding='5'>
                                         <tr id='bg-grey'>
-                                            <td>총 멘토링</td>
+                                            <td>총 강의료</td>
                                             <td>원천징수액</td>
                                             <td id='bg-lightyellow' rowspan='2'>실 지급액</td>
                                         </tr>
                                         <tr id='bg-grey'>
-                                            <td>{7}만원 * {8}시간</td>
-                                            <td>(사업소득 {3}%)</td>
+                                            <td>{contract_price / 10000}만원 * {hour}시간</td>
+                                            <td>({income_type_nm} {incamAddfare.rate * 100}%)</td>
                                         </tr>
                                         <tr class='price-line'>
-                                            <td>₩{9}</td>
-                                            <td>₩{10}</td>
-                                            <td id='bg-lightyellow'>₩{11}</td>
+                                            <td>₩{ToAccounting(employee_all)}</td>
+                                            <td>₩{ToAccounting(employee_tax)}</td>
+                                            <td id='bg-lightyellow'>₩{ToAccounting(employee_all - employee_tax)}</td>
                                         </tr>
                                     </table>
                                     <br />
                                     <br />
                                     <br />
                                     <br />
-            ", month, lec_wage, times, tax * 100, ToAccounting(lec_total), ToAccounting(lec_total * tax), ToAccounting(lec_calc)
-            , mnt_wage, times, ToAccounting(mnt_total), ToAccounting(mnt_total * tax), ToAccounting(mnt_calc));
-            sb.AppendFormat(@"
+            ");
+
+
+            sb.AppendFormat($@"
                                     <h1><span id='bg-yellow'>[핀인사이트로 송금해주실 금액]</span></h1>
-                                    <table border='3' cellpadding='30'>
+                                    <table cellpadding='5'>
                                         <tr id='bg-grey'>
                                             <td>송금액 계산</td>
                                             <td id='bg-yellow'>송금액</td>
                                         </tr>
                                         <tr>
-                                            <td>₩{0} - ₩{1}</td>
-                                            <td id='bg-yellow'>₩{2}</td>
+                                            <td>₩{ToAccounting(all - all_tax)} - ₩{ToAccounting(employee_all - employee_tax)}</td>
+                                            <td id='bg-yellow'>₩{ToAccounting(remit)}</td>
                                         </tr>
                                     </table>
                                     <ul class='caution'>
                                       <li>위 송금액을 아래의 계좌로 2주 이내 입금해 주시기 바랍니다.</li>
-                                      <span class='account-number'>{3} | {4} | (주)핀인사이트</span>
+                                      <span class='account-number'>{bank} | {account_num} | (주)핀인사이트</span>
                                       <br />
                                       <br />
                                       <li>송금액은 소득공제를 위해 현금영수증 발급해드립니다.</li>
@@ -124,7 +118,7 @@ namespace insightcampus_api.Utility
                         
                                   </div>
                             </body>
-                        </html>", ToAccounting(lec_calc), ToAccounting(mnt_calc), ToAccounting(remit), bank, account_num);
+                        </html>");
 
             return sb.ToString();
         }

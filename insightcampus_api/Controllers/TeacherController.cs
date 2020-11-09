@@ -51,6 +51,15 @@ namespace insightcampus_api.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] TeacherModel teacher)
         {
+            Random rnd = new Random();
+            string password = rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+
+            teacher.passwd = password;
             await _teacher.Add(teacher);
             return Ok();
         }
@@ -59,17 +68,19 @@ namespace insightcampus_api.Controllers
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] TeacherModel teacher)
         {
+            await _teacher.UpdateLog(teacher.teacher_seq);
             await _teacher.Update(teacher);
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
         [HttpDelete("{teacher_seq}")]
-        public async Task<ActionResult> Delete(string teacher_seq)
+        public async Task<ActionResult> Delete(int teacher_seq)
         {
             TeacherModel teacher = new TeacherModel
             {
-                teacher_seq = Convert.ToInt32(teacher_seq)
+                teacher_seq = teacher_seq,
+                use_yn = 0
             };
 
             await _teacher.Delete(teacher);

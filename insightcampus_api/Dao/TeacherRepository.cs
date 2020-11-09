@@ -42,7 +42,8 @@ namespace insightcampus_api.Dao
         {
             var result = (
                     from teacher in _context.TeacherContext
-                 orderby teacher.name
+                    where teacher.use_yn == 1
+                    orderby teacher.name
                   select teacher);
             
 
@@ -64,6 +65,7 @@ namespace insightcampus_api.Dao
             var result = await (
                       from teacher in _context.TeacherContext
                      where teacher.teacher_seq == teacher_seq
+                     where teacher.use_yn == 1
                     select teacher).SingleAsync();
 
             return result;
@@ -73,6 +75,7 @@ namespace insightcampus_api.Dao
         {
             var result = (
                     from teacher in _context.TeacherContext
+                    where teacher.use_yn == 1
                   select teacher);
 
             if (searchText != "ALL")
@@ -83,9 +86,31 @@ namespace insightcampus_api.Dao
             return await result.ToListAsync();
         }
 
-        public async Task Delete<T>(T entity) where T : class
+        public async Task Delete(TeacherModel teacher)
         {
-            _context.Remove(entity);
+            _context.Entry(teacher).Property(x => x.use_yn).IsModified = true;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateLog(int teacher_seq)
+        {
+            TeacherLogModel teacher_log = new TeacherLogModel();
+            teacher_log.log_dt = DateTime.Now;
+
+            var result = await (
+                      from teacher in _context.TeacherContext
+                      where teacher.teacher_seq == teacher_seq
+                      select teacher).SingleAsync();
+
+            teacher_log.teacher_seq = result.teacher_seq;
+            teacher_log.name = result.name;
+            teacher_log.email = result.email;
+            teacher_log.phone = result.phone;
+            teacher_log.address = result.address;
+            teacher_log.user_seq = result.user_seq;
+            teacher_log.passwd = result.passwd;
+
+            await _context.AddAsync(teacher_log);
             await _context.SaveChangesAsync();
         }
     }

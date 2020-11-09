@@ -25,6 +25,30 @@ namespace insightcampus_api.Dao
 
         public async Task Update(IncamContractModel incamContractModel)
         {
+            var log = await (
+                  from contract in _context.IncamContractContext
+                 where contract.contract_seq == incamContractModel.contract_seq
+                select new IncamContractLogModel
+                {
+                    log_dt = DateTime.Now,
+                    log_user = incamContractModel.upd_user,
+                    contract_seq = incamContractModel.contract_seq,
+                    teacher_seq = incamContractModel.teacher_seq,
+                    @class = incamContractModel.@class,
+                    original_company = incamContractModel.original_company,
+                    hour_price = incamContractModel.hour_price,
+                    hour_incen = incamContractModel.hour_incen,
+                    contract_price = incamContractModel.contract_price,
+                    contract_start_date = incamContractModel.contract_start_date,
+                    contract_end_date = incamContractModel.contract_end_date,
+                    reg_user = incamContractModel.reg_user,
+                    reg_dt = incamContractModel.reg_dt,
+                    upd_user = incamContractModel.upd_user,
+                    upd_dt = incamContractModel.upd_dt,
+                    use_yn = incamContractModel.use_yn
+                }).SingleAsync();
+
+            _context.Add(log);
             _context.Entry(incamContractModel).Property(x => x.@class).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.original_company).IsModified = true;
             _context.Entry(incamContractModel).Property(x => x.hour_price).IsModified = true;
@@ -45,6 +69,7 @@ namespace insightcampus_api.Dao
                     join teacher in _context.TeacherContext
                       on contract.teacher_seq equals teacher.teacher_seq
                    where company.codegroup_id == "cooperative"
+                   where contract.use_yn == 1
                  orderby contract.contract_seq descending
                   select new IncamContractModel
                   {
@@ -54,7 +79,7 @@ namespace insightcampus_api.Dao
                       original_company = contract.original_company,
                       original_company_nm = company.code_nm,
                       hour_price = contract.hour_price,
-                      hour_incen = contract.hour_price,
+                      hour_incen = contract.hour_incen,
                       contract_price = contract.contract_price,
                       contract_start_date = contract.contract_start_date,
                       contract_end_date = contract.contract_end_date,
@@ -93,6 +118,7 @@ namespace insightcampus_api.Dao
                     join teacher in _context.TeacherContext
                       on contract.teacher_seq equals teacher.teacher_seq
                    where company.codegroup_id == "cooperative"
+                   where contract.use_yn == 1
                  orderby contract.contract_seq descending
                   select new IncamContractModel
                     {
@@ -116,9 +142,9 @@ namespace insightcampus_api.Dao
             return await result.ToListAsync();
         }
 
-        public async Task Delete<T>(T entity) where T : class
+        public async Task Delete(IncamContractModel incamContractModel)
         {
-            _context.Remove(entity);
+            _context.Entry(incamContractModel).Property(x => x.use_yn).IsModified = true;
             await _context.SaveChangesAsync();
         }
     }

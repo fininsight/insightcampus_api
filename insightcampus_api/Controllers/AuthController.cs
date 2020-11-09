@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Net;
-using System.IO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using insightcampus_api.Dao;
 using insightcampus_api.Data;
 using insightcampus_api.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using insightcampus_api.Dao;
-using Microsoft.AspNetCore.Authorization;
 
 namespace insightcampus_api.Controllers
 {
@@ -115,8 +113,16 @@ namespace insightcampus_api.Controllers
         [HttpPost("familyLogin")]
         public async Task<LoginResultDto> familyLogin([FromBody] UserModel userModel)
         {
+    
+            TeacherModel teacher = new TeacherModel
+            {
+                teacher_seq = int.Parse(userModel.user_id),
+                passwd = userModel.user_pw
+            };
 
-            if (userModel.user_id!="이진범" || userModel.user_pw != "860921")
+            teacher = await _user.FamilyExists(teacher);
+
+            if (teacher == null)
             {
                 return new LoginResultDto
                 {
@@ -132,8 +138,8 @@ namespace insightcampus_api.Controllers
 
             var claims = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, "1"),
-                    new Claim(ClaimTypes.NameIdentifier, "1")
+                    new Claim(ClaimTypes.Name, teacher.teacher_seq.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, teacher.teacher_seq.ToString())
             });
 
             claims.AddClaim(new Claim(ClaimTypes.Role, "family"));
