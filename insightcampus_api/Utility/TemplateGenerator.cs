@@ -32,16 +32,17 @@ namespace insightcampus_api.Utility
                             <body>
                                 <div class='header'>
                                     <div class='title'>
-                                      <h1>{month}월 강의료 지급 명세서</h1>
+                                      <h1>강의료 지급 명세서</h1>
                                     </div>
+                                  <br/>
                                   <br/>
                                   <br/>
                                     <div class='explane'>
-                                      <p>안녕하세요<b> {name}님</b></p>
-                                      <p><b>{month}월 {day}일 진행 된 {class_name}</b>에 대한 정산내역입니다.</p>
-                                      <p>감사합니다.</p>
+                                      <p>안녕하세요, <b>{name}</b>님</p>
+                                      <p><b>{month}월 {day}일에 정산된 {class_name}</b>에 대한 내역입니다.</p>
                                     </div>
                                   </div>
+                                  <br/>
                                   <br/>
                                   <br/>
             ");
@@ -49,7 +50,7 @@ namespace insightcampus_api.Utility
 
             sb.AppendFormat($@"
                                   <div class='content'>
-                                    <h1>[{month}월 교육과정 총 입금액]</h1>
+                                    <h1>[교육과정 총 입금액]</h1>
                                     <table cellpadding='5'>
                                         <tr id='bg-grey'>
                                             <td>총 예산</td>
@@ -66,12 +67,13 @@ namespace insightcampus_api.Utility
                                             <td id='bg-lightyellow'>₩{ToAccounting(all - all_tax)}</td>
                                         </tr>
                                     </table>
-                                    <h5>* 위 금액은 강사님 계좌로 입금되는 금액입니다. 혹시 금액이 다르면 연락 주십시오.</h5>
+                                    <h5 style='padding-top:5px;'>* 위 금액은 강사님 계좌로 입금되는 금액입니다. 혹시 금액이 다르면 연락 주십시오.</h5>
                                     <br />
                                     <br />
                                     <br />
                                     <br />
-                                    <h1><span id='bg-yellow'>[{month}월 강의료]</span></h1>
+                                    <br />
+                                    <h1><span id='bg-yellow'>[강의료]</span></h1>
                                     <table cellpadding='5'>
                                         <tr id='bg-grey'>
                                             <td>총 강의료</td>
@@ -92,6 +94,7 @@ namespace insightcampus_api.Utility
                                     <br />
                                     <br />
                                     <br />
+                                    <br />
             ");
 
 
@@ -108,7 +111,7 @@ namespace insightcampus_api.Utility
                                         </tr>
                                     </table>
                                     <ul class='caution'>
-                                      <li>위 송금액을 아래의 계좌로 2주 이내 입금해 주시기 바랍니다.</li>
+                                      <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
                                       <span class='account-number'>{bank} | {account_num} | (주)핀인사이트</span>
                                       <br />
                                       <br />
