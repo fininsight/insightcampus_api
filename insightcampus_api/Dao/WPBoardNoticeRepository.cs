@@ -21,7 +21,7 @@ namespace insightcampus_api.Dao
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             string sql = @"
-                SELECT title, category1, category2, date
+                SELECT uid, title, category1, category2, date
                   FROM insightcampus.wp_kboard_board_content
                  WHERE (category1 != '자료실' OR category1 != '수강생후기')
               ORDER BY uid DESC
@@ -45,7 +45,7 @@ namespace insightcampus_api.Dao
         public async Task<DataTableOutDto> SelectLibrary(DataTableInputDto dataTableInputDto)
         {
             string sql = @"
-                SELECT title, category1, category2, date
+                SELECT uid, title, category1, category2, date
                   FROM insightcampus.wp_kboard_board_content
                  WHERE category1 = '자료실'
               ORDER BY uid DESC
@@ -69,7 +69,7 @@ namespace insightcampus_api.Dao
         public async Task<DataTableOutDto> SelectReview(DataTableInputDto dataTableInputDto)
         {
             string sql = @"
-                SELECT title, category1, category2, date
+                SELECT uid, title, category1, category2, date
                   FROM insightcampus.wp_kboard_board_content
                  WHERE category1 = '수강생후기'
               ORDER BY uid DESC
@@ -88,6 +88,30 @@ namespace insightcampus_api.Dao
             dataTableOutDto.totalElements = result.Count();
 
             return dataTableOutDto;
+        }
+
+        public async Task Update(string uid, string category)
+        {
+            string sql = $@"
+                UPDATE insightcampus.wp_kboard_board_content
+                   SET category1 = '{category}' 
+                 WHERE uid = {uid}
+            ";
+
+            _context.Database.ExecuteSqlCommand(sql);
+         
+        }
+
+        public async Task Init(string uid)
+        {
+            string sql = $@"
+                UPDATE insightcampus.wp_kboard_board_content
+                   SET category1 = '' 
+                 WHERE uid = {uid}
+            ";
+
+            _context.Database.ExecuteSqlCommand(sql);
+
         }
     }
 }

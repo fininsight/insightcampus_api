@@ -9,5 +9,7 @@ namespace insightcampus_api.Dao
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
         Task<DataTableOutDto> SelectLibrary(DataTableInputDto dataTableInputDto);
         Task<DataTableOutDto> SelectReview(DataTableInputDto dataTableInputDto);
+        Task Update(string uid, string category);
+        Task Init(string uid);
     }
 }
