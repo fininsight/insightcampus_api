@@ -1,0 +1,94 @@
+﻿@font-face {
+    font-family: 'Nanum Gothic';
+    font-style: normal;
+    font-weight: normal;
+    src: url(NanumGothic-Regular.ttf) format('ttf');
+}
+
+body {
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.header {
+    width: 800px;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+
+    .header .title {
+        text-align: center;
+    }
+
+        .header .title h1 {
+            font-size: 30px;
+        }
+
+.content {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.divi-line {
+    border: 2px solid black;
+}
+
+.content h1 {
+    font-size: 18px;
+}
+
+.content h5 {
+    margin-top: 0px;
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 50px;
+    float: right;
+}
+
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+    text-align: center;
+}
+
+    .content table td {
+        height: 35px;
+    }
+
+    .content table td {
+        border-top: 1px solid rgba(187, 187, 187, 0.185);
+        border-bottom: 1px solid rgba(187, 187, 187, 0.185);
+        ;
+    }
+
+    .content table .br-black td {
+        border-top: 1px solid rgba(0, 0, 0, 0.658);
+    }
+
+    .content table .br-black-end td {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.658);
+    }
+
+    .content table .td-1 {
+        width: 20%;
+    }
+
+    .content table .td-2 {
+        width: 80%;
+    }
+
+    .content table td {
+        text-align: left;
+    }
+
+.caution {
+    width: 50%;
+    margin: 20px auto;
+    font-size: 20px;
+}
+
+    .caution li {
+        padding: 10px;
+        list-style: none;
+        font-size: 18px;
+    }
