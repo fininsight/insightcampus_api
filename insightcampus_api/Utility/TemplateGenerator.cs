@@ -237,6 +237,58 @@ namespace insightcampus_api.Utility
                                 </ body >
 
                                 </ html > ");
+  
+                      return sb.ToString();
+        }
+  
+  
+  
+  
+        public static string GetEduCertificationHTMLString(EducationCertificationModel educationCertification)
+        {
+            var number = educationCertification.number;
+
+            var name = educationCertification.name;
+
+            var start_year = educationCertification.start_date.Year;
+            var start_month = educationCertification.start_date.Month;
+            var start_day = educationCertification.start_date.Day;
+            var end_year = educationCertification.end_date.Year;
+            var end_month = educationCertification.end_date.Month;
+            var end_day = educationCertification.end_date.Day;
+            var term = educationCertification.term;
+
+            var education_nm = educationCertification.education_nm;
+
+            var eduCertification_year = educationCertification.eduCertification_date.Year;
+            var eduCertification_month = educationCertification.eduCertification_date.Month;
+            var eduCertification_day = educationCertification.eduCertification_date.Day;
+
+            var sb = new StringBuilder();
+            sb.AppendFormat($@"
+                <!DOCTYPE html>
+                <html>
+                    <head></head>
+                    <body>
+                        <br><br><br><br><br><br><br>
+                        <div class="number">제 {number} 호</div>
+                        <br><br>
+                        <h1>교육 수료증</h1>
+                        <br><br>
+                        <li>성명 : {name}</li>
+                        <li>교육 기간 : {start_year}년 {start_month}월 {start_day}일 ~ {end_year}년 {end_month}월 {end_day} (총 {term}시간)</li>
+                        <li>교육 명 : {education_nm}</li>
+                        <br><br>
+                        <p>위 사람은 (주)핀인사이트 인사이트 캠퍼스가<br>주관한 금융 데이터 사이언스 교육 과정을<br>성실히 수료하였으므로 이 증서를 수여합니다.</p>
+                        <br><br><br><br><br><br>
+                        <div class="certification_date">{eduCertification_year}년 {eduCertification_month}월 {eduCertification_day}일</div>
+                        <br><br><br>
+                        <div class="bottom">
+                            <span class="bottom_start">(주) 핀인사이트 대표</span>
+                            <span class="bottom_end">이 민 호</span>
+                        </div>
+                    </body>
+                </html>");
 
             return sb.ToString();
         }
