@@ -126,6 +126,124 @@ namespace insightcampus_api.Utility
             return sb.ToString();
         }
 
+        public static string GetProofHTMLString(IncamAddfareModel incamAddfare)
+        {
+            var name = incamAddfare.name;
+            var all = (float)incamAddfare.hour_price * incamAddfare.hour;
+            var all_tax = Math.Truncate(all * incamAddfare.income / 10) * 10;
+            var hour = incamAddfare.hour;
+            var income_type_nm = incamAddfare.income_type_nm;
+            var hour_price = incamAddfare.hour_price;
+            var employee_all = (float)incamAddfare.contract_price * incamAddfare.hour;
+            var employee_tax = Math.Truncate(employee_all * incamAddfare.income / 10) * 10;
+            var contract_price = incamAddfare.contract_price;
+            var remit = (all - all_tax) - (employee_all - employee_tax);
+            var class_name = incamAddfare.@class;
+            var month = incamAddfare.addfare_date.Month;
+            var day = incamAddfare.addfare_date.Day;
+            var bank = "KB국민";
+            var account_num = "277237-04-001089";
+            
+            var sb = new StringBuilder();
+            sb.AppendFormat($@"
+                        <html>
+                          <head>
+                           </head>
+                            <body>
+                            <div class='header'>
+                                <div><img  alt=""></div>
+                                < br />
+                                < br />
+                                < br />
+                                < div class='title'>
+                                    <h1>재직증명서</h1>
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+            ");
+
+
+            sb.AppendFormat($@"
+                            <div class='content'>
+                                <div class='divi-line'><span></span></div>
+                                <h1>인적사항</h1>
+                                <table >
+                                    <tr class='br-black'>
+                                        <td class='td-1'>이&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 름</td>
+                                        <td class='td-2'>: {name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>주민등록번호</td>
+                                        <td> : </td>
+                                    </tr>
+                                    <tr>
+                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
+                                        <td>:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp연&nbsp &nbsp 락&nbsp &nbsp 처</td>
+                                        <td>:</td>
+                                    </tr>
+                                </table>
+                                <br />
+                                <br />
+                                <br />
+                                <h1>재직사항</h1>
+                                <table >
+                                    <tr class='br-black'>
+                                        <td class='td-1'>부&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 서</td>
+                                        < td class='td-2'>: </td>
+                                    </tr>
+                                    <tr>
+                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
+                                        <td>: </td>
+                                    </tr>
+                                    <tr>
+                                        <td>직&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 위</td>
+                                        <td>: </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp재&nbsp 직&nbsp 기&nbsp 간</td>
+                                        <td>:</td>
+                                    </tr>
+                                    <tr class='br-black-end'>
+                                        <td>&nbsp발&nbsp 급&nbsp 용&nbsp 도</td>
+                                        <td>:</td>
+                                    </tr>
+                                </table>
+                                <br />
+                                <br />
+                                <div><p>위와 같이 재직하고 있음을 증명합니다.</p></div>
+                                <br />
+                                <br />
+                                <br />
+            ");
+
+
+            sb.AppendFormat($@"
+                                <div><p></p></div>
+                                <br />
+                                <br />
+                                <br />
+                                <ul class='caution'>
+                                    <li>주&nbsp &nbsp 소 : </li>
+                                    <li>회사명 : </li>
+                                    <li>대표자 : 이민호 &nbsp &nbsp &nbsp &nbsp (인)</li>
+                                </ul>
+                                <div class='divi-line'><span></span></div>
+                                </ div >
+                                </ body >
+
+                                </ html > ");
+  
+                      return sb.ToString();
+        }
+  
+  
+  
+  
         public static string GetEduCertificationHTMLString(EducationCertificationModel educationCertification)
         {
             var number = educationCertification.number;
