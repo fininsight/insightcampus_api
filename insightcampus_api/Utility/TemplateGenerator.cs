@@ -137,10 +137,10 @@ namespace insightcampus_api.Utility
                            </head>
                             <body>
                             <div class='header'>
-                                < br />
-                                < br />
-                                < br />
-                                < div class='title'>
+                                <br />
+                                <br />
+                                <br />
+                                <div class='title'>
                                     <h1>재직증명서</h1>
                                 </div>
                                 <br />
@@ -179,7 +179,7 @@ namespace insightcampus_api.Utility
                                 <table >
                                     <tr class='br-black'>
                                         <td class='td-1'>부&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 서</td>
-                                        < td class='td-2'>: </td>
+                                        <td class='td-2'>: </td>
                                     </tr>
                                     <tr>
                                         <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
@@ -218,9 +218,9 @@ namespace insightcampus_api.Utility
                                     <li>대표자 : 이민호 &nbsp &nbsp &nbsp &nbsp (인)</li>
                                 </ul>
                                 <div class='divi-line'><span></span></div>
-                                </ div >
-                                </ body >
-                                </ html > ");
+                                </div>
+                                </body>
+                                </html> ");
 
             return sb.ToString();
         }
