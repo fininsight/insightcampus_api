@@ -24,15 +24,17 @@ li {
 p {
     text-align: center;
     font-size: 25px;
-    padding-right: 400px;
+    padding-right: 200px;
 }
 
 .certification_date {
     font-size: 18px;
+    padding-left: 200px;
 }
 
 .bottom {
     padding-left: 150px;
+    padding-bottom: 300px;
 }
 
 .bottom_start {
