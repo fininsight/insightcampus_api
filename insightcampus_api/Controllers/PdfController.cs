@@ -24,7 +24,7 @@ namespace insightcampus_api.Controllers
             _pdf = pdf;
         }
 
-        [HttpGet("{addfare_seq}")]
+        [HttpGet("addfare/{addfare_seq}")]
         public async Task<IActionResult> CreatePDF(int addfare_seq)
         {
             // sudo apt-get install libgdiplus
@@ -61,12 +61,11 @@ namespace insightcampus_api.Controllers
         }
 
 
-        [HttpGet("{employ_proof}")]
-        public async Task<IActionResult> CreateProofPDF(int employ_proof)
+        [HttpGet("proof")]
+        public async Task<IActionResult> CreateProofPDF()
         {
             // sudo apt-get install libgdiplus
 
-            var proof = await _pdf.Select(employ_proof);
             var globalSettings = new GlobalSettings
             {
                 ColorMode = ColorMode.Color,
@@ -81,7 +80,7 @@ namespace insightcampus_api.Controllers
             var objectSettings = new ObjectSettings
             {
                 PagesCount = true,
-                HtmlContent = TemplateGenerator.GetProofHTMLString(proof),
+                HtmlContent = TemplateGenerator.GetProofHTMLString(),
                 WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "pdfstyle.css") },
                 HeaderSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false },
                 FooterSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false }
@@ -95,15 +94,15 @@ namespace insightcampus_api.Controllers
 
             var file = _converter.Convert(pdf);
             
-            return File(file, "application/pdf", proof.name + "님_재직증명서_" + proof.addfare_date.ToString("yyyy-MM-dd") + ".pdf"); // for downloading as sample.pdf
+            return File(file, "application/pdf", "test" + " 님_재직증명서_" + ".pdf"); // for downloading as sample.pdf
         }
 
 
 
-        [HttpGet("{eduCertification_seq}")]
-        public async Task<IActionResult> CreateEduCertificationPDF(int eduCertification_seq)
+        [HttpGet("certification")]
+        public async Task<IActionResult> CreateEduCertificationPDF()
         {
-            var eduCertification = await _pdf.Select(eduCertification_seq);
+
             var globalSettings = new GlobalSettings
             {
                 ColorMode = ColorMode.Color,
@@ -118,7 +117,7 @@ namespace insightcampus_api.Controllers
             var objectSettings = new ObjectSettings
             {
                 PagesCount = true,
-                HtmlContent = TemplateGenerator.GetEduCertificationHTMLString(eduCertification),
+                HtmlContent = TemplateGenerator.GetEduCertificationHTMLString(),
                 WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "edu_certification_style.css") },
                 HeaderSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false },
                 FooterSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false }
@@ -132,7 +131,7 @@ namespace insightcampus_api.Controllers
 
             var file = _converter.Convert(pdf);
             
-            return File(file, "application/pdf", eduCertification.name + "님_교육수료증_" + eduCertification.date.ToString("yyyy-MM-dd") + ".pdf");
+            return File(file, "application/pdf", "test" + " 님_교육수료증_" + ".pdf");
             
         }
     }
