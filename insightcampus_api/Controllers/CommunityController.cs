@@ -70,5 +70,12 @@ namespace insightcampus_api.Controllers
             await _community.UpdateTemplate(communityModel);
             return Ok();
         }
+
+        [HttpPut("view_count")]
+        public async Task<ActionResult> ViewCountUpdate([FromBody] CommunityModel communityModel)
+        {
+            await _community.IncreaseViewCount(communityModel);
+            return Ok();
+        }
     }
 }

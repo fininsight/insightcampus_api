@@ -44,6 +44,12 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
+        public async Task IncreaseViewCount(CommunityModel communityModel)
+        {
+            _context.Entry(communityModel).Property(x => x.view_count).IsModified = true;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             var result = (
