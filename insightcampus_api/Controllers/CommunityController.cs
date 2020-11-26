@@ -63,5 +63,12 @@ namespace insightcampus_api.Controllers
             await _community.Delete(board);
             return Ok();
         }
+
+        [HttpPut("template")]
+        public async Task<ActionResult> TemplateUpdate([FromBody] CommunityModel communityModel)
+        {
+            await _community.UpdateTemplate(communityModel);
+            return Ok();
+        }
     }
 }

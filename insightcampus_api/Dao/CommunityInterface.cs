@@ -10,6 +10,7 @@ namespace insightcampus_api.Dao
         Task Add<T>(T entity) where T : class;
         Task Delete<T>(T entity) where T : class;
         Task Update(CommunityModel communityModel);
+        Task UpdateTemplate(CommunityModel communityModel);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
         Task<CommunityModel> Select(int board_seq);
     }

@@ -38,6 +38,12 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateTemplate(CommunityModel communityModel)
+        {
+            _context.Entry(communityModel).Property(x => x.content).IsModified = true;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             var result = (
