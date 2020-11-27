@@ -129,6 +129,18 @@ namespace insightcampus_api.Utility
         public static string GetProofHTMLString()
         {
             var name = "test";
+            var register_number = "test";
+            var home_address = "test";
+            var phone_number = "test";
+
+            var department = "test";
+            var work_address = "test";
+            var position = "test";
+            var work_period = "test";
+            var purpose = "test";
+
+            var blank = "test";
+            var company_address = "test";
 
             var sb = new StringBuilder();
             sb.AppendFormat($@"
@@ -137,39 +149,38 @@ namespace insightcampus_api.Utility
                            </head>
                             <body>
                             <div class='header'>
+                                <img class='logo' src = ''></img>
                                 <br />
                                 <br />
                                 <br />
                                 <div class='title'>
-                                    <h1>재직증명서</h1>
+                                    <h1>재직&nbsp증명서</h1>
                                 </div>
                                 <br />
                                 <br />
                                 <br />
                             </div>
             ");
-
-
             sb.AppendFormat($@"
                             <div class='content'>
                                 <div class='divi-line'><span></span></div>
                                 <h1>인적사항</h1>
                                 <table >
                                     <tr class='br-black'>
-                                        <td class='td-1'>이&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 름</td>
+                                        <td class='td-1'>이&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 름</td>
                                         <td class='td-2'>: {name}</td>
                                     </tr>
                                     <tr>
                                         <td>주민등록번호</td>
-                                        <td> : </td>
+                                        <td>: {register_number}</td>
                                     </tr>
                                     <tr>
-                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
-                                        <td>:</td>
+                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
+                                        <td>: {home_address}</td>
                                     </tr>
                                     <tr>
                                         <td>&nbsp연&nbsp &nbsp 락&nbsp &nbsp 처</td>
-                                        <td>:</td>
+                                        <td>: {phone_number}</td>
                                     </tr>
                                 </table>
                                 <br />
@@ -178,49 +189,47 @@ namespace insightcampus_api.Utility
                                 <h1>재직사항</h1>
                                 <table >
                                     <tr class='br-black'>
-                                        <td class='td-1'>부&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 서</td>
-                                        <td class='td-2'>: </td>
+                                        <td class='td-1'>부&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 서</td>
+                                        <td class='td-2'>: {department}</td>
                                     </tr>
                                     <tr>
-                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
-                                        <td>: </td>
+                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
+                                        <td>: {work_address}</td>
                                     </tr>
                                     <tr>
-                                        <td>직&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 위</td>
-                                        <td>: </td>
+                                        <td>직&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 위</td>
+                                        <td>: {position}</td>
                                     </tr>
                                     <tr>
                                         <td>&nbsp재&nbsp 직&nbsp 기&nbsp 간</td>
-                                        <td>:</td>
+                                        <td>: {work_period}</td>
                                     </tr>
                                     <tr class='br-black-end'>
                                         <td>&nbsp발&nbsp 급&nbsp 용&nbsp 도</td>
-                                        <td>:</td>
+                                        <td>: {purpose}</td>
                                     </tr>
                                 </table>
                                 <br />
                                 <br />
-                                <div><p>위와 같이 재직하고 있음을 증명합니다.</p></div>
-                                <br />
-                                <br />
+                                <h5>위와 같이 재직하고 있음을 증명합니다.</h5>
                                 <br />
             ");
 
 
             sb.AppendFormat($@"
-                                <div><p></p></div>
+                                <div class = 'blank'><p>{blank}</p></div>
                                 <br />
                                 <br />
                                 <br />
                                 <ul class='caution'>
-                                    <li>주&nbsp &nbsp 소 : </li>
-                                    <li>회사명 : </li>
-                                    <li>대표자 : 이민호 &nbsp &nbsp &nbsp &nbsp (인)</li>
+                                    <li>주&nbsp &nbsp 소 : {company_address}</li>
+                                    <li>회사명 : (주)핀인사이트 </li>
+                                    <li class = 'bot'>대표자 : 이&nbsp 민&nbsp 호 &nbsp &nbsp &nbsp &nbsp <img class = 'stemp' src = ''></img></li>
                                 </ul>
                                 <div class='divi-line'><span></span></div>
-                                </div>
-                                </body>
-                                </html> ");
+                                </div >
+                                </body >
+                                </html > ");
 
             return sb.ToString();
         }
