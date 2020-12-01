@@ -32,16 +32,17 @@ namespace insightcampus_api.Utility
                             <body>
                                 <div class='header'>
                                     <div class='title'>
-                                      <h1>{month}월 강의료 지급 명세서</h1>
+                                      <h1>강의료 지급 명세서</h1>
                                     </div>
+                                  <br/>
                                   <br/>
                                   <br/>
                                     <div class='explane'>
-                                      <p>안녕하세요<b> {name}님</b></p>
-                                      <p><b>{month}월 {day}일 진행 된 {class_name}</b>에 대한 정산내역입니다.</p>
-                                      <p>감사합니다.</p>
+                                      <p>안녕하세요, <b>{name}</b>님</p>
+                                      <p><b>{month}월 {day}일에 정산된 {class_name}</b>에 대한 내역입니다.</p>
                                     </div>
                                   </div>
+                                  <br/>
                                   <br/>
                                   <br/>
             ");
@@ -49,7 +50,7 @@ namespace insightcampus_api.Utility
 
             sb.AppendFormat($@"
                                   <div class='content'>
-                                    <h1>[{month}월 교육과정 총 입금액]</h1>
+                                    <h1>[교육과정 총 입금액]</h1>
                                     <table cellpadding='5'>
                                         <tr id='bg-grey'>
                                             <td>총 예산</td>
@@ -66,12 +67,13 @@ namespace insightcampus_api.Utility
                                             <td id='bg-lightyellow'>₩{ToAccounting(all - all_tax)}</td>
                                         </tr>
                                     </table>
-                                    <h5>* 위 금액은 강사님 계좌로 입금되는 금액입니다. 혹시 금액이 다르면 연락 주십시오.</h5>
+                                    <h5 style='padding-top:5px;'>* 위 금액은 강사님 계좌로 입금되는 금액입니다. 혹시 금액이 다르면 연락 주십시오.</h5>
                                     <br />
                                     <br />
                                     <br />
                                     <br />
-                                    <h1><span id='bg-yellow'>[{month}월 강의료]</span></h1>
+                                    <br />
+                                    <h1><span id='bg-yellow'>[강의료]</span></h1>
                                     <table cellpadding='5'>
                                         <tr id='bg-grey'>
                                             <td>총 강의료</td>
@@ -92,6 +94,7 @@ namespace insightcampus_api.Utility
                                     <br />
                                     <br />
                                     <br />
+                                    <br />
             ");
 
 
@@ -108,7 +111,7 @@ namespace insightcampus_api.Utility
                                         </tr>
                                     </table>
                                     <ul class='caution'>
-                                      <li>위 송금액을 아래의 계좌로 2주 이내 입금해 주시기 바랍니다.</li>
+                                      <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
                                       <span class='account-number'>{bank} | {account_num} | (주)핀인사이트</span>
                                       <br />
                                       <br />
@@ -119,6 +122,166 @@ namespace insightcampus_api.Utility
                                   </div>
                             </body>
                         </html>");
+
+            return sb.ToString();
+        }
+
+        public static string GetProofHTMLString()
+        {
+            var name = "test";
+            var register_number = "test";
+            var home_address = "test";
+            var phone_number = "test";
+
+            var department = "test";
+            var work_address = "test";
+            var position = "test";
+            var work_period = "test";
+            var purpose = "test";
+
+            var blank = "test";
+            var company_address = "test";
+
+            var sb = new StringBuilder();
+            sb.AppendFormat($@"
+                        <html>
+                          <head>
+                           </head>
+                            <body>
+                            <div class='header'>
+                                <img class='logo' src = ''></img>
+                                <br />
+                                <br />
+                                <br />
+                                <div class='title'>
+                                    <h1>재직&nbsp증명서</h1>
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+            ");
+            sb.AppendFormat($@"
+                            <div class='content'>
+                                <div class='divi-line'><span></span></div>
+                                <h1>인적사항</h1>
+                                <table >
+                                    <tr class='br-black'>
+                                        <td class='td-1'>이&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 름</td>
+                                        <td class='td-2'>: {name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>주민등록번호</td>
+                                        <td>: {register_number}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
+                                        <td>: {home_address}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp연&nbsp &nbsp 락&nbsp &nbsp 처</td>
+                                        <td>: {phone_number}</td>
+                                    </tr>
+                                </table>
+                                <br />
+                                <br />
+                                <br />
+                                <h1>재직사항</h1>
+                                <table >
+                                    <tr class='br-black'>
+                                        <td class='td-1'>부&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 서</td>
+                                        <td class='td-2'>: {department}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>주&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 소</td>
+                                        <td>: {work_address}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>직&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 위</td>
+                                        <td>: {position}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp재&nbsp 직&nbsp 기&nbsp 간</td>
+                                        <td>: {work_period}</td>
+                                    </tr>
+                                    <tr class='br-black-end'>
+                                        <td>&nbsp발&nbsp 급&nbsp 용&nbsp 도</td>
+                                        <td>: {purpose}</td>
+                                    </tr>
+                                </table>
+                                <br />
+                                <br />
+                                <h5>위와 같이 재직하고 있음을 증명합니다.</h5>
+                                <br />
+            ");
+
+
+            sb.AppendFormat($@"
+                                <div class = 'blank'><p>{blank}</p></div>
+                                <br />
+                                <br />
+                                <br />
+                                <ul class='caution'>
+                                    <li>주&nbsp &nbsp 소 : {company_address}</li>
+                                    <li>회사명 : (주)핀인사이트 </li>
+                                    <li class = 'bot'>대표자 : 이&nbsp 민&nbsp 호 &nbsp &nbsp &nbsp &nbsp <img class = 'stemp' src = ''></img></li>
+                                </ul>
+                                <div class='divi-line'><span></span></div>
+                                </div >
+                                </body >
+                                </html > ");
+
+            return sb.ToString();
+        }
+  
+  
+  
+  
+        public static string GetEduCertificationHTMLString()
+        {
+            var number = 1;
+
+            var name = "test";
+
+            var start_year = "test";
+            var start_month = "test";
+            var start_day = "test";
+            var end_year = "test";
+            var end_month = "test";
+            var end_day = "test";
+            var term = "test";
+
+            var education_nm = "test";
+
+            var eduCertification_year = "test";
+            var eduCertification_month = "test";
+            var eduCertification_day = "test";
+
+            var sb = new StringBuilder();
+            sb.AppendFormat($@"
+                <!DOCTYPE html>
+                <html>
+                    <head></head>
+                    <body>
+                        <br><br><br><br><br><br><br>
+                        <div class='number'>제 {number} 호</div>
+                        <br><br>
+                        <h1>교육 수료증</h1>
+                        <br><br>
+                        <li>성명 : {name}</li>
+                        <li>교육 기간 : {start_year}년 {start_month}월 {start_day}일 ~ {end_year}년 {end_month}월 {end_day} (총 {term}시간)</li>
+                        <li>교육 명 : {education_nm}</li>
+                        <br><br><br><br>
+                        <p>위 사람은 (주)핀인사이트 인사이트 캠퍼스가<br>주관한 금융 데이터 사이언스 교육 과정을<br>성실히 수료하였으므로 이 증서를 수여합니다.</p>
+                        <br><br><br><br><br><br><br><br>
+                        <div class='certification_date'>{eduCertification_year}년 {eduCertification_month}월 {eduCertification_day}일</div>
+                        <br><br><br>
+                        <div class='bottom'>
+                            <span class='bottom_start'>(주) 핀인사이트 대표</span>
+                            <span class='bottom_end'>이 민 호</span>
+                        </div>
+                    </body>
+                </html>");
 
             return sb.ToString();
         }

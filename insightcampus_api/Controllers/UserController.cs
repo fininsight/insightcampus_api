@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using insightcampus_api.Dao;
 using insightcampus_api.Data;
 using insightcampus_api.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace insightcampus_api.Controllers
@@ -22,7 +23,9 @@ namespace insightcampus_api.Controllers
             _email = email;
         }
 
+
         [HttpGet("{size}/{pageNumber}/{search?}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber, int search)
         {
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
