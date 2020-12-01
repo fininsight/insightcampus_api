@@ -81,7 +81,7 @@ namespace insightcampus_api.Controllers
             {
                 PagesCount = true,
                 HtmlContent = TemplateGenerator.GetProofHTMLString(),
-                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "pdfstyle.css") },
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "proof_style.css") },
                 HeaderSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false },
                 FooterSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false }
             };
@@ -97,7 +97,7 @@ namespace insightcampus_api.Controllers
             return File(file, "application/pdf", "test" + " 님_재직증명서_" + ".pdf"); // for downloading as sample.pdf
         }
 
-
+        
 
         [HttpGet("certification")]
         public async Task<IActionResult> CreateEduCertificationPDF()

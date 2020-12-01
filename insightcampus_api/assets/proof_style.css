@@ -15,16 +15,22 @@ body {
     padding-top: 40px;
 }
 
+    .header .logo {
+        content: url('../assets/fininlogo.png');
+        width: 25%;
+        height: auto;
+    }
+
     .header .title {
         text-align: center;
     }
 
-        .header .title h1 {
-            font-size: 30px;
-        }
+    .header .title h1 {
+        font-size: 35px;
+    }
 
 .content {
-    width: 800px;
+    width: 750px;
     margin: 0 auto;
 }
 
@@ -33,40 +39,36 @@ body {
 }
 
 .content h1 {
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .content h5 {
     margin-top: 0px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 300;
     margin-bottom: 50px;
-    float: right;
 }
 
 .content table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
     text-align: center;
 }
-
     .content table td {
-        height: 35px;
-    }
-
-    .content table td {
-        border-top: 1px solid rgba(187, 187, 187, 0.185);
-        border-bottom: 1px solid rgba(187, 187, 187, 0.185);
-        ;
+        border-top: 3px solid rgba(187, 187, 187, 0.185);
+        border-bottom: 3px solid rgba(187, 187, 187, 0.185);
+        margin: 3% 0;
+        height: 45px;
     }
 
     .content table .br-black td {
-        border-top: 1px solid rgba(0, 0, 0, 0.658);
+        border-top: 3px solid rgba(0, 0, 0, 0.658);
     }
 
     .content table .br-black-end td {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.658);
+        border-bottom: 3px solid rgba(0, 0, 0, 0.658);
     }
 
     .content table .td-1 {
@@ -88,7 +90,22 @@ body {
 }
 
     .caution li {
-        padding: 10px;
+        padding: 5px;
         list-style: none;
-        font-size: 18px;
+        font-size: 20px;
     }
+
+.blank{
+    text-align:center;
+}
+
+.stemp {
+    content: url('../assets/stamp.png');
+    width: 20%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.caution .bot {
+    margin-top: -25px;
+}
