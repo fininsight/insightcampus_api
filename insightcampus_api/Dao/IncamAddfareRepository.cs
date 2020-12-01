@@ -200,10 +200,11 @@ namespace insightcampus_api.Dao
                    안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
                    <br/>
                    {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
-                   첨부된 명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
+                   명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
                    <br/>
-                   - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)} (총입금액)</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
-                   - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit)} (송금액)</span><br/>
+                   - 교육과정 총 입금액 : ₩{ToAccounting(all - all_tax)}<br/>
+                   - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
+                   - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
                    - 송금계좌 : KB국민 | 277237-04-001089 | (주)핀인사이트<br/>
                    <br/>
                    <br/>
