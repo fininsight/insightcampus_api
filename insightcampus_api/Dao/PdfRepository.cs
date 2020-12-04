@@ -51,5 +51,6 @@ namespace insightcampus_api.Dao
             return result;
         }
 
+
     }
 }

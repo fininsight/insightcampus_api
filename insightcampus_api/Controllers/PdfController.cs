@@ -61,42 +61,6 @@ namespace insightcampus_api.Controllers
         }
 
 
-        [HttpGet("proof")]
-        public async Task<IActionResult> CreateProofPDF()
-        {
-            // sudo apt-get install libgdiplus
-
-            var globalSettings = new GlobalSettings
-            {
-                ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
-                PaperSize = PaperKind.A4,
-                Margins = new MarginSettings { Top = 10 },
-                DPI = 300,
-                DocumentTitle = "",
-            };
-
-
-            var objectSettings = new ObjectSettings
-            {
-                PagesCount = true,
-                HtmlContent = TemplateGenerator.GetProofHTMLString(),
-                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "proof_style.css") },
-                HeaderSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false },
-                FooterSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false }
-            };
-
-            var pdf = new HtmlToPdfDocument()
-            {
-                GlobalSettings = globalSettings,
-                Objects = { objectSettings }
-            };
-
-            var file = _converter.Convert(pdf);
-            
-            return File(file, "application/pdf", "test" + " 님_재직증명서_" + ".pdf"); // for downloading as sample.pdf
-        }
-
         
 
         [HttpGet("certification")]
