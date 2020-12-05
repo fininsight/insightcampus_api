@@ -48,7 +48,7 @@ namespace insightcampus_api.Data
         public DbSet<IncamAddfareLogModel> IncamAddfareLogContext { get; set; }
         public DbSet<IncamContractLogModel> IncamContractLogContext { get; set; }
         public DbSet<EmployProofModel> EmployProofContext { get; set; }
-
+        public DbSet<CommunityModel> CommunityContext { get; set; }
         public DbQuery<WPBoardNoticeDto> WPBoardNoticeModel { get; set; }
     }
 }

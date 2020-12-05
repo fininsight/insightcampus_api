@@ -270,9 +270,9 @@ namespace insightcampus_api.Utility
                         <li>성명 : {name}</li>
                         <li>교육 기간 : {start_year}년 {start_month}월 {start_day}일 ~ {end_year}년 {end_month}월 {end_day} (총 {term}시간)</li>
                         <li>교육 명 : {education_nm}</li>
-                        <br><br>
+                        <br><br><br><br>
                         <p>위 사람은 (주)핀인사이트 인사이트 캠퍼스가<br>주관한 금융 데이터 사이언스 교육 과정을<br>성실히 수료하였으므로 이 증서를 수여합니다.</p>
-                        <br><br><br><br><br><br>
+                        <br><br><br><br><br><br><br><br>
                         <div class='certification_date'>{eduCertification_year}년 {eduCertification_month}월 {eduCertification_day}일</div>
                         <br><br><br>
                         <div class='bottom'>
