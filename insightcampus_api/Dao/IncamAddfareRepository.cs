@@ -135,6 +135,73 @@ namespace insightcampus_api.Dao
             return dataTableOutDto;
         }
 
+        public async Task<List<IncamAddfareModel>> SelectExcel(List<Filter> filters)
+        {
+            var result = (
+                    from addfare in _context.IncamAddfareContext
+                    join contract in _context.IncamContractContext
+                      on addfare.contract_seq equals contract.contract_seq
+                    join teacher in _context.TeacherContext
+                      on contract.teacher_seq equals teacher.teacher_seq
+                    join company in _context.CodeContext
+                      on contract.original_company equals company.code_id
+                    join incom in _context.CodeContext
+                      on addfare.income_type equals incom.code_id
+                    where company.codegroup_id == "cooperative"
+                    where incom.codegroup_id == "incom"
+                    where addfare.use_yn == 1
+                    orderby addfare.addfare_seq descending
+                    select new IncamAddfareModel
+                    {
+                        addfare_seq = addfare.addfare_seq,
+                        contract_seq = addfare.contract_seq,
+                        hour = addfare.hour,
+                        addfare_date = addfare.addfare_date,
+                        income_type = addfare.income_type,
+                        income_type_nm = incom.code_nm,
+                        income = addfare.income,
+                        original_company_nm = company.code_nm,
+                        @class = contract.@class,
+                        hour_price = contract.hour_price,
+                        hour_incen = contract.hour_incen,
+                        contract_price = contract.contract_price,
+                        name = teacher.name,
+                        teacher_seq = teacher.teacher_seq
+                    });
+
+
+
+            foreach (var filter in filters)
+            {
+                if (filter.k == "name")
+                {
+                    result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+                }
+
+                else if (filter.k == "company")
+                {
+                    result = result.Where(w => w.original_company_nm.Contains(filter.v.Replace(" ", "")));
+                }
+
+                else if (filter.k == "class")
+                {
+                    result = result.Where(w => w.@class.Contains(filter.v.Replace(" ", "")));
+                }
+
+                else if (filter.k == "start_date")
+                {
+                    result = result.Where(w => w.addfare_date >= Convert.ToDateTime(filter.v));
+                }
+
+                else if (filter.k == "end_date")
+                {
+                    result = result.Where(w => w.addfare_date <= Convert.ToDateTime(filter.v));
+                }
+            }
+
+            return await result.ToListAsync();
+        }
+
         public async Task<DataTableOutDto> SelectFamily(DataTableInputDto dataTableInputDto, int teacher_seq)
         {
             var result = (

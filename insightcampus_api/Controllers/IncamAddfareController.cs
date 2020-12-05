@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace insightcampus_api.Controllers
 {
@@ -22,7 +24,7 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("{size}/{pageNumber}")]
+        [HttpGet("{size:int}/{pageNumber:int}")]
         public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
             var filters = JsonConvert.DeserializeObject<List<Filter>>(f);            DataTableInputDto dataTableInputDto = new DataTableInputDto();
@@ -30,6 +32,62 @@ namespace insightcampus_api.Controllers
             dataTableInputDto.pageNumber = pageNumber;
 
             return await _incamAddfare.Select(dataTableInputDto, filters);
+        }
+
+        [HttpGet("excel")]
+        public async Task<IActionResult> getExcel([FromQuery(Name = "f")] string f)
+        {
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            var result = await _incamAddfare.SelectExcel(filters);
+
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            string fileName = "내부정산.xlsx";
+
+     
+            using (var workbook = new XLWorkbook())
+            {
+                IXLWorksheet worksheet = workbook.Worksheets.Add("Sheet1");
+
+                worksheet.Cell(1, 1).Value = "정산서 No.";
+                worksheet.Cell(1, 2).Value = "정산일자";
+                worksheet.Cell(1, 3).Value = "원청사";
+                worksheet.Cell(1, 4).Value = "강의명";
+                worksheet.Cell(1, 5).Value = "이름";
+                worksheet.Cell(1, 6).Value = "정산시수";
+                worksheet.Cell(1, 7).Value = "소득구분";
+                worksheet.Cell(1, 8).Value = "실지급액";
+                worksheet.Cell(1, 9).Value = "송금요청액";
+
+
+                for (int i = 0; i < result.Count; i++)
+                {
+                    worksheet.Cell(i + 2, 1).Value = result[i].addfare_date.Year.ToString() + '-' + result[i].addfare_seq.ToString();
+                    worksheet.Cell(i + 2, 2).Value = result[i].addfare_date.ToString("yyyy-MM-dd");
+                    worksheet.Cell(i + 2, 3).Value = result[i].original_company_nm;
+                    worksheet.Cell(i + 2, 4).Value = result[i].@class;
+                    worksheet.Cell(i + 2, 5).Value = result[i].name;
+                    worksheet.Cell(i + 2, 6).Value = result[i].hour;
+                    worksheet.Cell(i + 2, 7).Value = result[i].income_type_nm;
+
+                    var all = (float)result[i].hour_price * result[i].hour;
+                    var all_tax = Math.Truncate(all * result[i].income / 10) * 10;
+                    var employee_all = (float)result[i].contract_price * result[i].hour;
+                    var employee_tax = Math.Truncate(employee_all * result[i].income / 10) * 10;
+                    var employee_deposit = employee_all - employee_tax;
+                    var remittance = all - all_tax - employee_deposit;
+
+                    worksheet.Cell(i + 2, 8).Value = employee_deposit;
+                    worksheet.Cell(i + 2, 9).Value = remittance;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, contentType, fileName);
+                }
+            }
+
         }
 
         [Authorize]
@@ -44,7 +102,7 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("{addfare_seq}")]
+        [HttpGet("{addfare_seq:int}")]
         public async Task<ActionResult<IncamAddfareModel>> Get(int addfare_seq)
         {
             return await _incamAddfare.Select(addfare_seq);
