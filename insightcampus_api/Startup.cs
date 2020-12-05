@@ -63,6 +63,7 @@ namespace insightcampus_api
             services.AddScoped<FaqInterface, FaqRepository>();
             services.AddScoped<CommunityInterface, CommunityRepository>();
             services.AddScoped<WPBoardNoticeInterface, WPBoardNoticeRepository>();
+            services.AddScoped<EmployProofInterface, EmployProofRepository>();
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {

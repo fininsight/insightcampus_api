@@ -126,21 +126,20 @@ namespace insightcampus_api.Utility
             return sb.ToString();
         }
 
-        public static string GetProofHTMLString()
+        public static string GetProofHTMLString(EmployProofModel employProof)
         {
-            var name = "test";
-            var register_number = "test";
-            var home_address = "test";
-            var phone_number = "test";
+            var name = employProof.name;
+            var register_number = employProof.register_number;
+            var home_address = employProof.home_address;
+            var phone_number = employProof.phone_number;
 
-            var department = "test";
-            var work_address = "test";
-            var position = "test";
-            var work_period = "test";
-            var purpose = "test";
+            var department = employProof.department;
+            var work_address = employProof.work_address;
+            var position = employProof.position;
+            var work_period = employProof.work_period;
+            var purpose = employProof.purpose;
 
             var blank = "test";
-            var company_address = "test";
 
             var sb = new StringBuilder();
             sb.AppendFormat($@"
@@ -222,7 +221,7 @@ namespace insightcampus_api.Utility
                                 <br />
                                 <br />
                                 <ul class='caution'>
-                                    <li>주&nbsp &nbsp 소 : {company_address}</li>
+                                    <li>주&nbsp &nbsp 소 : {work_address}</li>
                                     <li>회사명 : (주)핀인사이트 </li>
                                     <li class = 'bot'>대표자 : 이&nbsp 민&nbsp 호 &nbsp &nbsp &nbsp &nbsp <img class = 'stemp' src = ''></img></li>
                                 </ul>
