@@ -58,7 +58,7 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
+        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters)
         {
             var result = (
                     from addfare in _context.IncamAddfareContext
@@ -91,6 +91,36 @@ namespace insightcampus_api.Dao
                         name = teacher.name,
                         teacher_seq = teacher.teacher_seq
                     });
+
+            
+
+        foreach (var filter in filters)
+        {
+            if (filter.k == "name")
+            {
+                result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+            }
+
+            else if (filter.k == "company")
+            {
+                result = result.Where(w => w.original_company_nm.Contains(filter.v.Replace(" ", "")));
+            }
+
+            else if (filter.k == "class")
+            {
+                result = result.Where(w => w.@class.Contains(filter.v.Replace(" ", "")));
+            }
+
+            else if (filter.k == "start_date")
+            {
+                result = result.Where(w => w.addfare_date >= Convert.ToDateTime(filter.v));
+            }
+
+            else if (filter.k == "end_date")
+            {
+                result = result.Where(w => w.addfare_date <= Convert.ToDateTime(filter.v));
+            }
+        }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 

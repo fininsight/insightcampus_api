@@ -6,6 +6,7 @@ using insightcampus_api.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace insightcampus_api.Controllers
 {
@@ -22,13 +23,13 @@ namespace insightcampus_api.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpGet("{size}/{pageNumber}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
+        public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
-            DataTableInputDto dataTableInputDto = new DataTableInputDto();
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);            DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
 
-            return await _incamAddfare.Select(dataTableInputDto);
+            return await _incamAddfare.Select(dataTableInputDto, filters);
         }
 
         [Authorize]
