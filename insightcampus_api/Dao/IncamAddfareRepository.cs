@@ -58,6 +58,34 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateDeposit(IncamAddfareModel incamAddfareModel)
+        {
+            var log = await (
+                 from addfare in _context.IncamAddfareContext
+                 where addfare.addfare_seq == incamAddfareModel.addfare_seq
+                 select new IncamAddfareLogModel
+                 {
+                     log_dt = DateTime.Now,
+                     log_user = incamAddfareModel.upd_user,
+                     addfare_seq = addfare.addfare_seq,
+                     contract_seq = addfare.contract_seq,
+                     hour = addfare.hour,
+                     addfare_date = addfare.addfare_date,
+                     income_type = addfare.income_type,
+                     income = addfare.income,
+                     reg_user = addfare.reg_user,
+                     reg_dt = addfare.reg_dt,
+                     upd_user = addfare.upd_user,
+                     upd_dt = addfare.upd_dt,
+                     use_yn = addfare.use_yn
+                 }).SingleAsync();
+
+            _context.Add(log);
+            _context.Entry(incamAddfareModel).Property(x => x.check_yn).IsModified = true;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters)
         {
             var result = (
@@ -89,38 +117,39 @@ namespace insightcampus_api.Dao
                         hour_incen = contract.hour_incen,
                         contract_price = contract.contract_price,
                         name = teacher.name,
-                        teacher_seq = teacher.teacher_seq
+                        teacher_seq = teacher.teacher_seq,
+                        check_yn = addfare.check_yn
                     });
 
             
 
-        foreach (var filter in filters)
-        {
-            if (filter.k == "name")
+            foreach (var filter in filters)
             {
-                result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
-            }
+                if (filter.k == "name")
+                {
+                    result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+                }
 
-            else if (filter.k == "company")
-            {
-                result = result.Where(w => w.original_company_nm.Contains(filter.v.Replace(" ", "")));
-            }
+                else if (filter.k == "company")
+                {
+                    result = result.Where(w => w.original_company_nm.Contains(filter.v.Replace(" ", "")));
+                }
 
-            else if (filter.k == "class")
-            {
-                result = result.Where(w => w.@class.Contains(filter.v.Replace(" ", "")));
-            }
+                else if (filter.k == "class")
+                {
+                    result = result.Where(w => w.@class.Contains(filter.v.Replace(" ", "")));
+                }
 
-            else if (filter.k == "start_date")
-            {
-                result = result.Where(w => w.addfare_date >= Convert.ToDateTime(filter.v));
-            }
+                else if (filter.k == "start_date")
+                {
+                    result = result.Where(w => w.addfare_date >= Convert.ToDateTime(filter.v));
+                }
 
-            else if (filter.k == "end_date")
-            {
-                result = result.Where(w => w.addfare_date <= Convert.ToDateTime(filter.v));
+                else if (filter.k == "end_date")
+                {
+                    result = result.Where(w => w.addfare_date <= Convert.ToDateTime(filter.v));
+                }
             }
-        }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
@@ -234,8 +263,9 @@ namespace insightcampus_api.Dao
                         hour_incen = contract.hour_incen,
                         contract_price = contract.contract_price,
                         name = teacher.name,
-                        teacher_seq = teacher.teacher_seq
-                    });
+                        teacher_seq = teacher.teacher_seq,
+                        check_yn = addfare.check_yn
+                  });
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 

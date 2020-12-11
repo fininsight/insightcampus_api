@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace insightcampus_api.Controllers
 {
@@ -23,14 +26,52 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("{size}/{pageNumber}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
+        [HttpGet("{size:int}/{pageNumber:int}")]
+        public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
 
-            return await _teacher.Select(dataTableInputDto);
+            return await _teacher.Select(dataTableInputDto, filters);
+        }
+
+        [HttpGet("excel")]
+        public async Task<IActionResult> getExcel([FromQuery(Name = "f")] string f)
+        {
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            //var result = await _teacher.SelectExcel(filters);
+            var result = await _teacher.SelectExcel(filters);
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            string fileName = "강사관리.xlsx";
+
+
+            using (var workbook = new XLWorkbook())
+            {
+                IXLWorksheet worksheet = workbook.Worksheets.Add("Sheet1");
+
+                worksheet.Cell(1, 1).Value = "강사명";
+                worksheet.Cell(1, 2).Value = "이메일";
+                worksheet.Cell(1, 3).Value = "핸드폰 번호";
+                worksheet.Cell(1, 4).Value = "주소";
+
+                for (int i = 0; i < result.Count; i++)
+                {
+                    worksheet.Cell(i + 2, 1).Value = result[i].name;
+                    worksheet.Cell(i + 2, 2).Value = result[i].email;
+                    worksheet.Cell(i + 2, 3).Value = result[i].phone;
+                    worksheet.Cell(i + 2, 4).Value = result[i].address;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, contentType, fileName);
+                }
+            }
+
         }
 
         [Authorize(Roles = "admin")]
