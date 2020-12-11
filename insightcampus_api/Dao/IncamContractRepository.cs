@@ -60,7 +60,7 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
+        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters)
         {
             var result = (
                     from contract in _context.IncamContractContext
@@ -85,7 +85,24 @@ namespace insightcampus_api.Dao
                       contract_end_date = contract.contract_end_date,
                       name = teacher.name
                   });
-            result = result.OrderByDescending(o => o.contract_seq);
+
+                    foreach (var filter in filters)
+                    {
+                        if (filter.k == "name")
+                            result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+
+                        else if (filter.k == "company")
+                            result = result.Where(w => w.original_company_nm.Contains(filter.v.Replace(" ", "")));
+
+                        else if (filter.k == "class")
+                            result = result.Where(w => w.@class.Contains(filter.v.Replace(" ", "")));
+
+                        else if (filter.k == "start_date")
+                            result = result.Where(w => w.contract_start_date >= Convert.ToDateTime(filter.v));
+
+                        else if (filter.k == "end_date")
+                            result = result.Where(w => w.contract_end_date <= Convert.ToDateTime(filter.v));
+                    }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
@@ -98,6 +115,53 @@ namespace insightcampus_api.Dao
             dataTableOutDto.totalElements = result.Count();
 
             return dataTableOutDto;
+        }
+
+        public async Task<List<IncamContractModel>> SelectExcel(List<Filter> filters)
+        {
+            var result = (
+                    from contract in _context.IncamContractContext
+                    join company in _context.CodeContext
+                      on contract.original_company equals company.code_id
+                    join teacher in _context.TeacherContext
+                      on contract.teacher_seq equals teacher.teacher_seq
+                   where company.codegroup_id == "cooperative"
+                   where contract.use_yn == 1
+                 orderby contract.contract_seq descending
+                  select new IncamContractModel
+                  {
+                      contract_seq = contract.contract_seq,
+                      teacher_seq = contract.teacher_seq,
+                      @class = contract.@class,
+                      original_company = contract.original_company,
+                      original_company_nm = company.code_nm,
+                      hour_price = contract.hour_price,
+                      hour_incen = contract.hour_incen,
+                      contract_price = contract.contract_price,
+                      contract_start_date = contract.contract_start_date,
+                      contract_end_date = contract.contract_end_date,
+                      name = teacher.name
+                  });
+
+            foreach (var filter in filters)
+            {
+                if (filter.k == "name")
+                    result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+
+                else if (filter.k == "company")
+                    result = result.Where(w => w.original_company_nm.Contains(filter.v.Replace(" ", "")));
+
+                else if (filter.k == "class")
+                    result = result.Where(w => w.@class.Contains(filter.v.Replace(" ", "")));
+
+                else if (filter.k == "start_date")
+                    result = result.Where(w => w.contract_start_date >= Convert.ToDateTime(filter.v));
+
+                else if (filter.k == "end_date")
+                    result = result.Where(w => w.contract_end_date <= Convert.ToDateTime(filter.v));
+            }
+
+            return await result.ToListAsync();
         }
 
         public async Task<IncamContractModel> Select(int contract_seq)
