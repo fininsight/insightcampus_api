@@ -38,14 +38,27 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
+        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters)
         {
             var result = (
                     from teacher in _context.TeacherContext
                     where teacher.use_yn == 1
                     orderby teacher.name
-                  select teacher);
-            
+                    select new TeacherModel
+                    {
+                        name = teacher.name,
+                        email = teacher.email,
+                        phone = teacher.phone,
+                        address = teacher.address
+                    }) ;
+
+            foreach (var filter in filters)
+            {
+                if (filter.k == "name")
+                {
+                    result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+                }
+            }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
@@ -58,6 +71,31 @@ namespace insightcampus_api.Dao
             dataTableOutDto.totalElements = result.Count();
 
             return dataTableOutDto;
+        }
+
+        public async Task<List<TeacherModel>> SelectExcel(List<Filter> filters)
+        {
+            var result = (
+                    from teacher in _context.TeacherContext
+                    where teacher.use_yn == 1
+                    orderby teacher.name
+                    select new TeacherModel
+                    {
+                        name = teacher.name,
+                        email = teacher.email,
+                        phone = teacher.phone,
+                        address = teacher.address
+                    });
+
+            foreach (var filter in filters)
+            {
+                if (filter.k == "name")
+                {
+                    result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+                }
+            }
+
+            return await result.ToListAsync();
         }
 
         public async Task<TeacherModel> Select(int teacher_seq)

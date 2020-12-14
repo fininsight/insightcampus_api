@@ -27,7 +27,8 @@ namespace insightcampus_api.Controllers
         [HttpGet("{size:int}/{pageNumber:int}")]
         public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
-            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);            DataTableInputDto dataTableInputDto = new DataTableInputDto();
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
 
@@ -128,6 +129,17 @@ namespace insightcampus_api.Controllers
             incamAddfare.upd_dt = DateTime.Now;
             incamAddfare.upd_user = int.Parse(User.Identity.Name);
             await _incamAddfare.Update(incamAddfare);
+            return Ok();
+        }
+
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("deposit/{addfare_seq}")]
+        public async Task<ActionResult> depositPut([FromBody] IncamAddfareModel incamAddfare, int addfare_seq)
+        {
+            incamAddfare.addfare_seq = addfare_seq;
+            incamAddfare.check_yn = 1;
+            await _incamAddfare.UpdateDeposit(incamAddfare);
             return Ok();
         }
 
