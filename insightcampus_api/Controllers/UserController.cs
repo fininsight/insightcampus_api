@@ -6,6 +6,9 @@ using insightcampus_api.Data;
 using insightcampus_api.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace insightcampus_api.Controllers
 {
@@ -23,16 +26,16 @@ namespace insightcampus_api.Controllers
             _email = email;
         }
 
-
-        [HttpGet("{size}/{pageNumber}/{search?}")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber, int search)
+        [HttpGet("{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
 
-            return await _user.Select(dataTableInputDto);
+            return await _user.Select(dataTableInputDto, filters);
         }
 
         [HttpPost]

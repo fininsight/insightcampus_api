@@ -13,7 +13,7 @@ namespace insightcampus_api.Dao
         Task Update(UserModel userModel);
         UserModel Join(UserModel user);
         UserModel PasswordCheck(UserModel userModel, UserModel userMatched);
-        Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto);
+        Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters);
         Task<UserModel> UserExists(UserModel userModel);
         Task<TeacherModel> FamilyExists(TeacherModel teacherModel);
     }
