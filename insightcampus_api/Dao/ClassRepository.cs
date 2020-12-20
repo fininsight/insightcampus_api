@@ -4,6 +4,7 @@ using System.Linq;
 using insightcampus_api.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace insightcampus_api.Dao
 {
@@ -46,13 +47,31 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
+        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters)
         {
             var result = (
                       from cls in _context.ClassContext
                     select cls);
 
             // result = result.OrderByDescending(o => o.reg_dt);
+
+            foreach (var filter in filters)
+            {
+                if (filter.k == "class_nm")
+                {
+                    result = result.Where(w => w.class_nm.Contains(filter.v.Replace(" ", "")));
+                }
+
+                else if (filter.k == "teacher")
+                {
+                    result = result.Where(w => w.teacher == Convert.ToInt16(filter.v));
+                }
+
+                else if (filter.k == "duration_nm")
+                {
+                    result = result.Where(w => w.duration_nm.Contains(filter.v.Replace(" ", "")));
+                }
+            }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
@@ -66,6 +85,7 @@ namespace insightcampus_api.Dao
 
             return dataTableOutDto;
         }
+
 
         public async Task<ClassModel> Select(int class_seq)
         {

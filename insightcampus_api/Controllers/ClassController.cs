@@ -5,6 +5,9 @@ using insightcampus_api.Data;
 using insightcampus_api.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+
 
 namespace insightcampus_api.Controllers
 {
@@ -18,17 +21,19 @@ namespace insightcampus_api.Controllers
         {
             _class = __class;
         }
-        
-        [HttpGet("{size}/{pageNumber}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
+
+        [HttpGet("{size:int}/{pageNumber:int}")]
+        public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
 
-            return await _class.Select(dataTableInputDto);
+            return await _class.Select(dataTableInputDto, filters);
         }
-        
+
+
         [HttpGet("{class_seq}")]
         public async Task<ActionResult<ClassModel>> Get(int class_seq)
         {
