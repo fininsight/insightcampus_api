@@ -46,12 +46,20 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
+        public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto,  List<Filter> filters)
         {
             var result = (
                             from user in _context.UserContext
                             select user);
 
+            foreach (var filter in filters)
+            {
+                if (filter.k == "name")
+                    result = result.Where(w => w.name.Contains(filter.v.Replace(" ", "")));
+
+                else if (filter.k == "email")
+                    result = result.Where(w => w.email.Contains(filter.v.Replace(" ", "")));
+            }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
