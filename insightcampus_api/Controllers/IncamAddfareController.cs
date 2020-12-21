@@ -135,8 +135,9 @@ namespace insightcampus_api.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut("deposit/{addfare_seq}")]
-        public async Task<ActionResult> depositPut([FromBody] IncamAddfareModel incamAddfare, int addfare_seq)
+        public async Task<ActionResult> depositPut(int addfare_seq)
         {
+            IncamAddfareModel incamAddfare = new IncamAddfareModel();
             incamAddfare.addfare_seq = addfare_seq;
             incamAddfare.check_yn = 1;
             await _incamAddfare.UpdateDeposit(incamAddfare);
