@@ -50,6 +50,7 @@ namespace insightcampus_api.Data
         public DbSet<EmployProofModel> EmployProofContext { get; set; }
         public DbSet<CommunityModel> CommunityContext { get; set; }
         public DbSet<FinWorkModel> FinWorkContext { get; set; }
+        public DbSet<FinWorkDetailModel> FinWorkDetailContext { get; set; }
         public DbQuery<WPBoardNoticeDto> WPBoardNoticeModel { get; set; }
     }
 }
