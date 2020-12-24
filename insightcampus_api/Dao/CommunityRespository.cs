@@ -54,6 +54,7 @@ namespace insightcampus_api.Dao
         {
             var result = (
                     from board in _context.CommunityContext
+                    orderby board.board_seq descending
                     select board);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
