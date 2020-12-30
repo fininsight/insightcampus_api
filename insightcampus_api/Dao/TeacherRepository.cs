@@ -46,6 +46,7 @@ namespace insightcampus_api.Dao
                     orderby teacher.name
                     select new TeacherModel
                     {
+                        teacher_seq = teacher.teacher_seq,
                         name = teacher.name,
                         email = teacher.email,
                         phone = teacher.phone,
