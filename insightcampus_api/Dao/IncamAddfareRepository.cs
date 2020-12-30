@@ -58,30 +58,12 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateDeposit(IncamAddfareModel incamAddfareModel)
+        public async Task UpdateDeposit(List<IncamAddfareModel> incamAddfareModels)
         {
-            var log = await (
-                 from addfare in _context.IncamAddfareContext
-                 where addfare.addfare_seq == incamAddfareModel.addfare_seq
-                 select new IncamAddfareLogModel
-                 {
-                     log_dt = DateTime.Now,
-                     log_user = incamAddfareModel.upd_user,
-                     addfare_seq = addfare.addfare_seq,
-                     contract_seq = addfare.contract_seq,
-                     hour = addfare.hour,
-                     addfare_date = addfare.addfare_date,
-                     income_type = addfare.income_type,
-                     income = addfare.income,
-                     reg_user = addfare.reg_user,
-                     reg_dt = addfare.reg_dt,
-                     upd_user = addfare.upd_user,
-                     upd_dt = addfare.upd_dt,
-                     use_yn = addfare.use_yn
-                 }).SingleAsync();
-
-            _context.Add(log);
-            _context.Entry(incamAddfareModel).Property(x => x.check_yn).IsModified = true;
+            foreach (var incamAddfareModel in incamAddfareModels)
+            {
+                _context.Entry(incamAddfareModel).Property(x => x.check_yn).IsModified = true;
+            }
 
             await _context.SaveChangesAsync();
         }
