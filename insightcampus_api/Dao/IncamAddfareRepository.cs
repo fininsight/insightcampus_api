@@ -149,6 +149,11 @@ namespace insightcampus_api.Dao
                 {
                     result = result.Where(w => w.addfare_date <= Convert.ToDateTime(filter.v));
                 }
+
+                else if (filter.k == "deposit")
+                {
+                    result = result.Where(w => w.check_yn == Convert.ToInt16(filter.v));
+                }
             }
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
