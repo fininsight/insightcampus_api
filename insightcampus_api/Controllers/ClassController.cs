@@ -23,9 +23,11 @@ namespace insightcampus_api.Controllers
         }
 
         [HttpGet("{size:int}/{pageNumber:int}")]
-        public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
+        //public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
+        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
         {
-            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            List<Filter> filters = new List<Filter>();
+            // var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
