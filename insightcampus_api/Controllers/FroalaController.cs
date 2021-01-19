@@ -10,6 +10,7 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.Runtime;
+using Microsoft.Extensions.Configuration;
 
 namespace insightcampus_api.Controllers
 {
@@ -19,15 +20,17 @@ namespace insightcampus_api.Controllers
     {
 
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IConfiguration _config;
         private static IAmazonS3 s3Client;
         private static AWSCredentials credential;
 
 
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.APNortheast2;
 
-        public FroalaController(IHostingEnvironment hostingEnvironment)
+        public FroalaController(IHostingEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _hostingEnvironment = hostingEnvironment;
+            _config = configuration;
         }
 
         [HttpPost("UploadFiles")]
@@ -44,9 +47,14 @@ namespace insightcampus_api.Controllers
             // 1e199075.png
             string name = Guid.NewGuid().ToString().Substring(0, 8) + extension;
 
+            string year = DateTime.Now.ToString("yyyy");
+            string month = DateTime.Now.ToString("MM");
+
             try
             {
-                credential = new BasicAWSCredentials("AKIA2SJOFBZFF7O6ELWH", "zANo/mxTh17v3hMX2V1WhgO4hZf0pkhTr6++OzMZ");
+                string accessKey = _config.GetValue<string>("AWS:AccessKey");
+                string secretKey = _config.GetValue<string>("AWS:SecretKey");
+                credential = new BasicAWSCredentials(accessKey, secretKey);
                 s3Client = new AmazonS3Client(credential, bucketRegion);
 
                 var filePath = Path.GetTempFileName();
@@ -57,7 +65,7 @@ namespace insightcampus_api.Controllers
                 }
 
                 var fileTransferUtility = new TransferUtility(s3Client);                
-                await fileTransferUtility.UploadAsync(filePath, "insight-community-image", "uploads/" + name);
+                await fileTransferUtility.UploadAsync(filePath, "insight-community-image", year + "/" + month + "/" + name);
             }
             catch (AmazonS3Exception e)
             {
@@ -72,7 +80,7 @@ namespace insightcampus_api.Controllers
                     , e.Message);
             }
 
-            var fileLink = "https://insight-community-image.s3.ap-northeast-2.amazonaws.com/uploads/" + name;
+            var fileLink = "https://insight-community-image.s3.ap-northeast-2.amazonaws.com/" + year + "/" + month + "/" + name;
 
             Hashtable imageUrl = new Hashtable();
             imageUrl.Add("link", fileLink);
