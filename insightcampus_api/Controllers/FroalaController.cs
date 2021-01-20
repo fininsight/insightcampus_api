@@ -47,6 +47,10 @@ namespace insightcampus_api.Controllers
             // 1e199075.png
             string name = Guid.NewGuid().ToString().Substring(0, 8) + extension;
 
+            const string bucketName = "insightcampus";
+            const string awsLink = "https://insightcampus.s3.ap-northeast-2.amazonaws.com";
+            const string imgGroupFolder = "community";
+
             string year = DateTime.Now.ToString("yyyy");
             string month = DateTime.Now.ToString("MM");
 
@@ -65,7 +69,7 @@ namespace insightcampus_api.Controllers
                 }
 
                 var fileTransferUtility = new TransferUtility(s3Client);                
-                await fileTransferUtility.UploadAsync(filePath, "insight-community-image", year + "/" + month + "/" + name);
+                await fileTransferUtility.UploadAsync(filePath, bucketName, imgGroupFolder + "/" + year + "/" + month + "/" + name);
             }
             catch (AmazonS3Exception e)
             {
@@ -80,7 +84,7 @@ namespace insightcampus_api.Controllers
                     , e.Message);
             }
 
-            var fileLink = "https://insight-community-image.s3.ap-northeast-2.amazonaws.com/" + year + "/" + month + "/" + name;
+            var fileLink = awsLink + "/" + imgGroupFolder + "/" + year + "/" + month + "/" + name;
 
             Hashtable imageUrl = new Hashtable();
             imageUrl.Add("link", fileLink);
