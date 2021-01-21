@@ -33,9 +33,9 @@ namespace insightcampus_api.Controllers
             _config = configuration;
         }
 
-        [HttpPost("UploadFiles")]
+        [HttpPost("upload/community")]
         [Produces("application/json")]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> PostCommunity()
         {
             var theFile = HttpContext.Request.Form.Files.GetFile("file");
 
