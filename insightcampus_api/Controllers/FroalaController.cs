@@ -33,9 +33,9 @@ namespace insightcampus_api.Controllers
             _config = configuration;
         }
 
-        [HttpPost("UploadFiles")]
+        [HttpPost("upload/community")]
         [Produces("application/json")]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> PostCommunity()
         {
             var theFile = HttpContext.Request.Form.Files.GetFile("file");
 
@@ -46,6 +46,10 @@ namespace insightcampus_api.Controllers
             // Generate Random name.
             // 1e199075.png
             string name = Guid.NewGuid().ToString().Substring(0, 8) + extension;
+
+            const string bucketName = "insightcampus";
+            const string awsLink = "https://insightcampus.s3.ap-northeast-2.amazonaws.com";
+            const string imgGroupFolder = "community";
 
             string year = DateTime.Now.ToString("yyyy");
             string month = DateTime.Now.ToString("MM");
@@ -65,7 +69,7 @@ namespace insightcampus_api.Controllers
                 }
 
                 var fileTransferUtility = new TransferUtility(s3Client);                
-                await fileTransferUtility.UploadAsync(filePath, "insight-community-image", year + "/" + month + "/" + name);
+                await fileTransferUtility.UploadAsync(filePath, bucketName, imgGroupFolder + "/" + year + "/" + month + "/" + name);
             }
             catch (AmazonS3Exception e)
             {
@@ -80,7 +84,65 @@ namespace insightcampus_api.Controllers
                     , e.Message);
             }
 
-            var fileLink = "https://insight-community-image.s3.ap-northeast-2.amazonaws.com/" + year + "/" + month + "/" + name;
+            var fileLink = awsLink + "/" + imgGroupFolder + "/" + year + "/" + month + "/" + name;
+
+            Hashtable imageUrl = new Hashtable();
+            imageUrl.Add("link", fileLink);
+            return Json(imageUrl);
+        }
+
+        [HttpPost("upload/class")]
+        [Produces("application/json")]
+        public async Task<IActionResult> PostClass()
+        {
+            var theFile = HttpContext.Request.Form.Files.GetFile("file");
+
+            // Get File Extension
+            // .png
+            string extension = System.IO.Path.GetExtension(theFile.FileName);
+
+            // Generate Random name.
+            // 1e199075.png
+            string name = Guid.NewGuid().ToString().Substring(0, 8) + extension;
+
+            const string bucketName = "insightcampus";
+            const string awsLink = "https://insightcampus.s3.ap-northeast-2.amazonaws.com";
+            const string imgGroupFolder = "class";
+
+            string year = DateTime.Now.ToString("yyyy");
+            string month = DateTime.Now.ToString("MM");
+
+            try
+            {
+                string accessKey = _config.GetValue<string>("AWS:AccessKey");
+                string secretKey = _config.GetValue<string>("AWS:SecretKey");
+                credential = new BasicAWSCredentials(accessKey, secretKey);
+                s3Client = new AmazonS3Client(credential, bucketRegion);
+
+                var filePath = Path.GetTempFileName();
+
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    await theFile.CopyToAsync(stream);
+                }
+
+                var fileTransferUtility = new TransferUtility(s3Client);
+                await fileTransferUtility.UploadAsync(filePath, bucketName, imgGroupFolder + "/" + year + "/" + month + "/" + name);
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine(
+                        "Error encountered ***. Message:'{0}' when writing an object"
+                        , e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(
+                    "Unknown encountered on server. Message:'{0}' when writing an object"
+                    , e.Message);
+            }
+
+            var fileLink = awsLink + "/" + imgGroupFolder + "/" + year + "/" + month + "/" + name;
 
             Hashtable imageUrl = new Hashtable();
             imageUrl.Add("link", fileLink);
