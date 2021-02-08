@@ -11,6 +11,7 @@ namespace insightcampus_api.Model
         public int class_seq { get; set; }
         public string class_nm { get; set; }
         public int? teacher { get; set; }
+        public int? category { get; set; }
         public int duration { get; set; }
         public string duration_nm { get; set; }
         public string thumbnail { get; set; }

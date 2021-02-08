@@ -33,6 +33,7 @@ namespace insightcampus_api.Dao
         {
             _context.Entry(classModel).Property(x => x.class_nm).IsModified = true;
             _context.Entry(classModel).Property(x => x.teacher).IsModified = true;
+            _context.Entry(classModel).Property(x => x.category).IsModified = true;
             _context.Entry(classModel).Property(x => x.duration).IsModified = true;
             _context.Entry(classModel).Property(x => x.duration_nm).IsModified = true;
             _context.Entry(classModel).Property(x => x.thumbnail).IsModified = true;
