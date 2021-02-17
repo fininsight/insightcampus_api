@@ -98,5 +98,11 @@ namespace insightcampus_api.Dao
             return result;
         }
 
+        public async Task UpdateThumbnail(ClassModel classModel)
+        {
+            _context.Entry(classModel).Property(x => x.thumbnail).IsModified = true;
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
