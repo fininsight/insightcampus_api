@@ -37,6 +37,7 @@ namespace insightcampus_api.Dao
             _context.Entry(classModel).Property(x => x.duration).IsModified = true;
             _context.Entry(classModel).Property(x => x.duration_nm).IsModified = true;
             _context.Entry(classModel).Property(x => x.thumbnail).IsModified = true;
+            _context.Entry(classModel).Property(x => x.online_yn).IsModified = true;
             _context.Entry(classModel).Property(x => x.price).IsModified = true;
             _context.Entry(classModel).Property(x => x.real_price).IsModified = true;
             await _context.SaveChangesAsync();
