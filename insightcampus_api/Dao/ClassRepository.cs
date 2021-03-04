@@ -33,9 +33,11 @@ namespace insightcampus_api.Dao
         {
             _context.Entry(classModel).Property(x => x.class_nm).IsModified = true;
             _context.Entry(classModel).Property(x => x.teacher).IsModified = true;
+            _context.Entry(classModel).Property(x => x.category).IsModified = true;
             _context.Entry(classModel).Property(x => x.duration).IsModified = true;
             _context.Entry(classModel).Property(x => x.duration_nm).IsModified = true;
             _context.Entry(classModel).Property(x => x.thumbnail).IsModified = true;
+            _context.Entry(classModel).Property(x => x.online_yn).IsModified = true;
             _context.Entry(classModel).Property(x => x.price).IsModified = true;
             _context.Entry(classModel).Property(x => x.real_price).IsModified = true;
             await _context.SaveChangesAsync();
@@ -95,6 +97,12 @@ namespace insightcampus_api.Dao
                     select cls).SingleAsync();
 
             return result;
+        }
+
+        public async Task UpdateThumbnail(ClassModel classModel)
+        {
+            _context.Entry(classModel).Property(x => x.thumbnail).IsModified = true;
+            await _context.SaveChangesAsync();
         }
 
     }
