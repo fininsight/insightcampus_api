@@ -12,7 +12,8 @@ namespace insightcampus_api.Model
         public string class_nm { get; set; }
         public int? teacher { get; set; }
         public int? category { get; set; }
-        public int duration { get; set; }
+        public DateTime start_date { get; set; }
+        public DateTime end_date { get; set; }
         public string duration_nm { get; set; }
         public string thumbnail { get; set; }
         public int online_yn { get; set; }
