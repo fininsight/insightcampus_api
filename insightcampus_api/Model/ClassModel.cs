@@ -20,5 +20,9 @@ namespace insightcampus_api.Model
         public int price { get; set; }
         public int real_price { get; set; }
         public string template { get; set; }
+        public string zoom_link { get; set; }
+        public string zoom_pw { get; set; }
+        public int view_yn { get; set; }
+        public string status { get; set; }
     }
 }
