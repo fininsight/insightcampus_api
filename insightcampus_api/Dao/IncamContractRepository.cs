@@ -31,21 +31,21 @@ namespace insightcampus_api.Dao
                 select new IncamContractLogModel
                 {
                     log_dt = DateTime.Now,
-                    log_user = incamContractModel.upd_user,
-                    contract_seq = incamContractModel.contract_seq,
-                    teacher_seq = incamContractModel.teacher_seq,
-                    @class = incamContractModel.@class,
-                    original_company = incamContractModel.original_company,
-                    hour_price = incamContractModel.hour_price,
-                    hour_incen = incamContractModel.hour_incen,
-                    contract_price = incamContractModel.contract_price,
-                    contract_start_date = incamContractModel.contract_start_date,
-                    contract_end_date = incamContractModel.contract_end_date,
-                    reg_user = incamContractModel.reg_user,
-                    reg_dt = incamContractModel.reg_dt,
-                    upd_user = incamContractModel.upd_user,
-                    upd_dt = incamContractModel.upd_dt,
-                    use_yn = incamContractModel.use_yn
+                    log_user = contract.upd_user,
+                    contract_seq = contract.contract_seq,
+                    teacher_seq = contract.teacher_seq,
+                    @class = contract.@class,
+                    original_company = contract.original_company,
+                    hour_price = contract.hour_price,
+                    hour_incen = contract.hour_incen,
+                    contract_price = contract.contract_price,
+                    contract_start_date = contract.contract_start_date,
+                    contract_end_date = contract.contract_end_date,
+                    reg_user = contract.reg_user,
+                    reg_dt = contract.reg_dt,
+                    upd_user = contract.upd_user,
+                    upd_dt = contract.upd_dt,
+                    use_yn = contract.use_yn
                 }).SingleAsync();
 
             _context.Add(log);
