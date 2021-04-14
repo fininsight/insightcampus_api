@@ -14,10 +14,12 @@ namespace insightcampus_api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly OrderInterface _order;
+        private readonly OrderItemInterface _orderItem;
 
-        public OrderController(OrderInterface order)
+        public OrderController(OrderInterface order, OrderItemInterface orderItem)
         {
             _order = order;
+            _orderItem = orderItem;
         }
 
         [HttpGet("{order_id}")]
@@ -40,34 +42,36 @@ namespace insightcampus_api.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] OrderModel orders)
+        public async Task<ActionResult> Post([FromBody] OrderDataDto orders)
         {
-
-            orders.reg_date = DateTime.Now;
-            orders.upd_date = DateTime.Now;
-            await _order.Add(orders);
+            orders.order.reg_date = DateTime.Now;
+            orders.order.upd_date = DateTime.Now;
+            await _order.Add(orders.order);
+            await _orderItem.AddList(orders.orderItem);
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] OrderModel orders)
+        [HttpPut("{order_id}")]
+        public async Task<ActionResult> Put(int order_id, [FromBody] OrderDataDto orders)
         {
-            orders.upd_user = int.Parse(User.Identity.Name);
-            orders.upd_date = DateTime.Now;
-            orders.order_id = id;
-            await _order.Update(orders);
+            orders.order.upd_user = int.Parse(User.Identity.Name);
+            orders.order.upd_date = DateTime.Now;
+            orders.order.order_id = order_id;
+            await _orderItem.RemoveAll(order_id);
+            await _orderItem.AddList(orders.orderItem);
             return Ok();
         }
 
         [Authorize(Roles = "admin")]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("{order_id}")]
+        public async Task<ActionResult> Delete(int order_id)
         {
             OrderModel orders = new OrderModel
             {
-                order_id = id
+                order_id = order_id
             };
+            await _orderItem.RemoveAll(order_id);
             await _order.Delete(orders);
             return Ok();
         }
