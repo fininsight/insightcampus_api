@@ -39,6 +39,8 @@ namespace insightcampus_api.Data
         public DbSet<IncamAddfareModel> IncamAddfareContext { get; set; }
         public DbSet<IncamContractModel> IncamContractContext { get; set; }
         public DbSet<ClassQnaModel> ClassQnaContext { get; set; }
+        public DbSet<OrderModel> OrderContext { get; set; }
+        public DbSet<OrderItemModel> OrderItemContext { get; set; }
         public DbSet<TeacherModel> TeacherContext { get; set; }
         public DbSet<EmailLogModel> EmailLogContext { get; set; }
         public DbSet<IncamAddfareModel> PdfContext { get; set; }

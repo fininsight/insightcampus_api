@@ -55,6 +55,8 @@ namespace insightcampus_api
             services.AddScoped<IncamAddfareInterface, IncamAddfareRepository>();
             services.AddScoped<ClassQnaInterface, ClassQnaRepository>();
             services.AddScoped<EmailInterface, EmailRepository>();
+            services.AddScoped<OrderInterface, OrderRepository>();
+            services.AddScoped<OrderItemInterface, OrderItemRepository>();
             services.AddScoped<TeacherInterface, TeacherRepository>();
             services.AddScoped<PdfInterface, PdfRepository>();
             services.AddScoped<IncamContractInterface, IncamContractRepository>();
