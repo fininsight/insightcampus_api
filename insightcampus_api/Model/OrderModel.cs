@@ -13,6 +13,7 @@ namespace insightcampus_api.Model
         public DateTime order_date { get; set; }
         public decimal order_price { get; set; }
         public string order_type { get; set; }
+        public int order_user_seq { get; set; }
         public string address { get; set; }
         public int reg_user { get; set; }
         public DateTime reg_date { get; set; }
