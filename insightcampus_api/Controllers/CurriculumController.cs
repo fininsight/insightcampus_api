@@ -20,13 +20,13 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("{class_seq}/{size}/{pageNumber}")]
-        public async Task<ActionResult<DataTableOutDto>> Get(int class_seq, int size, int pageNumber)
+        [HttpGet("{curriculumgroup_seq}/{size}/{pageNumber}")]
+        public async Task<ActionResult<DataTableOutDto>> Get(int curriculumgroup_seq, int size, int pageNumber)
         {
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
-            dataTableInputDto.class_seq = class_seq;
+            dataTableInputDto.curriculumgroup_seq = curriculumgroup_seq;
 
             return await _curriculum.Select(dataTableInputDto);
         }

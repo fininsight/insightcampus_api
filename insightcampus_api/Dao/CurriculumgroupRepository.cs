@@ -8,41 +8,35 @@ using System.Threading.Tasks;
 
 namespace insightcampus_api.Dao
 {
-    public class CurriculumRepository : CurriculumInterface
+    public class CurriculumgroupRepository : CurriculumgroupInterface
     {
         private readonly DataContext _context;
 
-        public CurriculumRepository(DataContext context)
+        public CurriculumgroupRepository(DataContext context)
         {
             _context = context;
         }
 
-        
         public async Task Add<T>(T entity) where T : class
         {
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        
-        public async Task Update(CurriculumModel curriculumModel)
+
+        public async Task Delete<T>(T entity) where T : class
         {
-            //_context.Entry(curriculumModel).Property(x => x.curriculum_seq).IsModified = true;
-            _context.Entry(curriculumModel).Property(x => x.curriculum_nm).IsModified = true;
-            _context.Entry(curriculumModel).Property(x => x.curriculumgroup_seq).IsModified = true;
-            _context.Entry(curriculumModel).Property(x => x.order).IsModified = true;
-            _context.Entry(curriculumModel).Property(x => x.type).IsModified = true;
-            _context.Entry(curriculumModel).Property(x => x.option).IsModified = true;
+            _context.Remove(entity);
             await _context.SaveChangesAsync();
         }
-       
+
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
             var result = (
-                    from curriculum in _context.CurriculumContext
-                    where curriculum.curriculumgroup_seq == dataTableInputDto.curriculumgroup_seq
-                    select curriculum);
+                    from curriculumgroup in _context.CurriculumgroupContext
+                    where curriculumgroup.class_seq == dataTableInputDto.class_seq
+                    select curriculumgroup);
 
-            result = result.OrderByDescending(o => o.curriculum_seq);
+            result = result.OrderByDescending(o => o.curriculumgroup_seq);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
@@ -57,10 +51,11 @@ namespace insightcampus_api.Dao
             return dataTableOutDto;
         }
 
-        
-        public async Task Delete<T>(T entity) where T : class
+        public async Task Update(CurriculumgroupModel curriculumgroupModel)
         {
-            _context.Remove(entity);
+           // _context.Entry(curriculumgroupModel).Property(x => x.curriculumgroup_seq).IsModified = true;
+            _context.Entry(curriculumgroupModel).Property(x => x.curriculumgroup_nm).IsModified = true;
+            _context.Entry(curriculumgroupModel).Property(x => x.class_seq).IsModified = true;
             await _context.SaveChangesAsync();
         }
     }
