@@ -13,7 +13,8 @@ namespace insightcampus_api.Data
 
   
         public string codegroup_id { get; set; }
-        public int class_seq { get; set; } //class seq
+        public int curriculumgroup_seq { get; set; } 
+        public int class_seq { get; set; } 
         public string user_seq { get; set; }
     }
 }

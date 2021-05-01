@@ -10,12 +10,9 @@ namespace insightcampus_api.Model
         [Key]
         public int curriculum_seq { get; set; }
         public string curriculum_nm { get; set; }
-        public int class_seq { get; set; }
-        public int duration { get; set; }
-        public int level { get; set; }
-        public int parent_seq { get; set; }
+        public int curriculumgroup_seq { get; set; }
         public int order { get; set; }
-        public string video_url { get; set; }
-        public string video_type { get; set; }
+        public string type { get; set; }
+        public string option { get; set; }
     }
 }

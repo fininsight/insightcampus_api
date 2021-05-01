@@ -58,7 +58,34 @@ namespace insightcampus_api.Dao
         {
             var result = (
                       from cls in _context.ClassContext
-                    select cls);
+                      join teacher in _context.TeacherContext
+                        on cls.teacher equals teacher.teacher_seq into c_
+                      join category in _context.CategoryContext
+                        on cls.category equals category.category_seq
+                      from teacher in c_.DefaultIfEmpty()
+                      select new ClassModel
+                        {
+                            class_seq = cls.class_seq,
+                            class_nm = cls.class_nm,
+                            teacher = cls.teacher,
+                            category = cls.category,
+                            start_date = cls.start_date,
+                            end_date = cls.end_date,
+                            duration_nm = cls.duration_nm,
+                            thumbnail = cls.thumbnail,
+                            online_yn = cls.online_yn,
+                            price = cls.price,
+                            real_price = cls.real_price,
+                            template = cls.template,
+                            zoom_link = cls.zoom_link,
+                            zoom_pw = cls.zoom_pw,
+                            view_yn = cls.view_yn,
+                            status = cls.status,
+                            teacher_name = teacher.name,
+                            category_name = category.category_nm
+
+                        }
+                    );
 
             // result = result.OrderByDescending(o => o.reg_dt);
 
