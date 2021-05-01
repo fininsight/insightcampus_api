@@ -34,6 +34,7 @@ namespace insightcampus_api.Dao
             _context.Entry(orderModel).Property(x => x.order_date).IsModified = true;
             _context.Entry(orderModel).Property(x => x.order_price).IsModified = true;
             _context.Entry(orderModel).Property(x => x.order_type).IsModified = true;
+            _context.Entry(orderModel).Property(x => x.order_user_seq).IsModified = true;
             _context.Entry(orderModel).Property(x => x.address).IsModified = true;
             _context.Entry(orderModel).Property(x => x.upd_date).IsModified = true;
             _context.Entry(orderModel).Property(x => x.upd_user).IsModified = true;
