@@ -19,14 +19,14 @@ namespace insightcampus_api.Dao
         public Task<IncamAddfareModel> Select(int addfare_seq)
         {
             var result = (
-                    from incam_addfare in _context.PdfContext
+                    from incam_addfare in _context.IncamAddfareContext
                     join contract in _context.IncamContractContext
                     on incam_addfare.contract_seq equals contract.contract_seq
                     join teacher in _context.TeacherContext
                     on contract.teacher_seq equals teacher.teacher_seq
                     join incom in _context.CodeContext
                     on incam_addfare.income_type equals incom.code_id
-                    where incam_addfare.addfare_seq == addfare_seq
+                    where incam_addfare.addfare_seq == addfare_seq && incom.codegroup_id == "incom"
                     //select incam_addfare).SingleAsync();
                     select new IncamAddfareModel
                     {
