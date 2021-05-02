@@ -60,7 +60,7 @@ namespace insightcampus_api.Controllers
             orders.order.order_id = order_id;
             await _order.Update(orders.order);
             await _orderItem.RemoveAll(order_id);
-            await _orderItem.AddList(orders.orderItem);
+            await _orderItem.AddList(orders.orderItem, order_id);
             return Ok();
         }
 

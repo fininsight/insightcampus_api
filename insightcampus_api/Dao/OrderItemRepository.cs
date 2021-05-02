@@ -37,6 +37,21 @@ namespace insightcampus_api.Dao
             }
         }
 
+        public async Task AddList(List<OrderItemModel> orderItemList, int order_id)
+        {
+            foreach (var orderItem in orderItemList)
+            {
+                OrderItemModel ordItem = new OrderItemModel()
+                {
+                    order_id = order_id,
+                    class_seq = orderItem.class_seq,
+                    price = orderItem.price
+                };
+                await _context.AddAsync(ordItem);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<List<OrderItemModel>> SelectItems(int order_id)
         {
             var result = await (
