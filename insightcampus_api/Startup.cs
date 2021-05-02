@@ -54,6 +54,7 @@ namespace insightcampus_api
             services.AddScoped<CSVFileInterface, CSVFileRepository>();
             services.AddScoped<IncamAddfareInterface, IncamAddfareRepository>();
             services.AddScoped<ClassQnaInterface, ClassQnaRepository>();
+            services.AddScoped<ClassStudentInterface, ClassStudentRepository>();
             services.AddScoped<EmailInterface, EmailRepository>();
             services.AddScoped<OrderInterface, OrderRepository>();
             services.AddScoped<OrderItemInterface, OrderItemRepository>();

@@ -58,6 +58,7 @@ namespace insightcampus_api.Controllers
             orders.order.upd_user = int.Parse(User.Identity.Name);
             orders.order.upd_date = DateTime.Now;
             orders.order.order_id = order_id;
+            await _order.Update(orders.order);
             await _orderItem.RemoveAll(order_id);
             await _orderItem.AddList(orders.orderItem);
             return Ok();
