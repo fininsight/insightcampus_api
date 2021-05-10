@@ -63,15 +63,15 @@ namespace insightcampus_api.Controllers
 
         
 
-        [HttpGet("certification")]
-        public async Task<IActionResult> CreateEduCertificationPDF()
+        [HttpGet("certification/{class_seq}/{order_user_seq}")]
+        public async Task<IActionResult> CreateEduCertificationPDF(int class_seq, int order_user_seq)
         {
-
+            var classstudent = await _pdf.SelectStudent(class_seq, order_user_seq);
             var globalSettings = new GlobalSettings
             {
                 ColorMode = ColorMode.Color,
                 Orientation = Orientation.Portrait,
-                PaperSize = PaperKind.A4,
+                PaperSize = new PechkinPaperSize("260mm", "190mm"),
                 Margins = new MarginSettings { Top = 10 },
                 DPI = 300,
                 DocumentTitle = "",
@@ -81,7 +81,7 @@ namespace insightcampus_api.Controllers
             var objectSettings = new ObjectSettings
             {
                 PagesCount = true,
-                HtmlContent = TemplateGenerator.GetEduCertificationHTMLString(),
+                HtmlContent = CertificationGenerator.GetHTMLString(classstudent),
                 WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "edu_certification_style.css") },
                 HeaderSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false },
                 FooterSettings = { FontName = "NanumGothic", FontSize = 9, Right = "", Line = false }
@@ -95,7 +95,7 @@ namespace insightcampus_api.Controllers
 
             var file = _converter.Convert(pdf);
             
-            return File(file, "application/pdf", "test" + " 님_교육수료증_" + ".pdf");
+            return File(file, "application/pdf", "test" + " 님_교육수료증" + ".pdf");
             
         }
     }
