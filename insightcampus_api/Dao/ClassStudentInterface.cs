@@ -9,5 +9,6 @@ namespace insightcampus_api.Dao
     public interface ClassStudentInterface
     {
         Task<DataTableOutDto> Select(int class_seq, DataTableInputDto dataTableInputDto);
+        Task SendCertification(int class_seq, int order_user_seq, string file_path);
     }
 }
