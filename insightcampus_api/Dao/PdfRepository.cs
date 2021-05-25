@@ -51,6 +51,30 @@ namespace insightcampus_api.Dao
             return result;
         }
 
+        public Task<ClassStudentModel> SelectStudent(int class_seq, int order_user_seq)
+        {
+            var result = (
+                      from cls in _context.ClassContext
+                      join order_item in _context.OrderItemContext on class_seq equals order_item.class_seq
+                      join order in _context.OrderContext on order_item.order_id equals order.order_id
+                      join user in _context.UserContext on order.order_user_seq equals user.user_seq
+                      where cls.class_seq == class_seq && order.order_user_seq == order_user_seq
+                      select new ClassStudentModel
+                      {
+                          order_id = order.order_id,
+                          order_user_seq = order.order_user_seq,
+                          name = user.name,
+                          class_nm = cls.class_nm,
+                          order_item_seq = order_item.order_item_seq,
+                          order_date = order.order_date,
+                          start_date = cls.start_date,
+                          end_date = cls.end_date,
+                          order_type = order.order_type,
+                          order_price = order.order_price,
+                          address = order.address,
+                      }).SingleAsync();
 
+            return result;
+        }
     }
 }

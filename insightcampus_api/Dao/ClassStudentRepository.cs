@@ -13,9 +13,12 @@ namespace insightcampus_api.Dao
 
         private readonly DataContext _context;
 
-        public ClassStudentRepository(DataContext context)
+        private readonly EmailInterface _email;
+
+        public ClassStudentRepository(DataContext context, EmailInterface email)
         {
             _context = context;
+            _email = email;
         }
 
         public async Task<DataTableOutDto> Select(int class_seq, DataTableInputDto dataTableInputDto)
@@ -45,6 +48,51 @@ namespace insightcampus_api.Dao
             dataTableOutDto.totalElements = result.Count();
 
             return dataTableOutDto;
+        }
+
+        public async Task SendCertification(int class_seq, int order_user_seq, string file_path)
+        {
+
+            var result = await (
+                      from cls in _context.ClassContext
+                      join order_item in _context.OrderItemContext on class_seq equals order_item.class_seq
+                      join order in _context.OrderContext on order_item.order_id equals order.order_id
+                      join user in _context.UserContext on order.order_user_seq equals user.user_seq
+                      where cls.class_seq == class_seq && order.order_user_seq == order_user_seq
+                      select new ClassStudentModel
+                      {
+                          order_id = order.order_id,
+                          order_user_seq = order.order_user_seq,
+                          name = user.name,
+                          email = user.email,
+                          class_nm = cls.class_nm,
+                          order_item_seq = order_item.order_item_seq,
+                          order_date = order.order_date,
+                          start_date = cls.start_date,
+                          end_date = cls.end_date,
+                          order_type = order.order_type,
+                          order_price = order.order_price,
+                          address = order.address,
+                      }).SingleAsync();
+
+            string title = $"[핀인사이트] {result.name} 님 {result.class_nm} 수료증";
+
+            string content = $"{result.name}님  {result.class_nm} 수료증 보내드립니다.";
+
+            string[] test = { "bill@fininsight.co.kr" };
+            await _email.SendEmail(result.email, title, content, file_path, test);
+
+            EmailLogModel emailLog = new EmailLogModel
+            {
+                use_yn = 1,
+                subject = title,
+                contents = content,
+                to = result.email,
+                type = "certification"
+            };
+
+            await _context.AddAsync(emailLog);
+            await _context.SaveChangesAsync();
         }
 
     }
