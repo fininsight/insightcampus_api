@@ -19,7 +19,7 @@ namespace insightcampus_api.Controllers
             _curriculumgroup = curriculumgroup;
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpGet("{class_seq}/{size}/{pageNumber}")]
         public async Task<ActionResult<DataTableOutDto>> Get(int class_seq, int size, int pageNumber)
         {
