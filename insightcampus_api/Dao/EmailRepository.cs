@@ -98,7 +98,7 @@ namespace insightcampus_api.Dao
             }
         }
 
-        public async Task SendEmail(string to, string subject, string body, string file_path, string[] bccs)
+        public async Task SendEmail(string to, string subject, string body, string file_path, string file_name, string[] bccs)
         {
             var serverInfo = (
                         from code in _context.CodeContext
@@ -120,7 +120,7 @@ namespace insightcampus_api.Dao
                 message.Bcc.Add(bc);
             }
             System.IO.FileStream fs = new System.IO.FileStream(file_path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-            Attachment data = new Attachment(fs, $"{subject}.pdf", "application/pdf");
+            Attachment data = new Attachment(fs, file_name, "application/pdf");
 
             // requestData.ReceiverList = receiverString;
             message.Body = body;

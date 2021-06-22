@@ -95,7 +95,7 @@ namespace insightcampus_api.Controllers
 
             var file = _converter.Convert(pdf);
             
-            return File(file, "application/pdf", "test" + " 님_교육수료증" + ".pdf");
+            return File(file, "application/pdf", $"{classstudent.class_nm}강의수료증({classstudent.name}님).pdf");
             
         }
     }
