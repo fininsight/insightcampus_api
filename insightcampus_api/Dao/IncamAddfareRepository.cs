@@ -49,6 +49,7 @@ namespace insightcampus_api.Dao
                }).SingleAsync();
 
             _context.Add(log);
+            incamAddfareModel.addfare_date = incamAddfareModel.addfare_date.ToLocalTime();
             _context.Entry(incamAddfareModel).Property(x => x.addfare_date).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.contract_seq).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.hour).IsModified = true;
