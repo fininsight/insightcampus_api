@@ -26,12 +26,13 @@ namespace insightcampus_api.Dao
         
         public async Task Update(CurriculumModel curriculumModel)
         {
-            //_context.Entry(curriculumModel).Property(x => x.curriculum_seq).IsModified = true;
             _context.Entry(curriculumModel).Property(x => x.curriculum_nm).IsModified = true;
             _context.Entry(curriculumModel).Property(x => x.curriculumgroup_seq).IsModified = true;
             _context.Entry(curriculumModel).Property(x => x.order).IsModified = true;
             _context.Entry(curriculumModel).Property(x => x.type).IsModified = true;
             _context.Entry(curriculumModel).Property(x => x.option).IsModified = true;
+            _context.Entry(curriculumModel).Property(x => x.url).IsModified = true;
+            _context.Entry(curriculumModel).Property(x => x.duration).IsModified = true;
             await _context.SaveChangesAsync();
         }
        

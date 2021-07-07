@@ -14,5 +14,7 @@ namespace insightcampus_api.Model
         public int order { get; set; }
         public string type { get; set; }
         public string option { get; set; }
+        public string url { get; set; }
+        public string duration { get; set; }
     }
 }
