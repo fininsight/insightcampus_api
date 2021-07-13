@@ -47,8 +47,6 @@ namespace insightcampus_api.Dao
                       from ord in _context.OrderContext
                       select ord);
 
-            // result = result.OrderByDescending(o => o.reg_dt);
-
             foreach (var filter in filters)
             {
                 if (filter.k == "order_type")
@@ -61,6 +59,8 @@ namespace insightcampus_api.Dao
                     result = result.Where(w => w.address.Contains(filter.v.Replace(" ", "")));
                 }
             }
+
+            result = result.OrderByDescending(o => o.order_id);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 

@@ -59,10 +59,12 @@ namespace insightcampus_api.Dao
             var result = (
                       from cls in _context.ClassContext
                       join teacher in _context.TeacherContext
-                        on cls.teacher equals teacher.teacher_seq into c_
+                        on cls.teacher equals teacher.teacher_seq into _t
+                      from teacher in _t.DefaultIfEmpty()
                       join category in _context.CategoryContext
-                        on cls.category equals category.category_seq
-                      from teacher in c_.DefaultIfEmpty()
+                        on cls.category equals category.category_seq into _c
+                      from category in _c.DefaultIfEmpty()
+                   orderby cls.class_seq descending
                       select new ClassModel
                         {
                             class_seq = cls.class_seq,

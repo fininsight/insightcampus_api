@@ -28,10 +28,10 @@ namespace insightcampus_api.Utility
                                     <h2>{class_name}</h2>
                                 </div>
                                 <div class='class-duration'>
-                                    <h2>{start_date.ToString("yyyy. MM. dd")} - {end_date.ToString("yyyy. MM. dd")}</h2>
+                                    <h2>{start_date?.ToString("yyyy. MM. dd")} - {end_date?.ToString("yyyy. MM. dd")}</h2>
                                 </div>
                                 <div class='class-end-date'>
-                                    <h2>{end_date.ToString("yyyy. MM. dd")}</h2>
+                                    <h2>{end_date?.ToString("yyyy. MM. dd")}</h2>
                                 </div>
                                 <div class='certification-id'>
                                     <h3>{order_id}-{order_item_seq}</h3>
