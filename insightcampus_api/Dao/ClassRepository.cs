@@ -91,21 +91,24 @@ namespace insightcampus_api.Dao
 
             // result = result.OrderByDescending(o => o.reg_dt);
 
+        
+
             foreach (var filter in filters)
             {
                 if (filter.k == "class_nm")
                 {
                     result = result.Where(w => w.class_nm.Contains(filter.v.Replace(" ", "")));
+             
                 }
 
                 else if (filter.k == "teacher")
                 {
-                    result = result.Where(w => w.teacher == Convert.ToInt16(filter.v));
+                    result = result.Where(w => w.teacher_name.Contains(filter.v.Replace(" ", "")));
                 }
 
-                else if (filter.k == "duration_nm")
+                else if (filter.k == "online_yn")
                 {
-                    result = result.Where(w => w.duration_nm.Contains(filter.v.Replace(" ", "")));
+                    result = result.Where(w => w.online_yn == Convert.ToInt16(filter.v));
                 }
             }
 

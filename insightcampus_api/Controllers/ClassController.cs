@@ -15,7 +15,7 @@ using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.Runtime;
 using Microsoft.Extensions.Configuration;
-
+using Newtonsoft.Json;
 
 namespace insightcampus_api.Controllers
 {
@@ -39,10 +39,10 @@ namespace insightcampus_api.Controllers
 
         [HttpGet("{size:int}/{pageNumber:int}")]
         //public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
-        public async Task<ActionResult<DataTableOutDto>> Get(int size, int pageNumber)
+        public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
-            List<Filter> filters = new List<Filter>();
-            // var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            //List<Filter> filters = new List<Filter>();
+            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;
