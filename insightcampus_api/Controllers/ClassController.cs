@@ -41,8 +41,13 @@ namespace insightcampus_api.Controllers
         //public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         public async Task<ActionResult<DataTableOutDto>> Get([FromQuery(Name = "f")] string f, int size, int pageNumber)
         {
-            //List<Filter> filters = new List<Filter>();
-            var filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            var filters = new List<Filter>();
+
+            if(f != null)
+            {
+                filters = JsonConvert.DeserializeObject<List<Filter>>(f);
+            }
+                
             DataTableInputDto dataTableInputDto = new DataTableInputDto();
             dataTableInputDto.size = size;
             dataTableInputDto.pageNumber = pageNumber;

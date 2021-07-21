@@ -34,6 +34,7 @@ namespace insightcampus_api.Dao
             _context.Entry(classQnaModel).Property(x => x.parent_seq).IsModified = true;
             _context.Entry(classQnaModel).Property(x => x.title).IsModified = true;
             _context.Entry(classQnaModel).Property(x => x.content).IsModified = true;
+            _context.Entry(classQnaModel).Property(x => x.reply).IsModified = true;
             _context.Entry(classQnaModel).Property(x => x.reg_user).IsModified = true;
             _context.Entry(classQnaModel).Property(x => x.reg_dt).IsModified = true;
             _context.Entry(classQnaModel).Property(x => x.upd_user).IsModified = true;
