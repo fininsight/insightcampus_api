@@ -13,6 +13,7 @@ namespace insightcampus_api.Model
         public int parent_seq { get; set; }
         public string title { get; set; }
         public string content { get; set; }
+        public string reply { get; set; }
         public int reg_user { get; set; }
         public DateTime reg_dt { get; set; }
         public int upd_user { get; set; }
