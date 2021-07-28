@@ -45,7 +45,6 @@ namespace insightcampus_api.Controllers
             return await _class_notice.Select(class_notice_seq);
         }
 
-        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ClassNoticeModel classnotices)
         {
@@ -56,7 +55,7 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpPut("{seq}")]
         public async Task<ActionResult> Put(int seq, [FromBody] ClassNoticeModel classnotices)
         {
@@ -67,7 +66,7 @@ namespace insightcampus_api.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpDelete("{seq}")]
         public async Task<ActionResult> Delete(int seq)
         {
