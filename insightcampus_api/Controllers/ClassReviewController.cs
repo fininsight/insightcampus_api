@@ -29,6 +29,34 @@ namespace insightcampus_api.Controllers
             return await _classreview.Select(dataTableInputDto);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] ClassReviewModel classReview)
+        {
+            classReview.reg_dt = DateTime.Now;
+            classReview.upd_dt = DateTime.Now;
+            await _classreview.Add(classReview);
+            return Ok();
+        }
+
+        [HttpPut("{seq}")]
+        public async Task<ActionResult> Put(int seq, [FromBody] ClassReviewModel classReview)
+        {
+            classReview.class_review_seq = seq;
+            await _classreview.Update(classReview);
+            return Ok();
+        }
+
+        [HttpDelete("{seq}")]
+        public async Task<ActionResult> Delete(int seq)
+        {
+            ClassReviewModel classReview = new ClassReviewModel
+            {
+                class_review_seq = seq
+            };
+            await _classreview.Delete(classReview);
+            return Ok();
+        }
+
     }
 
 }
