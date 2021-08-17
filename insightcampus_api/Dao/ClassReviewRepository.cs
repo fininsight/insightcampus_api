@@ -17,6 +17,17 @@ namespace insightcampus_api.Dao
             _context = context;
         }
 
+        public async Task Add<T>(T entity) where T : class
+        {
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete<T>(T entity) where T : class
+        {
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
@@ -40,6 +51,18 @@ namespace insightcampus_api.Dao
             return dataTableOutDto;
         }
 
+        public async Task Update(ClassReviewModel classReviewModel)
+        {
+            _context.Entry(classReviewModel).Property(x => x.class_seq).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.parent_seq).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.title).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.content).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.reg_user).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.reg_dt).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.upd_user).IsModified = true;
+            _context.Entry(classReviewModel).Property(x => x.upd_dt).IsModified = true;
 
+            await _context.SaveChangesAsync();
+        }
     }
 }
