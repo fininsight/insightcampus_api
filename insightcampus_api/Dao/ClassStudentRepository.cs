@@ -75,11 +75,12 @@ namespace insightcampus_api.Dao
                           order_type = order.order_type,
                           order_price = order.order_price,
                           address = order.address,
+                          survey_url = cls.survey_url
                       }).SingleAsync();
 
             string title = $"[인사이트 캠퍼스/ {result.class_nm}] 수료증 및 종강 설문조사 안내드립니다.";
             
-            string content = @"
+            string content = $@"
                 <p>안녕하세요,</p> 
                 <p>인사이트 캠퍼스입니다.</p>
                 <p>강의 수강하시느라 수고 많으셨습니다.</p>
@@ -94,7 +95,7 @@ namespace insightcampus_api.Dao
                 <p>*설문 맨 하단에 쿠폰코드가 있습니다.</p>
                 <p>*할인쿠폰 종강 후 6개월 내 / 1회 / 타쿠폰과 중복 사용 가능.</p>
                 <br />
-                <p>설문하러가기>> <a href='https://forms.gle/1J4X1q9znzLkaUst9'>https://forms.gle/1J4X1q9znzLkaUst9</a></p>
+                <p>설문하러가기>> <a href='{result.survey_url}'>{result.survey_url}</a></p>
                 <br />
                 <p>=========================</p>
                 <br />

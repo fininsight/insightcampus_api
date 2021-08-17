@@ -24,6 +24,7 @@ namespace insightcampus_api.Model
         public string zoom_pw { get; set; }
         public int view_yn { get; set; }
         public string status { get; set; }
+        public string survey_url { get; set; }
         [NotMapped]
         public string teacher_name { get; set; }
         [NotMapped]

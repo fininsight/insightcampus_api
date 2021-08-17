@@ -16,5 +16,6 @@ namespace insightcampus_api.Model
         public string order_type { get; set; }
         public decimal order_price { get; set; }
         public string address { get; set; }
+        public string survey_url { get; set; }
     }
 }

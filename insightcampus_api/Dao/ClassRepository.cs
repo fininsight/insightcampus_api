@@ -45,6 +45,7 @@ namespace insightcampus_api.Dao
             _context.Entry(classModel).Property(x => x.zoom_pw).IsModified = true;
             _context.Entry(classModel).Property(x => x.view_yn).IsModified = true;
             _context.Entry(classModel).Property(x => x.status).IsModified = true;
+            _context.Entry(classModel).Property(x => x.survey_url).IsModified = true;
             await _context.SaveChangesAsync();
         }
 
@@ -84,8 +85,8 @@ namespace insightcampus_api.Dao
                             view_yn = cls.view_yn,
                             status = cls.status,
                             teacher_name = teacher.name,
-                            category_name = category.category_nm
-
+                            category_name = category.category_nm,
+                            survey_url = cls.survey_url,
                         }
                     );
 
