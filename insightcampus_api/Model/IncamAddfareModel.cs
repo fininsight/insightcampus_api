@@ -38,5 +38,8 @@ namespace insightcampus_api.Model
         public decimal contract_price { get; set; }
         [NotMapped]
         public float rate { get; set; }
+        public string evidence_type { get; set; }
+        [NotMapped]
+        public string evidence_type_nm { get; set; }
     }
 }

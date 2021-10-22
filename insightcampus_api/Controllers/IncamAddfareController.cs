@@ -142,6 +142,14 @@ namespace insightcampus_api.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpPut("evidenceType")]
+        public async Task<ActionResult> evidenceTypePut([FromBody] List<IncamAddfareModel> incamAddfares)
+        {
+            await _incamAddfare.UpdateEvidenceType(incamAddfares);
+            return Ok();
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpDelete("{addfare_seq}")]
         public async Task<ActionResult> Delete(string addfare_seq)
         {

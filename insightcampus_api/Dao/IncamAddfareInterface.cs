@@ -12,6 +12,7 @@ namespace insightcampus_api.Dao
         Task Add<T>(T entity) where T : class;
         Task Update(IncamAddfareModel incamAddfareModel);
         Task UpdateDeposit(List<IncamAddfareModel> incamAddfareModels);
+        Task UpdateEvidenceType(List<IncamAddfareModel> incamAddfareModels);
         Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters);
         Task<List<IncamAddfareModel>> SelectExcel(List<Filter> filters);
         Task<IncamAddfareModel> Select(int addfare_seq);

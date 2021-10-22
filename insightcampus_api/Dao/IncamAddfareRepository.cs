@@ -69,6 +69,16 @@ namespace insightcampus_api.Dao
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateEvidenceType(List<IncamAddfareModel> incamAddfareModels)
+        {
+            foreach (var incamAddfareModel in incamAddfareModels)
+            {
+                _context.Entry(incamAddfareModel).Property(x => x.evidence_type).IsModified = true;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto, List<Filter> filters)
         {
             var result = (
@@ -81,10 +91,13 @@ namespace insightcampus_api.Dao
                       on contract.original_company equals company.code_id
                     join incom in _context.CodeContext
                       on addfare.income_type equals incom.code_id
+                    join evidence in _context.CodeContext
+                      on new {type = addfare.evidence_type, codegroup_id = "evidence_type" } equals new { type = evidence.code_id, codegroup_id = evidence.codegroup_id } into _t
+                    from evidence in _t.DefaultIfEmpty()
                    where company.codegroup_id == "cooperative"
                    where incom.codegroup_id == "incom"
                    where addfare.use_yn == 1
-                    orderby addfare.addfare_seq descending
+                 orderby addfare.addfare_seq descending
                   select new IncamAddfareModel
                     {
                         addfare_seq = addfare.addfare_seq,
@@ -92,6 +105,7 @@ namespace insightcampus_api.Dao
                         hour = addfare.hour,
                         addfare_date = addfare.addfare_date,
                         income_type = addfare.income_type,
+                        evidence_type = addfare.evidence_type,
                         income_type_nm = incom.code_nm,
                         income = addfare.income,
                         original_company_nm = company.code_nm,
@@ -101,8 +115,9 @@ namespace insightcampus_api.Dao
                         contract_price = contract.contract_price,
                         name = teacher.name,
                         teacher_seq = teacher.teacher_seq,
-                        check_yn = addfare.check_yn
-                    });
+                        check_yn = addfare.check_yn,
+                        evidence_type_nm = evidence.code_nm
+                  });
 
             
 
@@ -136,6 +151,17 @@ namespace insightcampus_api.Dao
                 else if (filter.k == "deposit")
                 {
                     result = result.Where(w => w.check_yn == Convert.ToInt16(filter.v));
+                }
+                else if (filter.k == "evidenceType")
+                {
+                    if(filter.v == "00")
+                    {
+                        result = result.Where(w => w.evidence_type == null);
+                    }
+                    else
+                    {
+                        result = result.Where(w => w.evidence_type == filter.v);
+                    }
                 }
             }
 
