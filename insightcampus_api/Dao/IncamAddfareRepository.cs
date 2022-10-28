@@ -55,6 +55,8 @@ namespace insightcampus_api.Dao
             _context.Entry(incamAddfareModel).Property(x => x.hour).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.income_type).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.income).IsModified = true;
+            _context.Entry(incamAddfareModel).Property(x => x.addfare_gubun).IsModified = true;
+            _context.Entry(incamAddfareModel).Property(x => x.go_check).IsModified = true;
 
             await _context.SaveChangesAsync();
         }
@@ -92,9 +94,15 @@ namespace insightcampus_api.Dao
                     join incom in _context.CodeContext
                       on addfare.income_type equals incom.code_id
                     join evidence in _context.CodeContext
-                      on new {type = addfare.evidence_type, codegroup_id = "evidence_type" } equals new { type = evidence.code_id, codegroup_id = evidence.codegroup_id } into _t
+                      on new { type = addfare.evidence_type, codegroup_id = "evidence_type" } equals new { type = evidence.code_id, codegroup_id = evidence.codegroup_id } into _t
                     from evidence in _t.DefaultIfEmpty()
-                   where company.codegroup_id == "cooperative"
+                    join addfareGubun in _context.CodeContext
+                      on new { type = addfare.addfare_gubun, codegroup_id = "addfare_gubun" } equals new { type = addfareGubun.code_id, codegroup_id = addfareGubun.codegroup_id } into _g
+                    from addfareGubun in _g.DefaultIfEmpty()
+                    join goCheck in _context.CodeContext
+                      on new { type = addfare.go_check, codegroup_id = "go_check" } equals new { type = goCheck.code_id, codegroup_id = goCheck.codegroup_id } into _c
+                    from goCheck in _c.DefaultIfEmpty()
+                    where company.codegroup_id == "cooperative"
                    where incom.codegroup_id == "incom"
                    where addfare.use_yn == 1
                  orderby addfare.addfare_seq descending
@@ -116,7 +124,11 @@ namespace insightcampus_api.Dao
                         name = teacher.name,
                         teacher_seq = teacher.teacher_seq,
                         check_yn = addfare.check_yn,
-                        evidence_type_nm = evidence.code_nm
+                        evidence_type_nm = evidence.code_nm,
+                        addfare_gubun = addfareGubun.code_id,
+                        addfare_gubun_nm = addfareGubun.code_nm,
+                        go_check = goCheck.code_id,
+                        go_check_nm = goCheck.code_nm
                   });
 
             
@@ -330,28 +342,85 @@ namespace insightcampus_api.Dao
 
                 var result = await (
                               from teacher in _context.TeacherContext
-                             where teacher.teacher_seq == incamAddfare.teacher_seq
-                             select teacher).FirstOrDefaultAsync();
+                              join contract in _context.IncamContractContext
+                                on teacher.teacher_seq equals contract.teacher_seq
+                              join addfare in _context.IncamAddfareContext
+                                on contract.contract_seq equals addfare.contract_seq
+                              where teacher.teacher_seq == incamAddfare.teacher_seq
+                             select new TeacherModel
+                             {
+                                 teacher_seq = teacher.teacher_seq,
+                                 name = teacher.name,
+                                 email = teacher.email,
+                                 phone = teacher.phone,
+                                 address = teacher.address,
+                                 user_seq = teacher.user_seq,
+                                 passwd = teacher.passwd,
+                                 reg_user = teacher.reg_user,
+                                 ret_dt = teacher.ret_dt,
+                                 upd_user = teacher.upd_user,
+                                 upd_dt = teacher.upd_dt,
+                                 use_yn = teacher.use_yn,
+                                 addfare_gubun = addfare.addfare_gubun
+                             }).FirstOrDefaultAsync();
 
                 string title = $"[핀인사이트] {incamAddfare.@class} 지급명세서 {incamAddfare.addfare_date.ToString("yyyy-MM-dd")}";
+                string content = "";
 
-                string content = $@"
-                   <br/>
-                   <br/>
-                   안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
-                   <br/>
-                   {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
-                   명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
-                   <br/>
-                   - 교육과정 총 입금액 : ₩{ToAccounting(all - all_tax)}<br/>
-                   - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
-                   - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
-                   - 송금계좌 : KB국민 | 277237-04-001089 | (주)핀인사이트<br/>
-                   <br/>
-                   <br/>
-                   지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
-                   <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
-                ";
+                if (result.addfare_gubun == "01")
+                {
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
+                        <br/>
+                        - 교육과정 총 입금액 : ₩{ToAccounting(all - all_tax)}<br/>
+                        - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
+                        - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
+                        - 송금계좌 : KB국민 | 277237-04-001089 | (주)핀인사이트<br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (result.addfare_gubun == "02")
+                {
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        <br/>
+                        - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (result.addfare_gubun == "03")
+                {
+                    var employee_vat = employee_all * 0.1;
+
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        <br/>
+                        - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all + employee_vat)}</span> <span style='color:red;'>부가세 : {ToAccounting(employee_vat)}</span><br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
 
                 string[] test = {"bill@fininsight.co.kr"};
                 await _email.SendEmail(result.email, title, content, test);

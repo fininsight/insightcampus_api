@@ -20,6 +20,9 @@ namespace insightcampus_api.Model
         public DateTime upd_dt { get; set; }
         public int use_yn { get; set; }
         public int check_yn { get; set; }
+        public string addfare_gubun { get; set; }
+        public string go_check { get; set; }
+
         [NotMapped]
         public int teacher_seq { get; set; }
         [NotMapped]
@@ -41,5 +44,9 @@ namespace insightcampus_api.Model
         public string evidence_type { get; set; }
         [NotMapped]
         public string evidence_type_nm { get; set; }
+        [NotMapped]
+        public string addfare_gubun_nm { get; set; }
+        [NotMapped]
+        public string go_check_nm { get; set; }
     }
 }

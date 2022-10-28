@@ -43,7 +43,8 @@ namespace insightcampus_api.Dao
                         contract_price = contract.contract_price,
                         name = teacher.name,
                         rate = float.Parse(incom.value1),
-                        income = incam_addfare.income
+                        income = incam_addfare.income,
+                        addfare_gubun = incam_addfare.addfare_gubun
                     }).SingleAsync();
 
 
