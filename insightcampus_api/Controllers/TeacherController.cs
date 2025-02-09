@@ -109,6 +109,15 @@ namespace insightcampus_api.Controllers
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] TeacherModel teacher)
         {
+            Random rnd = new Random();
+            string password = rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+            password += rnd.Next(0, 9).ToString();
+
+            teacher.passwd = password;
             await _teacher.UpdateLog(teacher.teacher_seq);
             await _teacher.Update(teacher);
             return Ok();

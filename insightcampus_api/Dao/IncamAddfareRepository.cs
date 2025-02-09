@@ -344,8 +344,8 @@ namespace insightcampus_api.Dao
                               from teacher in _context.TeacherContext
                               join contract in _context.IncamContractContext
                                 on teacher.teacher_seq equals contract.teacher_seq
-                              join addfare in _context.IncamAddfareContext
-                                on contract.contract_seq equals addfare.contract_seq
+                            //join addfare in _context.IncamAddfareContext
+                              //on contract.contract_seq equals addfare.contract_seq
                               where teacher.teacher_seq == incamAddfare.teacher_seq
                              select new TeacherModel
                              {
@@ -361,13 +361,13 @@ namespace insightcampus_api.Dao
                                  upd_user = teacher.upd_user,
                                  upd_dt = teacher.upd_dt,
                                  use_yn = teacher.use_yn,
-                                 addfare_gubun = addfare.addfare_gubun
+                            //     addfare_gubun = addfare.addfare_gubun
                              }).FirstOrDefaultAsync();
 
                 string title = $"[핀인사이트] {incamAddfare.@class} 지급명세서 {incamAddfare.addfare_date.ToString("yyyy-MM-dd")}";
                 string content = "";
 
-                if (result.addfare_gubun == "01")
+                if (incamAddfare.addfare_gubun == "01")
                 {
                     content = $@"
                         <br/>
@@ -387,7 +387,7 @@ namespace insightcampus_api.Dao
                         <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
                     ";
                 }
-                else if (result.addfare_gubun == "02")
+                else if (incamAddfare.addfare_gubun == "02")
                 {
                     content = $@"
                         <br/>
@@ -403,7 +403,7 @@ namespace insightcampus_api.Dao
                         <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
                     ";
                 }
-                else if (result.addfare_gubun == "03")
+                else if (incamAddfare.addfare_gubun == "03")
                 {
                     var employee_vat = employee_all * 0.1;
 
@@ -414,7 +414,27 @@ namespace insightcampus_api.Dao
                         <br/>
                         {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
                         <br/>
-                        - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all + employee_vat)}</span> <span style='color:red;'>부가세 : {ToAccounting(employee_vat)}</span><br/>
+                        - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all + employee_vat)}</span> <span style='color:red;'>(부가세 : {ToAccounting(employee_vat)})</span><br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (incamAddfare.addfare_gubun == "04")
+                {
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
+                        <br/>
+                        - 새싹 기준 강의료 : ₩{ToAccounting(all - all_tax)}<br/>
+                        - 핀인사이트 기준 강의료 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
+                        - 송금액(회수금액) : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
+                        - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
                         <br/>
                         <br/>
                         지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
@@ -422,8 +442,8 @@ namespace insightcampus_api.Dao
                     ";
                 }
 
-                string[] test = {"bill@fininsight.co.kr"};
-                await _email.SendEmail(result.email, title, content, test);
+                string[] bcc = {"bill@fins.ai"};
+                await _email.SendEmail(result.email, title, content, bcc);
 
                 EmailLogModel emailLog = new EmailLogModel
                 {
