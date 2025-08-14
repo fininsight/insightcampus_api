@@ -22,7 +22,7 @@ namespace insightcampus_api.Model
         public int check_yn { get; set; }
         public string addfare_gubun { get; set; }
         public string go_check { get; set; }
-
+        public int cumulative_incentive { get; set; }
         [NotMapped]
         public int teacher_seq { get; set; }
         [NotMapped]

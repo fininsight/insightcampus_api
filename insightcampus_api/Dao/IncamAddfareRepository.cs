@@ -45,7 +45,8 @@ namespace insightcampus_api.Dao
                    reg_dt = addfare.reg_dt,
                    upd_user = addfare.upd_user,
                    upd_dt = addfare.upd_dt,
-                   use_yn = addfare.use_yn
+                   use_yn = addfare.use_yn,
+                   cumulative_incentive = addfare.cumulative_incentive
                }).SingleAsync();
 
             _context.Add(log);
@@ -57,6 +58,7 @@ namespace insightcampus_api.Dao
             _context.Entry(incamAddfareModel).Property(x => x.income).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.addfare_gubun).IsModified = true;
             _context.Entry(incamAddfareModel).Property(x => x.go_check).IsModified = true;
+            _context.Entry(incamAddfareModel).Property(x => x.cumulative_incentive).IsModified = true;
 
             await _context.SaveChangesAsync();
         }
@@ -116,6 +118,7 @@ namespace insightcampus_api.Dao
                         evidence_type = addfare.evidence_type,
                         income_type_nm = incom.code_nm,
                         income = addfare.income,
+                        cumulative_incentive = addfare.cumulative_incentive,
                         original_company_nm = company.code_nm,
                         @class = contract.@class,
                         hour_price = contract.hour_price,
@@ -212,6 +215,7 @@ namespace insightcampus_api.Dao
                         contract_seq = addfare.contract_seq,
                         hour = addfare.hour,
                         addfare_date = addfare.addfare_date,
+                        cumulative_incentive = addfare.cumulative_incentive,
                         income_type = addfare.income_type,
                         income_type_nm = incom.code_nm,
                         income = addfare.income,
@@ -221,7 +225,7 @@ namespace insightcampus_api.Dao
                         hour_incen = contract.hour_incen,
                         contract_price = contract.contract_price,
                         name = teacher.name,
-                        teacher_seq = teacher.teacher_seq
+                        teacher_seq = teacher.teacher_seq,                        
                     });
 
 
@@ -290,7 +294,8 @@ namespace insightcampus_api.Dao
                         contract_price = contract.contract_price,
                         name = teacher.name,
                         teacher_seq = teacher.teacher_seq,
-                        check_yn = addfare.check_yn
+                        check_yn = addfare.check_yn,
+                        cumulative_incentive = addfare.cumulative_incentive
                   });
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
@@ -336,9 +341,12 @@ namespace insightcampus_api.Dao
                 var employee_tax = Math.Truncate(employee_all * incamAddfare.income / 10) * 10;
                 var contract_price = incamAddfare.contract_price;
                 var remit = (all - all_tax) - (employee_all - employee_tax);
+                var remit_vat = remit * 0.1;
+                var remit_all = remit + remit_vat;
                 var class_name = incamAddfare.@class;
                 var month = incamAddfare.addfare_date.Month;
                 var day = incamAddfare.addfare_date.Day;
+                var cumulative_incentive = incamAddfare.cumulative_incentive;
 
                 var result = await (
                               from teacher in _context.TeacherContext
@@ -360,7 +368,7 @@ namespace insightcampus_api.Dao
                                  ret_dt = teacher.ret_dt,
                                  upd_user = teacher.upd_user,
                                  upd_dt = teacher.upd_dt,
-                                 use_yn = teacher.use_yn,
+                                 use_yn = teacher.use_yn,                                
                             //     addfare_gubun = addfare.addfare_gubun
                              }).FirstOrDefaultAsync();
 
@@ -437,6 +445,88 @@ namespace insightcampus_api.Dao
                         - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
                         <br/>
                         <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (incamAddfare.addfare_gubun == "05")
+                {
+                    var employee_vat = employee_all * 0.1;
+
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        <br/>
+                        - 강의료 실지급액 : <span style='color:blue;'>₩{ToAccounting(employee_all)}</span> <span style='color:red;'>(부가세 : 해당없음)</span><br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (incamAddfare.addfare_gubun == "21")
+                {
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
+                        <br/>
+                        - 원청사 기준 강의료 : ₩{ToAccounting(all - all_tax)}<br/>
+                        - 핀인사이트 기준 강의료 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
+                        <br/>
+                        - 공급가액 (정산금액) : ₩{ToAccounting(remit)}<br/>
+                        - 부가세(10%) : ₩{ToAccounting(remit_vat)}<br/>
+                        - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit_all)}</span><br/>
+                        - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (incamAddfare.addfare_gubun == "22")
+                {
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
+                        <br/>
+                        - 원청사 기준 강의료 : ₩{ToAccounting(all - all_tax)}<br/>
+                        - 핀인사이트 기준 강의료 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
+                        - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
+                        - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
+                        <br/>
+                        <br/>
+                        지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
+                        <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
+                    ";
+                }
+                else if (incamAddfare.addfare_gubun == "23")
+                {
+                    content = $@"
+                        <br/>
+                        <br/>
+                        안녕하세요, <span style='color:blue'>{incamAddfare.name}</span> 님<br/>
+                        <br/>
+                        {incamAddfare.@class} 과정 강의료 지급명세서 송부합니다.<br/>
+                        명세서 확인 후 아래와 같이 송금 요청드립니다.<br/>
+                        <br/>
+                        - 원청사 기준 강의료 : ₩{ToAccounting(all)}<br/>
+                        - 핀인사이트 기준 강의료 : <span style='color:blue;'>₩{ToAccounting(employee_all)}</span><br/>
+                        - 선지급 인센티브 금액 : <span style='color:blue;'>₩{ToAccounting(all - employee_all)}</span><br/>
+                        - 누적 선지급 인센티브 금액 : <span style='color:blue;'>₩{ToAccounting(cumulative_incentive)}</span><br/>
+                        <br/>
+                        <br/>
+                        모든 금액은 세전 기준이며, 인센티브 실지급액은 세금 공제 후 달라질 수 있습니다.<br/>
                         지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
                         <a href='http://49.50.172.5:8080/admin?seq={result.teacher_seq}&password={result.passwd}' target='_blank'>지급명세서 확인</a><br/>
                     ";

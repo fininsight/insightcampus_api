@@ -23,6 +23,7 @@ namespace insightcampus_api.Model
         public int? upd_user { get; set; }
         public DateTime? upd_dt { get; set; }
         public int use_yn { get; set; }
+        public int cumulative_incentive { get; set; }
         [NotMapped]
         public int teacher_seq { get; set; }
         [NotMapped]

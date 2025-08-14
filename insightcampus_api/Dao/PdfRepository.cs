@@ -44,7 +44,8 @@ namespace insightcampus_api.Dao
                         name = teacher.name,
                         rate = float.Parse(incom.value1),
                         income = incam_addfare.income,
-                        addfare_gubun = incam_addfare.addfare_gubun
+                        addfare_gubun = incam_addfare.addfare_gubun,
+                        cumulative_incentive = incam_addfare.cumulative_incentive
                     }).SingleAsync();
 
 

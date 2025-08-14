@@ -5,6 +5,7 @@ using insightcampus_api.Model;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace insightcampus_api.Dao
 {
@@ -46,11 +47,10 @@ namespace insightcampus_api.Dao
 
         public async Task<DataTableOutDto> Select(DataTableInputDto dataTableInputDto)
         {
-
             var result = (
                     from code in _context.CodeContext
                    where code.codegroup_id == dataTableInputDto.codegroup_id
-                  select code);
+                   select code);                     
 
             result = result.OrderBy(o => o.order_num);
 
@@ -81,12 +81,21 @@ namespace insightcampus_api.Dao
         public async Task<List<CodeModel>> SelectCodes(string codegroup_id)
         {
 
-            var result = await (
+            var result = (
                     from code in _context.CodeContext
                    where code.codegroup_id == codegroup_id
-                  select code).ToListAsync();
+                  select code);
 
-            return result;
+            if (codegroup_id == "addfare_gubun")
+            {
+                result = result.Where(o => o.value1 == "1");
+            }
+
+            result = result.OrderBy(o => o.order_num);
+
+            var result2 = await result.ToListAsync();
+
+            return result2;
         }
     }
 }

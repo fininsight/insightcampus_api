@@ -17,8 +17,10 @@ namespace insightcampus_api.Utility
             var employee_all = (float)incamAddfare.contract_price * incamAddfare.hour;
             var employee_tax = Math.Truncate(employee_all * incamAddfare.income / 10) * 10;
             var employee_vat = employee_all * 0.1;
-            var contract_price = incamAddfare.contract_price;
+            var contract_price = incamAddfare.contract_price;            
             var remit = (all - all_tax) - (employee_all - employee_tax);
+            var remit_vat = remit * 0.1;
+            var remit_all = remit + remit_vat;
             var class_name = incamAddfare.@class;
             var month = incamAddfare.addfare_date.Month;
             var day = incamAddfare.addfare_date.Day;
@@ -104,7 +106,37 @@ namespace insightcampus_api.Utility
                     <br />
                     <br />
             ");
+            } else if (incamAddfare.addfare_gubun == "21" || incamAddfare.addfare_gubun == "22" || incamAddfare.addfare_gubun == "23")
+            {
+                sb.AppendFormat($@"
+                <div class='content'>
+                    <h1>[원청사 기준 강의료]</h1>
+                    <table cellpadding='5'>
+                        <tr id='bg-grey'>
+                            <td>총 예산</td>
+                            <td>원천징수액</td>
+                            <td id='bg-lightyellow' rowspan='2'>총 입금액</td>
+                        </tr>
+                        <tr id='bg-grey'>
+                            <td>{hour_price / 10000}만원 * {hour}시간</td>
+                            <td>({income_type_nm} {incamAddfare.income * 100}%)</td>
+                        </tr>
+                        <tr class='price-line'>
+                            <td>₩{ToAccounting(all)}</td>
+                            <td>₩{ToAccounting(all_tax)}</td>
+                            <td id='bg-lightyellow'>₩{ToAccounting(all - all_tax)}</td>
+                        </tr>
+                    </table>                    
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+            ");
             }
+
+
+
 
             if (incamAddfare.addfare_gubun == "01")
             {
@@ -215,6 +247,61 @@ namespace insightcampus_api.Utility
                     <br />
                 ");
             }
+            else if (incamAddfare.addfare_gubun == "05")
+            {
+                sb.AppendFormat($@"
+                    <div class='content'>
+                        <h1><span id='bg-yellow'>[강의료]</span></h1>
+                        <table cellpadding='5'>
+                            <tr id='bg-grey'>
+                                <td>총 예산</td>
+                                <td>세금계산서</td>
+                                <td id='bg-lightyellow' rowspan='2'>실 지급액</td>
+                            </tr>
+                            <tr id='bg-grey'>
+                                <td>{contract_price / 10000}만원 * {hour}시간</td>
+                                <td>(부가세 해당없음)</td>
+                            </tr>
+                            <tr class='price-line'>
+                                <td>₩{ToAccounting(employee_all)}</td>
+                                <td>₩0</td>
+                                <td id='bg-lightyellow'>₩{ToAccounting(employee_all)}</td>
+                            </tr>
+                        </table>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                ");
+            }
+            else if (incamAddfare.addfare_gubun == "21" || incamAddfare.addfare_gubun == "22" || incamAddfare.addfare_gubun == "23")
+            {
+                sb.AppendFormat($@"
+                    <h1><span>[핀인사이트 기준 강의료]</span></h1>
+                    <table cellpadding='5'>
+                        <tr id='bg-grey'>
+                            <td>총 강의료</td>
+                            <td>원천징수액</td>
+                            <td id='bg-lightyellow' rowspan='2'>총 입금액</td>
+                        </tr>
+                        <tr id='bg-grey'>
+                            <td>{contract_price / 10000}만원 * {hour}시간</td>
+                            <td>({income_type_nm} {incamAddfare.rate * 100}%)</td>
+                        </tr>
+                        <tr class='price-line'>
+                            <td>₩{ToAccounting(employee_all)}</td>
+                            <td>₩{ToAccounting(employee_tax)}</td>
+                            <td id='bg-lightyellow'>₩{ToAccounting(employee_all - employee_tax)}</td>
+                        </tr>
+                    </table>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                ");
+            }
 
             if (incamAddfare.addfare_gubun == "01")
             {
@@ -243,7 +330,7 @@ namespace insightcampus_api.Utility
                             </body>
                         </html>");
             }
-            else if (incamAddfare.addfare_gubun == "02" || incamAddfare.addfare_gubun == "03")
+            else if (incamAddfare.addfare_gubun == "02" || incamAddfare.addfare_gubun == "03" || incamAddfare.addfare_gubun == "05")
             {
                 sb.AppendFormat($@"
                                     <ul class='caution'>
@@ -275,6 +362,88 @@ namespace insightcampus_api.Utility
                                       <br />
                                       <li>송금액은 소득공제를 위해 현금영수증 발급해드립니다.</li>
                                       <li>사업체가 있으신 경우 세금계산서 발급도 가능합니다. (중복 발급은 불가합니다.)</li>
+                                    </ul>
+                        
+                                  </div>
+                            </body>
+                        </html>");
+            }
+            else if (incamAddfare.addfare_gubun == "21")
+            {
+                sb.AppendFormat($@"
+                    <h1><span id='bg-yellow'>[핀인사이트로 송금해주실 금액]</span></h1>
+                    <table cellpadding='5'>
+                        <tr id='bg-grey'>
+                            <td>공급가액 (정산금액)</td>
+                            <td>부가세</td>
+                            <td id='bg-lightyellow'>총 송금액</td>
+                        </tr>
+                        <tr class='price-line'>
+                            <td>₩{ToAccounting(all - all_tax)} - ₩{ToAccounting(employee_all - employee_tax)}</td>
+                            <td rowspan='2'>₩{ToAccounting(remit_vat)}</td>
+                            <td rowspan='2' id='bg-lightyellow'>₩{ToAccounting(remit_all)}</td>
+                        </tr>
+                        <tr class='price-line'>
+                            <td>₩{ToAccounting(remit)}</td>                           
+                        </tr>
+                    </table>     
+                        <ul class='caution'>
+                            <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
+                            <span class='account-number'>하나은행 | 447-910038-45804 | (주)인코어</span>
+                            <br />
+                            <br />
+                            <li>위 송금액은 정산금액(공급가액)에 부가세 10%를 추가한 금액입니다.</li>
+                            <li>입금이 확인된 후 세금계산서를 발행해 드립니다. (중복발급 불가)</li>
+                        </ul>
+                        
+                    </div>
+                </body>
+            </html>");
+            }
+            else if (incamAddfare.addfare_gubun == "22")
+            {
+                sb.AppendFormat($@"
+                                    <h1><span id='bg-yellow'>[핀인사이트로 송금해주실 금액]</span></h1>
+                                    <table cellpadding='5'>
+                                        <tr id='bg-grey'>
+                                            <td>송금액 계산</td>
+                                            <td id='bg-lightyellow'>송금액</td>
+                                        </tr>
+                                        <tr>
+                                            <td>₩{ToAccounting(all - all_tax)} - ₩{ToAccounting(employee_all - employee_tax)}</td>
+                                            <td id='bg-lightyellow'>₩{ToAccounting(remit)}</td>
+                                        </tr>
+                                    </table>
+                                    <ul class='caution'>
+                                      <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
+                                      <span class='account-number'>하나은행 | 447-910038-45804 | (주)인코어</span>
+                                      <br />
+                                      <br />
+                                      <li>송금액은 소득공제를 위해 현금영수증 발급해드립니다.</li>
+                                    </ul>
+                        
+                                  </div>
+                            </body>
+                        </html>");
+            }
+            else if (incamAddfare.addfare_gubun == "23")
+            {
+                sb.AppendFormat($@"
+                                    <h1><span id='bg-yellow'>[선지급 인센티브 금액 (세전기준)]</span></h1>
+                                    <table cellpadding='5'>
+                                        <tr id='bg-grey'>
+                                            <td>선지급 인센티브 금액 계산</td>
+                                            <td id='bg-lightyellow'>총 금액</td>
+                                        </tr>
+                                        <tr>
+                                            <td>₩{ToAccounting(all)} - ₩{ToAccounting(employee_all)}</td>
+                                            <td id='bg-lightyellow'>₩{ToAccounting(all - employee_all)}</td>
+                                        </tr>
+                                    </table>
+                                    <ul class='caution'>
+                                      <li>누적 선지급 인센티브 금액 : ( ₩{ToAccounting(incamAddfare.cumulative_incentive)} )원</li>                                      
+                                      <li>인센티브 차감 방식 : 상 하반기 인센티브 금액 - 선지급 인센티브 금액</li>
+                                      <li>모든 금액은 세전 기준이며, 인센티브 실지급액은 세금 공제 후 달라질 수 있습니다. </li>
                                     </ul>
                         
                                   </div>
