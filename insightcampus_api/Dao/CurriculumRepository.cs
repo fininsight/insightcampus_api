@@ -43,7 +43,7 @@ namespace insightcampus_api.Dao
                     where curriculum.curriculumgroup_seq == dataTableInputDto.curriculumgroup_seq
                     select curriculum);
 
-            result = result.OrderByDescending(o => o.curriculum_seq);
+            result = result.OrderBy(o => o.order);
 
             var paging = await result.Skip((dataTableInputDto.pageNumber - 1) * dataTableInputDto.size).Take(dataTableInputDto.size).ToListAsync();
 
