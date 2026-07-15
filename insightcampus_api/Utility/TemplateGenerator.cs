@@ -357,7 +357,7 @@ namespace insightcampus_api.Utility
                                     </table>
                                     <ul class='caution'>
                                       <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
-                                      <span class='account-number'>하나은행 | 447-910038-45804 | (주)인코어</span>
+                                      <span class='account-number'>케이뱅크 | 700-100-087671 | (주)인코어</span>
                                       <br />
                                       <br />
                                       <li>송금액은 소득공제를 위해 현금영수증 발급해드립니다.</li>
@@ -389,7 +389,7 @@ namespace insightcampus_api.Utility
                     </table>     
                         <ul class='caution'>
                             <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
-                            <span class='account-number'>하나은행 | 447-910038-45804 | (주)인코어</span>
+                            <span class='account-number'>케이뱅크 | 700-100-087671 | (주)인코어</span>
                             <br />
                             <br />
                             <li>위 송금액은 정산금액(공급가액)에 부가세 10%를 추가한 금액입니다.</li>
@@ -416,7 +416,7 @@ namespace insightcampus_api.Utility
                                     </table>
                                     <ul class='caution'>
                                       <li>위 송금액을 아래의 계좌로 입금해 주시기 바랍니다.</li>
-                                      <span class='account-number'>하나은행 | 447-910038-45804 | (주)인코어</span>
+                                      <span class='account-number'>케이뱅크 | 700-100-087671 | (주)인코어</span>
                                       <br />
                                       <br />
                                       <li>송금액은 소득공제를 위해 현금영수증 발급해드립니다.</li>

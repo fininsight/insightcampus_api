@@ -442,7 +442,7 @@ namespace insightcampus_api.Dao
                         - 새싹 기준 강의료 : ₩{ToAccounting(all - all_tax)}<br/>
                         - 핀인사이트 기준 강의료 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
                         - 송금액(회수금액) : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
-                        - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
+                        - 송금계좌 : 케이뱅크 | 700-100-087671 | (주)인코어<br/>
                         <br/>
                         <br/>
                         지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
@@ -483,7 +483,7 @@ namespace insightcampus_api.Dao
                         - 공급가액 (정산금액) : ₩{ToAccounting(remit)}<br/>
                         - 부가세(10%) : ₩{ToAccounting(remit_vat)}<br/>
                         - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit_all)}</span><br/>
-                        - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
+                        - 송금계좌 : 케이뱅크 | 700-100-087671 | (주)인코어<br/>
                         <br/>
                         <br/>
                         지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
@@ -503,7 +503,7 @@ namespace insightcampus_api.Dao
                         - 원청사 기준 강의료 : ₩{ToAccounting(all - all_tax)}<br/>
                         - 핀인사이트 기준 강의료 : <span style='color:blue;'>₩{ToAccounting(employee_all - employee_tax)}</span> <span style='color:red;'>(세전 {contract_price / 10000}만원 * {hour}시간)</span><br/>
                         - 송금요청액 : <span style='color:blue;'>₩{ToAccounting(remit)}</span><br/>
-                        - 송금계좌 : 하나은행 | 447-910038-45804 | (주)인코어<br/>
+                        - 송금계좌 : 케이뱅크 | 700-100-087671 | (주)인코어<br/>
                         <br/>
                         <br/>
                         지급명세서는 아래 링크에서 확인하실수 있습니다. (링크를 공유하지 말아주세요)<br/>
